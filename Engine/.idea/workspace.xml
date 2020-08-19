@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="Engine" targetName="Glad" />
+    </generated>
+  </component>
+  <component name="CMakeSettings" AUTO_RELOAD="true">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fc907363-a92f-4b10-9e08-f85d5ea4537b" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="OCResolveContextSettings">
+    <option name="configuration" value="0-Debug-Engine" />
+  </component>
+  <component name="ProjectId" id="1frI6qIlyuY1NtXTd5eoidswJBS" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="settings.editor.selected.configurable" value="configurable.group.build" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Gerry\Desktop\CPPMC\Engine\out\include" />
+      <recent name="C:\Users\Gerry\Desktop\CPPMC\Engine\Engine\Dependencies\GLFW" />
+      <recent name="C:\Users\Gerry\Desktop\CPPMC\Engine\cmake-build-debug\Engine\Dependencies" />
+      <recent name="C:\Users\Gerry\Desktop\CPPMC\Engine\Engine" />
+      <recent name="C:\Users\Gerry\Desktop\CPPMC\Engine\Sandbox" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Gerry\Desktop\CPPMC\Engine" />
+      <recent name="C:\Users\Gerry\Desktop\CPPMC\Engine\Engine\engine\platform\GLFW" />
+      <recent name="C:\Users\Gerry\Desktop\CPPMC\Engine\Engine\Engine" />
+      <recent name="C:\Users\Gerry\Desktop\CPPMC\Engine\Engine\Dependenciews" />
+      <recent name="C:\Users\Gerry\Desktop\CPPMC\Engine\Engine" />
+    </key>
+  </component>
+  <component name="RunManager" selected="CMake Application.Engine">
+    <configuration name="Engine" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" RUN_PATH="$PROJECT_DIR$/entrypoint.cpp" EXPLICIT_BUILD_TARGET_NAME="all">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Glad" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Engine" TARGET_NAME="Glad" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.Engine" />
+      <item itemvalue="CMake Application.Glad" />
+    </list>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fc907363-a92f-4b10-9e08-f85d5ea4537b" name="Default Changelist" comment="" />
+      <created>1596969611106</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1596969611106</updated>
+      <workItem from="1596969612286" duration="16829000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="3239" y="87" key="#Engine" timestamp="1596996093990">
+      <screen x="2560" y="-154" width="1920" height="1040" />
+    </state>
+    <state x="3239" y="87" key="#Engine/0.0.2560.1400/2560.-154.1920.1040@2560.-154.1920.1040" timestamp="1596996093990" />
+    <state x="2974" y="21" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1596996052322">
+      <screen x="2560" y="-154" width="1920" height="1040" />
+    </state>
+    <state x="2974" y="21" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1400/2560.-154.1920.1040@2560.-154.1920.1040" timestamp="1596996052322" />
+    <state x="3250" y="113" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1596991162161">
+      <screen x="2560" y="-154" width="1920" height="1040" />
+    </state>
+    <state x="3250" y="113" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.2560.1400/2560.-154.1920.1040@2560.-154.1920.1040" timestamp="1596991162161" />
+    <state x="3300" y="121" key="FileChooserDialogImpl" timestamp="1597001781416">
+      <screen x="2560" y="-154" width="1920" height="1040" />
+    </state>
+    <state x="3300" y="121" key="FileChooserDialogImpl/0.0.2560.1400/2560.-154.1920.1040@2560.-154.1920.1040" timestamp="1597001781416" />
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1597001782215">
+      <screen x="2560" y="-154" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.-154.1920.1040@2560.-154.1920.1040" timestamp="1597001782215" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1597001782215">
+      <screen x="2560" y="-154" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.2560.1400/2560.-154.1920.1040@2560.-154.1920.1040" timestamp="1597001782215" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1597001782214">
+      <screen x="2560" y="-154" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.2560.1400/2560.-154.1920.1040@2560.-154.1920.1040" timestamp="1597001782214" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1597001782215">
+      <screen x="2560" y="-154" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.2560.1400/2560.-154.1920.1040@2560.-154.1920.1040" timestamp="1597001782215" />
+    <state x="3021" y="8" key="SettingsEditor" timestamp="1596994661551">
+      <screen x="2560" y="-154" width="1920" height="1040" />
+    </state>
+    <state x="3021" y="8" key="SettingsEditor/0.0.2560.1400/2560.-154.1920.1040@2560.-154.1920.1040" timestamp="1596994661551" />
+    <state x="3216" y="-35" width="737" height="801" key="find.popup" timestamp="1596995287955">
+      <screen x="2560" y="-154" width="1920" height="1040" />
+    </state>
+    <state x="3216" y="-35" width="737" height="801" key="find.popup/0.0.2560.1400/2560.-154.1920.1040@2560.-154.1920.1040" timestamp="1596995287955" />
+  </component>
+</project>
