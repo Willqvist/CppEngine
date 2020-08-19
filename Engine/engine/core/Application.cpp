@@ -77,8 +77,8 @@ void VoxEng::Application::run() {
         window->clear();
 
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
-
     }
+    destroy();
 }
 
 void VoxEng::Application::onEvent(Event &ev) {

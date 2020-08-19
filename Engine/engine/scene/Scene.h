@@ -6,29 +6,35 @@
 #define CPPMC_SCENE_H
 
 #include <entt/entt.hpp>
-#include "Entity.hpp"
 #include <core/Core.h>
 #include <vector>
 #include <core/Timestep.h>
 
 namespace VoxEng {
+
+    class Entity;
+
     class Scene {
     public:
         Scene();
 
-        Ref<Entity> createEntity();
+        Entity createEntity();
 
         void update(Timestep ts);
 
         void render();
 
-        std::vector<Ref<Entity>>& entities();
+        void start();
+
+        void stop();
+
+        std::vector<Entity>& entities();
 
         ~Scene();
 
     private:
         entt::registry mRegistry;
-        std::vector<Ref<Entity>> mEntities;
+        std::vector<Entity> mEntities;
         friend class Entity;
     };
 }

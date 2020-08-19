@@ -11,8 +11,8 @@
 #include <tools/Tools.h>
 #include <rendering/Renderer.h>
 #include <Scene/Scene.h>
-#include <components/TestComponent.h>
-#include <components/ScriptComponent.h>
+#include <components/TestComponent.hpp>
+#include <components/ScriptComponent.hpp>
 #include "GameApplication.h"
 static Ref<VertexArray> arrb;
 static Ref<Shader> shader;
@@ -20,8 +20,11 @@ static Ref<Material> m;
 static Scene* scene;
 void GameApplication::init() {
     scene = new Scene();
-    Ref<Entity> ent = scene->createEntity();
-    ent->addScriptComponent<TestComponent>();
+    Entity ent = scene->createEntity();
+    //ent->addComponent<ScriptComponent>().bind<TestComponent>();
+    ent.addComponent<ScriptComponent>().bind<TestComponent>();
+    //ent.addScriptableComponent<TestComponent>();
+    scene->start();
     Ref<VertexArray> array = VertexArray::create();
     float arr[8] = {
             -0.5f, -0.5f,
@@ -62,7 +65,8 @@ void GameApplication::render() {
 }
 
 void GameApplication::destroy() {
-
+    //scene->stop();
+    delete scene;
 }
 
 GameApplication::~GameApplication() {

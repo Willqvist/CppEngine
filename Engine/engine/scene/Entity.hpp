@@ -9,24 +9,17 @@
 #include <entt/entt.hpp>
 #include <core/Timestep.h>
 #include <core/Logger.h>
-#include <components/ScriptComponent.h>
-
+#include "Scene.h"
 namespace VoxEng {
-
-    class Scene;
 
     class Entity {
 
     public:
+        Entity() {};
         Entity(entt::entity id, Scene *scene): id(id), scene(scene){}
         template<typename T>
-        void addComponent() {
-            scene->mRegistry.emplace<T>(id);
-        };
-
-        template<typename T>
-        void addScriptComponent() {
-            scene->mRegistry.emplace<ScriptComponent>(id, new T());
+        T& addComponent() {
+            return scene->mRegistry.emplace<T>(id);
         };
 
         template<typename T>
@@ -35,7 +28,7 @@ namespace VoxEng {
         };
 
         template<class T>
-        T getComponent() {
+        T& getComponent() {
             return scene->mRegistry.get<T>(id);
         };
 
