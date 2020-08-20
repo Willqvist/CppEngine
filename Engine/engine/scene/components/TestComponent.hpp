@@ -6,14 +6,16 @@
 #define CPPMC_TESTCOMPONENT_HPP
 
 #include "VoxComponent.h"
-
+#include "ScriptComponent.hpp"
+#include "../Instansiator.h"
 namespace VoxEng {
     class TestComponent: public VoxComponent {
     public:
-        void update(Timestep ts) override {
 
-            DEBUG_LOG("wew %d",transform.x);
+        void update(Timestep ts) override {
+            this->transform->position.x += 0.2f*ts;
         };
+    private:
     };
 }
 

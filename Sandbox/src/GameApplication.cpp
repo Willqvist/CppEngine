@@ -11,8 +11,8 @@
 #include <tools/Tools.h>
 #include <rendering/Renderer.h>
 #include <Scene/Scene.h>
-#include <components/TestComponent.hpp>
-#include <components/ScriptComponent.hpp>
+#include <scene/components/TestComponent.hpp>
+#include <scene/components/ScriptComponent.hpp>
 #include "GameApplication.h"
 static Ref<VertexArray> arrb;
 static Ref<Shader> shader;
@@ -20,9 +20,13 @@ static Ref<Material> m;
 static Scene* scene;
 void GameApplication::init() {
     scene = new Scene();
-    Entity ent = scene->createEntity();
+    Entity ent = scene->createEntity("testObject");
     //ent->addComponent<ScriptComponent>().bind<TestComponent>();
-    ent.addComponent<ScriptComponent>().bind<TestComponent>();
+    Instansiator::addScriptComponent<TestComponent>(ent);
+    Camera& cam = ent.addComponent<Camera>();
+    Transform& transform = ent.getComponent<Transform>();
+    transform.position.z += 2.0f;
+    cam.update(transform);
     //ent.addScriptableComponent<TestComponent>();
     scene->start();
     Ref<VertexArray> array = VertexArray::create();
@@ -60,8 +64,9 @@ void GameApplication::update(VoxEng::Timestep& delta) {
 }
 
 void GameApplication::render() {
-    Renderer::render(arrb,m);
     scene->render();
+    Renderer::render(arrb,m);
+    Renderer::end();
 }
 
 void GameApplication::destroy() {

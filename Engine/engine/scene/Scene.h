@@ -9,6 +9,7 @@
 #include <core/Core.h>
 #include <vector>
 #include <core/Timestep.h>
+#include <scene/components/Components.h>
 
 namespace VoxEng {
 
@@ -18,7 +19,8 @@ namespace VoxEng {
     public:
         Scene();
 
-        Entity createEntity();
+        Entity createEntity(const std::string& name);
+        Entity createEntity(const std::string& name, Entity& parent);
 
         void update(Timestep ts);
 

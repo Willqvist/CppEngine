@@ -10,26 +10,41 @@
 #include <core/Timestep.h>
 #include <core/Logger.h>
 #include "Scene.h"
-namespace VoxEng {
 
+namespace VoxEng {
+    typedef unsigned int EntityID;
     class Entity {
 
     public:
         Entity() {};
-        Entity(entt::entity id, Scene *scene): id(id), scene(scene){}
+        Entity(entt::entity id, Scene *scene): mId(id), scene(scene){}
         template<typename T>
         T& addComponent() {
-            return scene->mRegistry.emplace<T>(id);
+            if(hasComponent<T>())
+                return getComponent<T>();
+            return scene->mRegistry.emplace<T>(mId);
         };
+
+        EntityID id() {
+            return getComponent<NamedComponent>().id;
+        }
+
+        entt::entity componentIdentifier() {
+            return mId;
+        }
+
+        const std::string& name() {
+            return getComponent<NamedComponent>().name();
+        }
 
         template<typename T>
         bool hasComponent() {
-            scene->mRegistry.has<T>(id);
+            return scene->mRegistry.has<T>(mId);
         };
 
         template<class T>
         T& getComponent() {
-            return scene->mRegistry.get<T>(id);
+            return scene->mRegistry.get<T>(mId);
         };
 
         template<class T>
@@ -37,10 +52,14 @@ namespace VoxEng {
             return scene->mRegistry.remove_if_exists<T>(id);
         };
 
+        Scene* getScene() {
+            return scene;
+        }
+
         ~Entity() = default;
 
     private:
-        entt::entity id;
+        entt::entity mId;
         Scene* scene;
     };
 }
