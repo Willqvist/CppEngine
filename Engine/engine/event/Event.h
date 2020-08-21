@@ -8,7 +8,7 @@
 EVENT_TYPE getType(){return EVENT_TYPE::type;}
 namespace VoxEng {
     enum class EVENT_TYPE{
-        WINDOW_CLOSE
+        WINDOW_CLOSE=0, KEY_PRESS, MOUSE_MOVE, MOUSE_PRESS,WINDOW_RESIZE
     };
     class Event {
     public:

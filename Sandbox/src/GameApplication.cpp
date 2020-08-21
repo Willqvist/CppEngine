@@ -14,6 +14,8 @@
 #include <scene/components/TestComponent.hpp>
 #include <scene/components/ScriptComponent.hpp>
 #include "GameApplication.h"
+#include "components/CameraMovement.h"
+
 static Ref<VertexArray> arrb;
 static Ref<Shader> shader;
 static Ref<Material> m;
@@ -22,19 +24,19 @@ void GameApplication::init() {
     scene = new Scene();
     Entity ent = scene->createEntity("testObject");
     //ent->addComponent<ScriptComponent>().bind<TestComponent>();
-    Instansiator::addScriptComponent<TestComponent>(ent);
+    Instansiator::addScriptComponent<CameraMovement>(ent);
     Camera& cam = ent.addComponent<Camera>();
     Transform& transform = ent.getComponent<Transform>();
-    transform.position.z += 2.0f;
+    transform.position.z += 10.0f;
     cam.update(transform);
     //ent.addScriptableComponent<TestComponent>();
     scene->start();
     Ref<VertexArray> array = VertexArray::create();
     float arr[8] = {
-            -0.5f, -0.5f,
-            0.5f, -0.5f,
-            0.5f, 0.5f,
-           -0.5f, 0.5f
+            -1.5f, -1.5f,
+            1.5f, -1.5f,
+            1.5f, 1.5f,
+           -1.5f, 1.5f
     };
 
     unsigned int indexArray[6] = {

@@ -5,10 +5,11 @@
 #ifndef CPPMC_APPLICATION_H
 #define CPPMC_APPLICATION_H
 
-#include <event/WindowClose.h>
+#include <event/Events.h>
 #include "Window.h"
 #include "Core.h"
 #include "Timestep.h"
+#include "Input.h"
 
 namespace VoxEng {
     class Application: public EventListener {
@@ -40,8 +41,10 @@ namespace VoxEng {
         Ref<Window> window;
         bool running = true;
     private:
-        bool onWindowCloseEvent(WindowClose& ev);
+        bool onWindowCloseEvent(WindowCloseEvent& ev);
+        bool onWindowResizeEvent(WindowResizeEvent& ev);
         float prevFrameTime = 0.0f;
+        Ref<Input> inputHandler;
     };
 }
 

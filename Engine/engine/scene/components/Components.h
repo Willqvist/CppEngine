@@ -18,6 +18,14 @@ namespace VoxEng {
         glm::vec3 rotation = glm::vec3(0,0,0);
         glm::vec3 scale = glm::vec3(1,1,1);
         Transform* parent;
+
+        glm::vec3 forward() {
+            return glm::vec3(0,0,0);
+        }
+
+        glm::vec3 up() {
+            return glm::vec3(0,1,0);
+        }
     };
 
     enum class ProjectionMode {
@@ -42,7 +50,7 @@ namespace VoxEng {
                     break;
                 }
                 case ProjectionMode::PERSPECTIVE: {
-                    proj = glm::perspective(fov, viewport.x/viewport.y, zNear, zFar);
+                    proj = glm::perspective(glm::radians(fov), viewport.x/viewport.y, zNear, zFar);
                     break;
                 }
             }
@@ -51,8 +59,8 @@ namespace VoxEng {
         void update(Transform& transform) {
             view = glm::mat4(1.0f);
             view = glm::rotate(view, transform.rotation.x,glm::vec3(-1.0f,0,0));
-            view = glm::rotate(view, transform.rotation.y,glm::vec3(0,-1,0));
-            view = glm::rotate(view, transform.rotation.z,glm::vec3(0,0,-1));
+            view = glm::rotate(view, transform.rotation.y,glm::vec3(0,-1.0f,0));
+            view = glm::rotate(view, transform.rotation.z,glm::vec3(0,0,-1.0f));
             view = glm::translate(view,-transform.position);
             viewProj = proj*view;
         }

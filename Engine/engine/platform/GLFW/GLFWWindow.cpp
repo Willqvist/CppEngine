@@ -2,8 +2,9 @@
 // Created by Gerry on 2020-08-09.
 //
 #include <core/Logger.h>
-#include <event/WindowClose.h>
+#include <event/Events.h>
 #include <rendering/RenderingCommand.h>
+#include <core/Input.h>
 #include "GLFWWindow.h"
 #include "iostream"
 #include "imgui/imgui.h"
@@ -21,6 +22,7 @@ VoxEng::GLFWWindow::GLFWWindow(const WindowAttributes& attributes) : Window(attr
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
     glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
+    DEBUG_LOG("ENABLED MOTION %d", glfwRawMouseMotionSupported());
 
     window = glfwCreateWindow(mWidth,mHeight,mTitle,NULL,NULL);
     if(!window) {
@@ -40,6 +42,7 @@ VoxEng::GLFWWindow::GLFWWindow(const WindowAttributes& attributes) : Window(attr
         exit(-1);
     }
     glViewport(0,0,width(),height());
+    setupListeners();
 #ifdef DEBUG_ENABLE
     //IMGUI
     IMGUI_CHECKVERSION();
@@ -51,6 +54,7 @@ VoxEng::GLFWWindow::GLFWWindow(const WindowAttributes& attributes) : Window(attr
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 150");
 #endif
+    lockMouse(true);
 }
 
 
@@ -68,10 +72,9 @@ void VoxEng::GLFWWindow::enableVSync(bool enable) {
 
 void VoxEng::GLFWWindow::update() {
     if(glfwWindowShouldClose(window)) {
-        WindowClose closeEvent;
+        WindowCloseEvent closeEvent;
         sendEvent(closeEvent);
     }
-
     glfwPollEvents();
 #ifdef DEBUG_ENABLE
     ImGui_ImplOpenGL3_NewFrame();
@@ -97,4 +100,54 @@ void VoxEng::GLFWWindow::clear() {
 
 VoxEng::GLFWWindow::~GLFWWindow() {
     glfwTerminate();
+}
+
+void VoxEng::GLFWWindow::setupListeners() {
+    glfwSetKeyCallback(window,[](GLFWwindow* window, int key, int scancode, int action, int mode){
+        GLFWWindow* windowPointer = static_cast<GLFWWindow*>(glfwGetWindowUserPointer(window));
+        InputState state;
+        switch(action) {
+            case GLFW_PRESS: state = InputState::PRESSED; break;
+            case GLFW_RELEASE: state = InputState::RELEASED; break;
+            case GLFW_REPEAT: state = InputState::HOLD; break;
+        }
+        KeyPressEvent ev(key,state);
+        windowPointer->sendEvent(ev);
+    });
+
+    glfwSetMouseButtonCallback(window,[](GLFWwindow* window, int button, int action, int mods){
+        GLFWWindow* windowPointer = static_cast<GLFWWindow*>(glfwGetWindowUserPointer(window));
+        InputState state;
+        switch(action) {
+            case GLFW_PRESS: state = InputState::PRESSED; break;
+            case GLFW_RELEASE: state = InputState::RELEASED; break;
+            case GLFW_REPEAT: state = InputState::HOLD; break;
+        }
+        MousePressEvent ev(button,state);
+        windowPointer->sendEvent(ev);
+    });
+
+    glfwSetCursorPosCallback(window,[](GLFWwindow* window, double x,double y){
+        GLFWWindow* windowPointer = static_cast<GLFWWindow*>(glfwGetWindowUserPointer(window));
+        MouseMoveEvent ev(x,y);
+        windowPointer->sendEvent(ev);
+    });
+
+    glfwSetWindowSizeCallback(window,[](GLFWwindow* window, int width,int height){
+        glViewport(0,0,width,height);
+        GLFWWindow* windowPointer = static_cast<GLFWWindow*>(glfwGetWindowUserPointer(window));
+        windowPointer->mWidth = width;
+        windowPointer->mHeight = height;
+        WindowResizeEvent ev(width,height);
+        windowPointer->sendEvent(ev);
+    });
+}
+
+void VoxEng::GLFWWindow::lockMouse(bool locked) {
+    if(locked) {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    } else {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        glfwSetCursorPos(window,mWidth/2,mHeight/2);
+    }
 }

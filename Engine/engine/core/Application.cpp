@@ -15,7 +15,8 @@
 
 VoxEng::Application::Application(VoxEng::WindowAttributes &attributes) {
     window = Window::createWindow(attributes);
-
+    inputHandler = CreateRef<Input>();
+    window->addEventListener(inputHandler);
 }
 
 static std::vector<float> framesArr;
@@ -30,9 +31,11 @@ void VoxEng::Application::run() {
     #endif
     const float dt = 1/60.0f;
     double accumulator = 0;
+    float prevFrameDelta = 0;
     while(running) {
         float time = static_cast<float>(glfwGetTime());
         Timestep timestep = time - prevFrameTime;
+        prevFrameDelta= timestep;
         prevFrameTime = time;
         accumulator += timestep;
         while(accumulator >= dt) {
@@ -44,7 +47,13 @@ void VoxEng::Application::run() {
             #endif
         }
         //if(maxTimePerFrame-timestep > 0)
+        if(Input::isKeyDown(KeyCode::Escape)) {
+            window->lockMouse(false);
+        }
+        inputHandler->poll();
         window->update();
+
+
         render();
         #ifdef DEBUG_ENABLE
                 ImGui::Begin("Debug");
@@ -68,10 +77,14 @@ void VoxEng::Application::run() {
                 //TODO: break this out to a class so Application is not dependant of IMGUI;
                 ImGui::Text("Fps: %d",prevFrame);
                 ImGui::Text("Ups: %d",prevUpd);
+                ImGui::Text("Frame Time: %f",prevFrameDelta);
+                glm::vec2 delta = Input::getMouseDelta();
+                ImGui::Text("MouseDelta: %f | %f",delta.x,delta.y);
                 ImGui::Begin("CPU");
                 ImGui::PlotLines("Frame time", framesArr.data(), framesArr.size());
                 ImGui::End();
                 ImGui::End();
+
 #endif
 
         window->clear();
@@ -83,8 +96,8 @@ void VoxEng::Application::run() {
 
 void VoxEng::Application::onEvent(Event &ev) {
     EventExecutor exec(ev);
-    exec.bind<WindowClose>(BIND_LAMBDA(onWindowCloseEvent));
-    running = false;
+    exec.bind<WindowCloseEvent>(BIND_LAMBDA(onWindowCloseEvent));
+    exec.bind<WindowResizeEvent>(BIND_LAMBDA(onWindowResizeEvent));
 }
 
 VoxEng::Ref<VoxEng::Window> &VoxEng::Application::getWindow() {
@@ -95,7 +108,12 @@ VoxEng::Application::~Application() {
 
 }
 
-bool VoxEng::Application::onWindowCloseEvent(WindowClose &ev) {
+bool VoxEng::Application::onWindowCloseEvent(WindowCloseEvent &ev) {
+    DEBUG_LOG("IM HERE CLOSING DOWN");
     running = false;
     return true;
+}
+
+bool VoxEng::Application::onWindowResizeEvent(VoxEng::WindowResizeEvent &ev) {
+    return false;
 }

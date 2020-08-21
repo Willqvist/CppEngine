@@ -40,6 +40,8 @@ namespace VoxEng {
 
         virtual void clear() = 0;
 
+        virtual void lockMouse(bool locked) = 0;
+
         virtual ~Window() = default;
 
         static Ref<Window> createWindow(const WindowAttributes& attributes);

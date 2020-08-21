@@ -22,9 +22,14 @@ namespace VoxEng {
 
         void clear() override;
 
+        void lockMouse(bool locked) override;
+
         ~GLFWWindow() override;
 
     private:
+
+        void setupListeners();
+
         WindowGLFW* window;
     };
 }
