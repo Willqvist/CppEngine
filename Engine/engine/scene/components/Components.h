@@ -10,7 +10,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "core/Logger.h"
 #include <glm/gtx/string_cast.hpp>
-
+#include <math.h>
 namespace VoxEng {
     class Transform {
     public:
@@ -20,10 +20,15 @@ namespace VoxEng {
         Transform* parent;
 
         glm::vec3 forward() {
-            return glm::vec3(0,0,0);
+            return glm::normalize(glm::vec3(sin(glm::radians(rotation.y)),sin(glm::radians(rotation.x)),cos(glm::radians(rotation.y))));
+        }
+
+        glm::vec3 right() {
+            return glm::normalize(glm::vec3(sin(glm::radians(rotation.y-90)),sin(glm::radians(rotation.x)),cos(glm::radians(rotation.y-90))));
         }
 
         glm::vec3 up() {
+            //float sinX = sin(glm::radians(rotation.x));
             return glm::vec3(0,1,0);
         }
     };
@@ -34,6 +39,7 @@ namespace VoxEng {
 
     struct Camera {
         glm::mat4 view,proj,viewProj;
+        ProjectionMode mode;
         float fov = 70.0f;
         float zNear = 0.01f;
         float zFar = 1000.0f;
@@ -42,7 +48,13 @@ namespace VoxEng {
             DEBUG_LOG("Creating camera");
             projection(ProjectionMode::PERSPECTIVE);
         }
+
+        void updateProjection() {
+            projection(this->mode);
+        }
+
         void projection(ProjectionMode mode) {
+            this->mode = mode;
             switch (mode) {
                 case ProjectionMode::ORTHOGRAPHIC: {
                     glm::vec2 half = viewport * 0.5f;
@@ -58,9 +70,9 @@ namespace VoxEng {
 
         void update(Transform& transform) {
             view = glm::mat4(1.0f);
-            view = glm::rotate(view, transform.rotation.x,glm::vec3(-1.0f,0,0));
-            view = glm::rotate(view, transform.rotation.y,glm::vec3(0,-1.0f,0));
-            view = glm::rotate(view, transform.rotation.z,glm::vec3(0,0,-1.0f));
+            view = glm::rotate(view, glm::radians(transform.rotation.x),glm::vec3(-1.0f,0,0));
+            view = glm::rotate(view, glm::radians(transform.rotation.y),glm::vec3(0,-1.0f,0));
+            view = glm::rotate(view, glm::radians(transform.rotation.z),glm::vec3(0,0,-1.0f));
             view = glm::translate(view,-transform.position);
             viewProj = proj*view;
         }

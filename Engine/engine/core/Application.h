@@ -26,7 +26,9 @@ namespace VoxEng {
         void onEvent(Event &ev) override final;
 
         Ref<Window>& getWindow();
-
+        static Application* getApplication() {
+            return application;
+        }
     protected:
         virtual void update(Timestep& delta) = 0;
 
@@ -45,6 +47,9 @@ namespace VoxEng {
         bool onWindowResizeEvent(WindowResizeEvent& ev);
         float prevFrameTime = 0.0f;
         Ref<Input> inputHandler;
+        inline static Application* application;
+        friend class Scene;
+        friend class EntryPoint;
     };
 }
 

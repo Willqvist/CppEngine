@@ -141,11 +141,15 @@ void VoxEng::GLFWWindow::setupListeners() {
         WindowResizeEvent ev(width,height);
         windowPointer->sendEvent(ev);
     });
+    WindowResizeEvent ev(mWidth,mHeight);
+    this->sendEvent(ev);
 }
 
 void VoxEng::GLFWWindow::lockMouse(bool locked) {
     if(locked) {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        if (glfwRawMouseMotionSupported())
+            glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
     } else {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         glfwSetCursorPos(window,mWidth/2,mHeight/2);

@@ -17,6 +17,7 @@ VoxEng::Application::Application(VoxEng::WindowAttributes &attributes) {
     window = Window::createWindow(attributes);
     inputHandler = CreateRef<Input>();
     window->addEventListener(inputHandler);
+    application = this;
 }
 
 static std::vector<float> framesArr;

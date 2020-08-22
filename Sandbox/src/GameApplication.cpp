@@ -19,13 +19,16 @@
 static Ref<VertexArray> arrb;
 static Ref<Shader> shader;
 static Ref<Material> m;
-static Scene* scene;
 void GameApplication::init() {
-    scene = new Scene();
+    Ref<Scene> scene = Scene::create("test");
+    Scene::goToScene("test",nullptr,0);
     Entity ent = scene->createEntity("testObject");
     //ent->addComponent<ScriptComponent>().bind<TestComponent>();
     Instansiator::addScriptComponent<CameraMovement>(ent);
     Camera& cam = ent.addComponent<Camera>();
+    Ref<Window> window = getWindow();
+    cam.viewport = glm::vec2(window->width(),window->height());
+    cam.updateProjection();
     Transform& transform = ent.getComponent<Transform>();
     transform.position.z += 10.0f;
     cam.update(transform);
@@ -58,22 +61,21 @@ void GameApplication::init() {
     m = ResourceManager::createMaterial("AlbedoMaterial",shader);
     m->set("m_Vec2",2.0f);
     m->set("m_albedoTexture",ResourceManager::loadTexture("res/images/img.png"));
-    m->set("m_Color",glm::vec3(1.0f,0.0f,0.0f));
+    m->set("m_Color",glm::vec3(1.0f,1.0f,0.0f));
 }
 
 void GameApplication::update(VoxEng::Timestep& delta) {
-    scene->update(delta);
+    Scene::active()->update(delta);
 }
 
 void GameApplication::render() {
-    scene->render();
+    Scene::active()->render();
     Renderer::render(arrb,m);
     Renderer::end();
 }
 
 void GameApplication::destroy() {
     //scene->stop();
-    delete scene;
 }
 
 GameApplication::~GameApplication() {

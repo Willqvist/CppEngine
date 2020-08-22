@@ -9,8 +9,8 @@
 #include "scene/Entity.hpp"
 #include "components/Components.h"
 #include <rendering/Renderer.h>
+#include <core/Window.h>
 VoxEng::Scene::Scene() {
-
 }
 
 VoxEng::Entity VoxEng::Scene::createEntity(const std::string& name, Entity& parent) {
@@ -83,5 +83,19 @@ void VoxEng::Scene::stop() {
 }
 
 VoxEng::Scene::~Scene() {
+    if(hasSceneData)
+        free(data);
+}
 
+void VoxEng::Scene::onEvent(VoxEng::Event &ev) {
+    EventExecutor e(ev);
+    e.bind<WindowResizeEvent>(BIND_LAMBDA(onWindowResizeEvent));
+}
+
+bool VoxEng::Scene::onWindowResizeEvent(VoxEng::WindowResizeEvent &ev) {
+    mRegistry.view<Camera>().each([=](auto id, Camera& comp) {
+        comp.viewport = glm::vec2(ev.width,ev.height);
+        comp.updateProjection();
+    });
+    return true;
 }

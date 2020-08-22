@@ -5,8 +5,8 @@
 
 VoxEng::Application* entry() {
     VoxEng::WindowAttributes attributes {
-        1080,
-        720,
+        2160,
+        1000,
         "Title"
     };
 

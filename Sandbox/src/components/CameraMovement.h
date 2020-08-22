@@ -8,6 +8,7 @@
 #include <scene/components/VoxComponent.h>
 #include <core/Input.h>
 #include <glm/gtx/compatibility.hpp>
+#include <glm/gtx/string_cast.hpp>
 using namespace VoxEng;
 class CameraMovement: public VoxComponent {
 public:
@@ -17,13 +18,35 @@ public:
 
     void update(VoxEng::Timestep ts) override {
         glm::vec2 speed = Input::getMouseDelta();
+        glm::vec3 forward = glm::vec3(0,0,0);
+        if(Input::isKeyDown(KeyCode::W)) {
+            forward += transform->forward();
+        }
+
+        if(Input::isKeyDown(KeyCode::S)) {
+            forward += -transform->forward();
+        }
+
+        if(Input::isKeyDown(KeyCode::D)) {
+            forward += transform->right();
+        }
+
+        if(Input::isKeyDown(KeyCode::A)) {
+            forward += -transform->right();
+        }
+        this->transform->position += glm::vec3(1,0,1)*-forward*movementSpeed*(float)ts;
+
         if(speed.x == 0 && speed.y == 0) return;
-        float scale = 0.01f;
-        glm::vec3 mouseDelta = glm::vec3(transform->rotation.x-speed.y*scale,transform->rotation.y-speed.x*scale,0);
-        glm::vec3 res = glm::lerp(transform->rotation,mouseDelta,0.3f);
+        glm::vec3 mouseDelta = glm::vec3(transform->rotation.x-speed.y*rotationSpeed,transform->rotation.y-speed.x*rotationSpeed,0);
+        glm::vec3 res = glm::lerp(transform->rotation,mouseDelta,0.4f*ts);
+        //glm::vec3 res = glm::vec3(0,45,0);
         transform->rotation = res;
+
     }
 private:
     Transform* transform;
+    float movementSpeed = 14.2f;
+    float rotationSpeed = 30.2f;
+
 };
 #endif //CPPMC_CAMERAMOVEMENT_H
