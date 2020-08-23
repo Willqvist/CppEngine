@@ -44,7 +44,9 @@ namespace VoxEng {
         }
 
         ~ScriptComponent() {
-            //destroyComponent(this);
+            for(VoxComponent* comp : components) {
+                delete comp;
+            }
         };
 
     protected:

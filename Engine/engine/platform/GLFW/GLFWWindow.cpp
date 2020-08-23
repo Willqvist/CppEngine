@@ -55,6 +55,11 @@ VoxEng::GLFWWindow::GLFWWindow(const WindowAttributes& attributes) : Window(attr
     ImGui_ImplOpenGL3_Init("#version 150");
 #endif
     lockMouse(true);
+
+    //TODO: abstract out to interface so not bound to opengl.
+    glEnable(GL_CULL_FACE);
+    glFrontFace(GL_CW);
+    glCullFace(GL_FRONT);
 }
 
 

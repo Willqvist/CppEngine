@@ -12,16 +12,13 @@
 #include "iostream"
 #include <thread>
 #include <imgui/imgui.h>
-
+#include <scene/Scene.h>
 VoxEng::Application::Application(VoxEng::WindowAttributes &attributes) {
     window = Window::createWindow(attributes);
     inputHandler = CreateRef<Input>();
     window->addEventListener(inputHandler);
     application = this;
 }
-
-static std::vector<float> framesArr;
-
 void VoxEng::Application::run() {
     #ifdef DEBUG_ENABLE
         unsigned int timeSinceStart = getTime();
@@ -36,7 +33,8 @@ void VoxEng::Application::run() {
     while(running) {
         float time = static_cast<float>(glfwGetTime());
         Timestep timestep = time - prevFrameTime;
-        prevFrameDelta= timestep;
+        prevFrameDelta = timestep;
+        data.frameTime = prevFrameDelta;
         prevFrameTime = time;
         accumulator += timestep;
         while(accumulator >= dt) {
@@ -57,34 +55,27 @@ void VoxEng::Application::run() {
 
         render();
         #ifdef DEBUG_ENABLE
-                ImGui::Begin("Debug");
-                renderDebug();
+        renderDebug();
         #endif
         #ifdef DEBUG_ENABLE
                 tsavg += timestep;
                 frames++;
+                data.frameTime = prevFrameDelta;
                 if(getTime() - timeSinceStart > 1000)
                 {
-                    if(framesArr.size() > 150)
-                        framesArr.erase(framesArr.begin());
-                    framesArr.push_back(tsavg/frames);
+                    if(data.frames.size() > 150)
+                        data.frames.erase(data.frames.begin());
+                    data.frames.push_back(tsavg/frames);
                     timeSinceStart = getTime();
                     prevFrame = frames;
                     prevUpd = ups;
+                    data.fps = prevFrame;
+                    data.ups = ups;
                     frames = 0;
                     ups = 0;
                     tsavg = 0;
                 }
                 //TODO: break this out to a class so Application is not dependant of IMGUI;
-                ImGui::Text("Fps: %d",prevFrame);
-                ImGui::Text("Ups: %d",prevUpd);
-                ImGui::Text("Frame Time: %f",prevFrameDelta);
-                glm::vec2 delta = Input::getMouseDelta();
-                ImGui::Text("MouseDelta: %f | %f",delta.x,delta.y);
-                ImGui::Begin("CPU");
-                ImGui::PlotLines("Frame time", framesArr.data(), framesArr.size());
-                ImGui::End();
-                ImGui::End();
 
 #endif
 
@@ -117,4 +108,16 @@ bool VoxEng::Application::onWindowCloseEvent(WindowCloseEvent &ev) {
 
 bool VoxEng::Application::onWindowResizeEvent(VoxEng::WindowResizeEvent &ev) {
     return false;
+}
+
+void VoxEng::Application::update(VoxEng::Timestep &delta) {
+    Ref<Scene> active = Scene::active();
+    if(active)
+        active->update(delta);
+}
+
+void VoxEng::Application::render() {
+    Ref<Scene> active = Scene::active();
+    if(active)
+        active->render();
 }

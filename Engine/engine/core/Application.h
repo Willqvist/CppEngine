@@ -12,6 +12,13 @@
 #include "Input.h"
 
 namespace VoxEng {
+
+    struct RuntimeData {
+        int fps,ups;
+        float frameTime;
+        std::vector<float> frames;
+    };
+
     class Application: public EventListener {
     public:
 
@@ -29,10 +36,15 @@ namespace VoxEng {
         static Application* getApplication() {
             return application;
         }
-    protected:
-        virtual void update(Timestep& delta) = 0;
 
-        virtual void render() = 0;
+        RuntimeData& getRuntimeData() {
+            return data;
+        }
+
+    protected:
+        void update(Timestep& delta);
+
+        void render();
 
         virtual void renderDebug() {};
 
@@ -40,6 +52,7 @@ namespace VoxEng {
 
         virtual void event(Event& ev) = 0;
 
+        RuntimeData data;
         Ref<Window> window;
         bool running = true;
     private:

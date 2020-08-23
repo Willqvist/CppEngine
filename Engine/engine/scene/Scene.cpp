@@ -39,6 +39,9 @@ void VoxEng::Scene::update(Timestep ts) {
    mRegistry.view<ScriptComponent>().each([ts](ScriptComponent& comp) {
         comp.update(ts);
    });
+    for(const Scope<Layer>& layer : layers) {
+        layer->update(ts);
+    }
 }
 
 void VoxEng::Scene::render() {
@@ -54,11 +57,15 @@ void VoxEng::Scene::render() {
             break;
         }
     }
+    if(!mainCamera) return;
     mainCamera->update(*cameraTransform);
     Renderer::begin(mainCamera);
     mRegistry.view<ScriptComponent>().each([](ScriptComponent& comp) {
         comp.render();
     });
+    for(const Scope<Layer>& layer : layers) {
+        layer->render();
+    }
     //Renderer::end();
 }
 

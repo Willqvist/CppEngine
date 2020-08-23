@@ -13,7 +13,7 @@ namespace VoxEng {
     class Renderer {
     public:
         static void begin(Camera* camera);
-        static void render(Ref <VertexArray> array,Ref<Material> material);
+        static void render(Ref <VertexArray> array,Ref<Material> material, Transform& transform);
         static void end();
     private:
         static inline Camera* camera;

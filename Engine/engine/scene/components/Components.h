@@ -11,6 +11,7 @@
 #include "core/Logger.h"
 #include <glm/gtx/string_cast.hpp>
 #include <math.h>
+#include <glm/mat4x4.hpp>
 namespace VoxEng {
     class Transform {
     public:
@@ -30,6 +31,16 @@ namespace VoxEng {
         glm::vec3 up() {
             //float sinX = sin(glm::radians(rotation.x));
             return glm::vec3(0,1,0);
+        }
+
+        operator glm::mat4 () const {
+            glm::mat4 id = glm::mat4(1.0f);
+            id = glm::translate(id,position);
+            id = glm::rotate(id,rotation.x,glm::vec3(1.0f,0,0));
+            id = glm::rotate(id,rotation.y,glm::vec3(0,1.0f,0));
+            id = glm::rotate(id,rotation.z,glm::vec3(0,0,1.0f));
+            id = glm::scale(id,scale);
+            return id;
         }
     };
 

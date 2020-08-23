@@ -14,6 +14,8 @@
 #include <string.h>
 #include <event/EventListener.h>
 #include <core/Application.h>
+#include <vector>
+#include "Layer.h"
 namespace VoxEng {
 
     class Entity;
@@ -39,6 +41,12 @@ namespace VoxEng {
         T* sceneData() {
             return reinterpret_cast<T*>(data);
         };
+        template<class T>
+        void addLayer() {
+            Scope<Layer> layer = CreateScope<T>();
+            layer->onCreate();
+            layers.push_back(std::move(layer));
+        }
 
         std::vector<Entity>& entities();
 
@@ -58,12 +66,17 @@ namespace VoxEng {
             return scene;
         };
 
+        virtual void onSceneStart(void* data) {};
 
+        virtual void onSceneEnd() {};
 
         static Ref<Scene> goToScene(const std::string& name, void* data, int size) {
+            if(activeScene) {
+                activeScene->onSceneEnd();
+            }
             activeScene = scenes[name];
-            if(size > 0)
-                activeScene->onSceneEnter(data,size);
+            activeScene->onSceneEnter(data,size);
+            activeScene->start();
             return activeScene;
         };
 
@@ -75,22 +88,27 @@ namespace VoxEng {
     protected:
         Application* application;
     private:
+        std::vector<Scope<Layer>> layers;
         bool onWindowResizeEvent(WindowResizeEvent& ev);
         void onSceneEnter(void* data, int size) {
             if(hasSceneData) {
                 free(data);
             }
-            void* newData = malloc(size);
-            memcpy(newData, data,size);
-            this->data = data;
-            hasSceneData = true;
+            this->data = nullptr;
+            if(size > 0) {
+                void *newData = malloc(size);
+                memcpy(newData, data, size);
+                this->data = data;
+                hasSceneData = true;
+            }
+            onSceneStart(this->data);
         }
 
         entt::registry mRegistry;
         void* data;
         bool hasSceneData = false;
         std::vector<Entity> mEntities;
-        inline static Ref<Scene> activeScene;
+        inline static Ref<Scene> activeScene = nullptr;
         inline static std::map<std::string, Ref<Scene>> scenes;
         friend class Entity;
     };

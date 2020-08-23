@@ -19,10 +19,6 @@ public:
 
     void init() override;
 
-    void update(Timestep& delta) override;
-
-    void render() override;
-
     void destroy() override;
 
     ~GameApplication() override;

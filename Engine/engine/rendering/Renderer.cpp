@@ -9,10 +9,10 @@ void VoxEng::Renderer::begin(Camera* camera) {
     Renderer::camera = camera;
 }
 
-void VoxEng::Renderer::render(/*const ComponentRef<Transform>& transform,*/VoxEng::Ref<VoxEng::VertexArray> data, VoxEng::Ref<VoxEng::Material> material) {
+void VoxEng::Renderer::render(VoxEng::Ref<VoxEng::VertexArray> data, VoxEng::Ref<VoxEng::Material> material,Transform& transform) {
     material->bind();
     material->getShader()->setUniform("uViewProj",camera->viewProj);
-    //material->getShader()->setUniform("uTransform",camera.proj);
+    material->getShader()->setUniform("uTransform",transform);
     VertexArrayRenderer::draw(data);
 }
 
