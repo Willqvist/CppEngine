@@ -55,4 +55,14 @@ private:
     Transform* transform;
     Ref<VertexArray> vertexArray;
 };
+
+class VecorDot: public VoxComponent {
+public:
+    void update(Timestep ts) override {
+        glm::vec3 pos = target->localPosition()+target->up();
+        transform->setPosition(pos);
+    }
+public:
+    Transform* target;
+};
 #endif //CPPMC_PLANE_H

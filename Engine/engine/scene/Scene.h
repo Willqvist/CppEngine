@@ -9,13 +9,14 @@
 #include <core/Core.h>
 #include <vector>
 #include <core/Timestep.h>
-#include <scene/components/Components.h>
 #include <map>
 #include <string.h>
 #include <event/EventListener.h>
 #include <core/Application.h>
 #include <vector>
 #include "Layer.h"
+#include "Registry.h"
+
 namespace VoxEng {
 
     class Entity;
@@ -35,6 +36,10 @@ namespace VoxEng {
 
         void stop();
 
+        Registry registry() {
+            return Registry(mRegistry);
+        }
+
         void onEvent(Event &ev) override;
 
         template<class T>
@@ -47,8 +52,6 @@ namespace VoxEng {
             layer->onCreate();
             layers.push_back(std::move(layer));
         }
-
-        std::vector<Entity>& entities();
 
         static Ref<Scene> create(const std::string& name) {
             Ref<Scene> scene = CreateRef<Scene>();
@@ -107,7 +110,6 @@ namespace VoxEng {
         entt::registry mRegistry;
         void* data;
         bool hasSceneData = false;
-        std::vector<Entity> mEntities;
         inline static Ref<Scene> activeScene = nullptr;
         inline static std::map<std::string, Ref<Scene>> scenes;
         friend class Entity;

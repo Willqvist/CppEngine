@@ -57,9 +57,9 @@ VoxEng::GLFWWindow::GLFWWindow(const WindowAttributes& attributes) : Window(attr
     lockMouse(true);
 
     //TODO: abstract out to interface so not bound to opengl.
-    glEnable(GL_CULL_FACE);
-    glFrontFace(GL_CW);
-    glCullFace(GL_FRONT);
+    //glEnable(GL_CULL_FACE);
+    //glFrontFace(GL_CW);
+    //glCullFace(GL_FRONT);
 }
 
 

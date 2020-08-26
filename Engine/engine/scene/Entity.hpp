@@ -9,6 +9,7 @@
 #include <entt/entt.hpp>
 #include <core/Timestep.h>
 #include <core/Logger.h>
+#include <scene/components/NamedComponent.h>
 #include "Scene.h"
 
 namespace VoxEng {
@@ -33,6 +34,11 @@ namespace VoxEng {
             return mId;
         }
 
+        bool valid() {
+            if(scene == nullptr) return false;
+            return scene->mRegistry.valid(mId);
+        }
+
         const std::string& name() {
             return getComponent<NamedComponent>().name();
         }
@@ -43,7 +49,7 @@ namespace VoxEng {
         };
 
         template<class T>
-        T& getComponent() {
+        T & getComponent() {
             return scene->mRegistry.get<T>(mId);
         };
 
@@ -59,8 +65,8 @@ namespace VoxEng {
         ~Entity() = default;
 
     private:
-        entt::entity mId;
-        Scene* scene;
+        entt::entity mId {entt::null};
+        Scene* scene = nullptr;
     };
 }
 

@@ -10,34 +10,36 @@
 #include "components/Components.h"
 #include <rendering/Renderer.h>
 #include <core/Window.h>
+#include <scene/components/NamedComponent.h>
+
 VoxEng::Scene::Scene() {
 }
 
 VoxEng::Entity VoxEng::Scene::createEntity(const std::string& name, Entity& parent) {
     Entity entity(mRegistry.create(),this);
     Transform& trans = entity.addComponent<Transform>();
+    trans.parentEntity = parent;
+    trans.createMatrix();
     entity.addComponent<ScriptComponent>();
-    trans.parent = &parent.getComponent<Transform>();
     NamedComponent& comp = entity.addComponent<NamedComponent>();
     comp.name(name);
-    mEntities.push_back(entity);
     return entity;
 }
 
 VoxEng::Entity VoxEng::Scene::createEntity(const std::string &name) {
     Entity entity(mRegistry.create(),this);
-    entity.addComponent<Transform>();
+    Transform& trans = entity.addComponent<Transform>();
+    trans.createMatrix();
+    entity.addComponent<ScriptComponent>();
     NamedComponent& comp = entity.addComponent<NamedComponent>();
     entity.addComponent<NamedComponent>();
-
     comp.name(name);
-    mEntities.push_back(entity);
     return entity;
 }
 
 void VoxEng::Scene::update(Timestep ts) {
    mRegistry.view<ScriptComponent>().each([ts](ScriptComponent& comp) {
-        comp.update(ts);
+       comp.update(ts);
    });
     for(const Scope<Layer>& layer : layers) {
         layer->update(ts);
@@ -67,10 +69,6 @@ void VoxEng::Scene::render() {
         layer->render();
     }
     //Renderer::end();
-}
-
-std::vector<VoxEng::Entity>& VoxEng::Scene::entities() {
-    return mEntities;
 }
 
 void VoxEng::Scene::start() {

@@ -9,6 +9,5 @@ VoxEng::Application* entry() {
         1000,
         "Title"
     };
-
     return new GameApplication(attributes);
 }
