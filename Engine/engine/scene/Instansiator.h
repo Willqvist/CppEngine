@@ -21,8 +21,11 @@ namespace VoxEng {
         };
 
         template <typename T>
-        static void addScriptComponent(Entity& entity) {
-            entity.addComponent<ScriptComponent>().bind<T>();
+        static T* addScriptComponent(Entity& entity) {
+            VoxComponent* val = entity.addComponent<ScriptComponent>().set<T>();
+            val->mEntity = entity;
+            val->onCreate();
+            return static_cast<T*>(val);
         };
         template <typename T>
         static T* addScriptComponentImmediate(Entity& entity) {

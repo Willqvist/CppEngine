@@ -28,7 +28,8 @@ void WorldScene::onSceneStart(void *data) {
     e.getComponent<Transform>().translateZ(TransformType::POSITION,10);
     Instansiator::addScriptComponent<Plane>(e2);
     Instansiator::addScriptComponent<Rotator>(e2);
-    Instansiator::addScriptComponent<Plane>(e3);
+    Plane* p = Instansiator::addScriptComponent<Plane>(e3);
+    p->material->set("m_Color",glm::vec3(1,0,0));
 
     //Instansiator::addScriptComponent<Plane>(e4);
     //VecorDot* d = Instansiator::addScriptComponentImmediate<VecorDot>(e4);

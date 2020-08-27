@@ -60,7 +60,7 @@ class VecorDot: public VoxComponent {
 public:
     void update(Timestep ts) override {
         glm::vec3 pos = target->localPosition()+target->up();
-        transform->setPosition(pos);
+        transform().setPosition(pos);
     }
 public:
     Transform* target;

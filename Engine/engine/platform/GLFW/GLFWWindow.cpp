@@ -56,6 +56,8 @@ VoxEng::GLFWWindow::GLFWWindow(const WindowAttributes& attributes) : Window(attr
 #endif
     lockMouse(true);
 
+    glEnable(GL_DEPTH_TEST);
+
     //TODO: abstract out to interface so not bound to opengl.
     //glEnable(GL_CULL_FACE);
     //glFrontFace(GL_CW);

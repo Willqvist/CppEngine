@@ -12,19 +12,18 @@ using namespace VoxEng;
 class Rotator: public VoxComponent {
 public:
     void onCreate() override {
-        transform = &component<Transform>();
-        transform->setRotation(0,0,0);
+        transform().setRotation(0,0,0);
     }
 
     void update(VoxEng::Timestep ts) override {
         //transform->translateRotation(0,0,12.0f*ts);
         //transform->setRotation(45,45,45);
         //transform->translateRotation(4,0,0);
-        transform->translateRotation(0,1,1);
+        transform().translateRotation(0,1,1);
     }
 
     void render() override {
-        //DEBUG_LOG("UP: %s",to_string(transform->up()).c_str());
+        DEBUG_LOG("UP: %s",to_string(transform().up()).c_str());
         //DEBUG_LOG("rendering here");
         //DEBUG_LOG("rot: %s",to_string(transform->localRotation()).c_str());
         //transform->setRotation(0,0,0);
@@ -33,7 +32,6 @@ public:
 
     }
 private:
-    Transform* transform;
     float movementSpeed = 14.2f;
     float rotationSpeed = 30.2f;
 

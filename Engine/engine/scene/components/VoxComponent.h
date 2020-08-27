@@ -19,15 +19,13 @@ namespace VoxEng {
     public:
         VoxComponent() {};
         virtual void onCreate() {
-            this->transform = &component<Transform>();
         };
         virtual void update(Timestep ts) {};
         virtual void render()  {};
-        /*
         Transform& transform() {
             return mEntity.getComponent<Transform>();
         }
-         */
+
 
         template<typename T>
         T& component() {
@@ -60,7 +58,6 @@ namespace VoxEng {
         virtual ~VoxComponent() = default;
     protected:
         Entity mEntity;
-        Transform* transform;
     private:
         friend class Scene;
         friend class Instansiator;
