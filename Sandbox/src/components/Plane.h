@@ -65,4 +65,23 @@ public:
 public:
     Transform* target;
 };
+class UpVectorDisplay: public VoxComponent {
+public:
+    void onCreate() override {
+        transform().setRotation(0,0,0);
+    }
+    void setOrigin(Entity& target) {
+        this->target = target;
+    }
+
+    void update(Timestep ts) override {
+        DEBUG_LOG("IM HERE");
+        //glm::vec3 t = target.getComponent<Transform>().right()*4.0f;
+        //this->transform().setPosition(org+t);
+        //this->transform().setPosition(org+t);
+    }
+public:
+    Entity target;
+    glm::vec3 org = glm::vec3(0,0,0);
+};
 #endif //CPPMC_PLANE_H

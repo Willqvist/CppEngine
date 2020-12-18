@@ -23,7 +23,7 @@ public:
     }
 
     void render() override {
-        DEBUG_LOG("UP: %s",to_string(transform().up()).c_str());
+        //DEBUG_LOG("UP: %s",to_string(transform().up()).c_str());
         //DEBUG_LOG("rendering here");
         //DEBUG_LOG("rot: %s",to_string(transform->localRotation()).c_str());
         //transform->setRotation(0,0,0);

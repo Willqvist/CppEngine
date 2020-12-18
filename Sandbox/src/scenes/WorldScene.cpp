@@ -29,6 +29,8 @@ void WorldScene::onSceneStart(void *data) {
     Instansiator::addScriptComponent<Plane>(e2);
     Instansiator::addScriptComponent<Rotator>(e2);
     Plane* p = Instansiator::addScriptComponent<Plane>(e3);
+    //UpVectorDisplay* up  = Instansiator::addScriptComponent<UpVectorDisplay>(e3);
+    //up->setOrigin(e2);
     p->material->set("m_Color",glm::vec3(1,0,0));
 
     //Instansiator::addScriptComponent<Plane>(e4);

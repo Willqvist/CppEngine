@@ -10,6 +10,7 @@
 #include <scene/Entity.hpp>
 #include <glm/ext/quaternion_float.hpp>
 #include <math/Vector3.h>
+#include <glm/ext/quaternion_trigonometric.hpp>
 
 namespace VoxEng {
     enum class TransformType {
@@ -37,7 +38,10 @@ namespace VoxEng {
             float radX = glm::radians(rotation().x);
             float radY = glm::radians(rotation().y);
             float radZ = glm::radians(rotation().z);
-            return glm::quat(glm::vec3(radX,radY,radZ));
+            glm::quat angX = glm::angleAxis(radX, Vector3::right());
+            glm::quat angY = glm::angleAxis(radY, Vector3::up());
+            glm::quat angZ = glm::angleAxis(radZ, Vector3::forward());
+            return angX*angY*angZ;
         }
 
         glm::vec3 forwardXZ() {
@@ -227,6 +231,8 @@ namespace VoxEng {
                 parent->createMatrix();
                 //DEBUG_LOG("UP: %s",to_string(parent->up()).c_str());
                 mPosition = mLocalPosition.x*parent->right() + mLocalPosition.y*parent->up() + mLocalPosition.z * parent->forward();
+                mRotation = mLocalRotation + parent->rotation();
+                mScale = mLocalScale* parent->scale();
             }
             //id = parent->createMatrix() * id;
         }
@@ -241,12 +247,7 @@ namespace VoxEng {
             prevDirty = true;
             //DEBUG_LOG("HAS CHANGED: %d", parent && parent->hasChanged());
             updateWorldPosition(parent);
-            glm::mat4 id = glm::mat4(1.0f);
-            id = glm::translate(id, mPosition);
-            id = glm::rotate(id, glm::radians(mRotation.x), glm::vec3(1.0f, 0, 0));
-            id = glm::rotate(id, glm::radians(mRotation.y), glm::vec3(0, 1.0f, 0));
-            id = glm::rotate(id, glm::radians(mRotation.z), glm::vec3(0, 0, 1.0f));
-            id = glm::scale(id, mScale);
+            glm::mat4 id = fillTransformMatrix();
 
             //DEBUG_LOG("scale: %s - %s",to_string(mPosition).c_str(),to_string(mLocalPosition).c_str());
 
@@ -256,6 +257,17 @@ namespace VoxEng {
             transform = id;
             return id;
         }
+
+        glm::mat4 fillTransformMatrix() const {
+            glm::mat4 id = glm::mat4(1.0f);
+            id = glm::translate(id, mPosition);
+            id = glm::rotate(id, glm::radians(mRotation.x), glm::vec3(1.0f, 0, 0));
+            id = glm::rotate(id, glm::radians(mRotation.y), glm::vec3(0, 1.0f, 0));
+            id = glm::rotate(id, glm::radians(mRotation.z), glm::vec3(0, 0, 1.0f));
+            id = glm::scale(id, mScale);
+            return id;
+        }
+
         glm::mat4 transform;
         glm::vec3 oldPosition = glm::vec3(0,0,0);
         glm::vec3 oldRotation = glm::vec3(0,0,0);

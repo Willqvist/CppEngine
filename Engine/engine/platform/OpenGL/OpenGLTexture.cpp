@@ -6,8 +6,6 @@
 #include <stb_image/stb_image.h>
 #include <glad/glad.h>
 #include <core/Logger.h>
-#include <direct.h>
-#define GetCurrentDir _getcwd
 
 VoxEng::OpenGLTexture::OpenGLTexture(const VoxEng::TextureDetails &details, int textureId, int x, int y, int width,
                                      int height): Texture(details),textureId(textureId),x(x),y(y),mWidth(width),mHeight(height) {
@@ -62,9 +60,7 @@ VoxEng::Ref<VoxEng::OpenGLTexture> VoxEng::OpenGLTexture::create(const char *pat
     }
     else
     {
-        char buff[256]; //create string buffer to hold path
-        GetCurrentDir( buff, 256 );
-        DEBUG_ERROR("Error loading file: %s - reason: %s - path: %s\n", path,stbi_failure_reason(),buff);
+        DEBUG_ERROR("Error loading file: %s - reason: %s\n", path,stbi_failure_reason());
     }
     stbi_image_free(data);
 
