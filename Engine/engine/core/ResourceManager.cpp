@@ -19,6 +19,18 @@ VoxEng::Ref<VoxEng::Texture> VoxEng::ResourceManager::loadTexture(const std::str
     return ResourceManager::loadTexture(path, Texture::defaultDetails);
 }
 
+VoxEng::Ref<VoxEng::Shader> VoxEng::ResourceManager::loadShader(const std::string &path, ShaderLayout& layout) {
+    //TODO: cache loaded shaders;
+    ParsedShader parsedShaders;
+    if(!loadShaders(path.c_str(), &parsedShaders)) {
+        DEBUG_ERROR("Could not find shader: %s",path.c_str());
+        exit(1);
+    }
+    Ref<Shader> s = Shader::create(parsedShaders.vertex,parsedShaders.fragment,layout);
+    s->setAttribLocation(parsedShaders.in);
+    return s;
+}
+
 VoxEng::Ref<VoxEng::Shader> VoxEng::ResourceManager::loadShader(const std::string &path) {
     //TODO: cache loaded shaders;
     ParsedShader parsedShaders;
@@ -26,9 +38,15 @@ VoxEng::Ref<VoxEng::Shader> VoxEng::ResourceManager::loadShader(const std::strin
         DEBUG_ERROR("Could not find shader: %s",path.c_str());
         exit(1);
     }
-    Ref<Shader> s = Shader::create(parsedShaders.vertex,parsedShaders.fragment);
+    std::vector<ShaderLayoutLocation> locations;
+    for(int i = 0; i < parsedShaders.in.size(); i++) {
+        locations.push_back({parsedShaders.in[i],i});
+    }
+    ShaderLayout layout = ShaderLayout(locations);
+
+    Ref<Shader> s = Shader::create(parsedShaders.vertex,parsedShaders.fragment,layout);
     s->setAttribLocation(parsedShaders.in);
-    return Shader::create(parsedShaders.vertex,parsedShaders.fragment);
+    return s;
 }
 
 VoxEng::Ref<VoxEng::Material> VoxEng::ResourceManager::createMaterial(const std::string &name, const Ref<Shader>& shader) {

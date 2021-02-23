@@ -6,12 +6,14 @@
 #include "OpenGLArrayBuffer.h"
 
 VoxEng::OpenGLArrayBuffer::OpenGLArrayBuffer(unsigned int size) {
+    this->size = size;
     glGenBuffers(1,&bufferId);
     bind();
     glBufferData(GL_ARRAY_BUFFER, size,nullptr, GL_DYNAMIC_DRAW);
 }
 
 VoxEng::OpenGLArrayBuffer::OpenGLArrayBuffer(float *data, unsigned int size) {
+    this->size = size;
     glGenBuffers(1,&bufferId);
     bind();
     glBufferData(GL_ARRAY_BUFFER, size,data, GL_DYNAMIC_DRAW);

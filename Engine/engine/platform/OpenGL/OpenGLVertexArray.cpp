@@ -36,7 +36,7 @@ void VoxEng::OpenGLVertexArray::addBuffer(const VoxEng::Ref<VoxEng::ArrayBuffer>
             case ElementType::int4:
             case ElementType::boolean:
                 glEnableVertexAttribArray(vertexIndex);
-                DEBUG_LOG("%d : %d : %#08x : %d : %d",vertexIndex,elem.count(),toOpenGLType(elem.type),layout.stride(),elem.offset);
+                //DEBUG_LOG("%d : %d : %#08x : %d : %d",vertexIndex,elem.count(),toOpenGLType(elem.type),layout.stride(),elem.offset);
                 glVertexAttribPointer(vertexIndex,elem.count(),toOpenGLType(elem.type),
                         elem.normalized ? GL_TRUE:GL_FALSE,
                         layout.stride(),
@@ -57,6 +57,8 @@ void VoxEng::OpenGLVertexArray::addIndexBuffer(const VoxEng::Ref<VoxEng::IndexBu
 
 
 VoxEng::OpenGLVertexArray::~OpenGLVertexArray() {
+    fprintf(stderr,"i got here destroyed buffer!\n");
+
     glDeleteVertexArrays(1,&vaoId);
 }
 

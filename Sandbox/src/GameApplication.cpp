@@ -12,7 +12,7 @@
 #include <rendering/Renderer.h>
 #include <Scene/Scene.h>
 #include <scene/components/TestComponent.hpp>
-#include <scene/components/ScriptComponent.hpp>
+#include <scene/components/ScriptComponent.h>
 #include "GameApplication.h"
 #include "components/CameraMovement.h"
 #include "scenes/WorldScene.h"

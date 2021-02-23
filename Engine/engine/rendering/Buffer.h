@@ -95,7 +95,7 @@ namespace VoxEng {
         static Ref<ArrayBuffer> create(float* vertices, unsigned int size);
 
         virtual ~ArrayBuffer() = default;
-
+        int size;
     };
 
     class IndexBuffer {

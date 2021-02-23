@@ -28,9 +28,9 @@ namespace VoxEng {
     };
 
     struct TextureDetails {
-        TextureType type;
-        TextureWrap wrapping;
-        TextureFilter min,max;
+        TextureType type = TextureType::T_2D;
+        TextureWrap wrapping = TextureWrap::REPEAT;
+        TextureFilter min = TextureFilter::NEAREST,max = TextureFilter::NEAREST;
     };
 
     class Texture {
@@ -38,6 +38,7 @@ namespace VoxEng {
         Texture(const TextureDetails& details): mDetails(details) {};
 
         virtual void bind() = 0;
+        virtual void bind(int location) = 0;
         virtual void unbind() = 0;
         virtual int width() = 0;
         virtual int height() = 0;
@@ -59,8 +60,8 @@ namespace VoxEng {
         inline static TextureDetails defaultDetails = {
                 TextureType::T_2D,
                 TextureWrap::CLAMP_TO_EDGE,
-                TextureFilter::NEAREST,
-                TextureFilter::LINEAR
+                TextureFilter::LINEAR,
+                TextureFilter::NEAREST
         };
 
         friend class ResourceManager;

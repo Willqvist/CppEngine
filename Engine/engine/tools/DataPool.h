@@ -7,7 +7,7 @@
 #include <mutex>
 #include <unordered_map>
 namespace VoxEng {
-    class Block {
+    class DataBlock {
         public:
             int start;
             int end;
@@ -21,7 +21,7 @@ namespace VoxEng {
 
     private:
         Data data[capacity];
-        std::vector<Block> blocks;
+        std::vector<DataBlock> blocks;
         std::mutex mutex;
     };
 }

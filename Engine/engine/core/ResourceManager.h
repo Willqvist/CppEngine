@@ -19,6 +19,7 @@ namespace VoxEng {
         static Ref <Texture> loadTexture(const std::string& path);
 
         static Ref <Shader> loadShader(const std::string& path);
+        static Ref <Shader> loadShader(const std::string& path, ShaderLayout& layout);
         static Ref <Material> createMaterial(const std::string& name, const Ref<Shader>& shader);
     private:
         inline static std::map<std::string, Ref<Texture>> textures;

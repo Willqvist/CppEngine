@@ -8,20 +8,19 @@
 #include <core/Timestep.h>
 #include <core/Core.h>
 #include <scene/components/Components.h>
-#include <scene/Entity.hpp>
+#include <scene/Entity.h>
 
 #define Comp(name) component<name>()
 #define _transform component<Transform>()
 namespace VoxEng {
 
-
     class VoxComponent {
     public:
         VoxComponent() {};
-        virtual void onCreate() {
-        };
+        virtual void onCreate() {};
         virtual void update(Timestep ts) {};
         virtual void render()  {};
+        //virtual void destroy() {};
         Transform& transform() {
             return mEntity.getComponent<Transform>();
         }
@@ -53,6 +52,10 @@ namespace VoxEng {
             this->mEntity = entity;
         }
 
+        Entity getEntity() {
+            return mEntity;
+        }
+
         //const Entity& entity() const;
 
         virtual ~VoxComponent() = default;
@@ -60,7 +63,7 @@ namespace VoxEng {
         Entity mEntity;
     private:
         friend class Scene;
-        friend class Instansiator;
+        friend class Entity;
     };
 }
 #endif

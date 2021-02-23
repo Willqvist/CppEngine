@@ -7,10 +7,10 @@
 
 #include <glm/vec3.hpp>
 #include <scene/Registry.h>
-#include <scene/Entity.hpp>
 #include <glm/ext/quaternion_float.hpp>
 #include <math/Vector3.h>
 #include <glm/ext/quaternion_trigonometric.hpp>
+#include <scene/Entity.h>
 
 namespace VoxEng {
     enum class TransformType {
@@ -20,18 +20,19 @@ namespace VoxEng {
     class Transform {
     public:
         Transform() {
+            setRotation(0,0,0);
         }
 
         glm::vec3 right() {
-            return toQuaternion() * Vector3::right();
+            return mRight;
         }
 
         glm::vec3 up() {
-            return toQuaternion() * Vector3::up();
+            return mUp;
         }
 
         glm::vec3 forward() {
-            return toQuaternion() * Vector3::forward();
+            return mForward;
         }
 
         glm::quat toQuaternion() {
@@ -181,6 +182,17 @@ namespace VoxEng {
             return createMatrix();
         }
     private:
+
+        glm::mat4 createRotMatrix(const glm::vec3& position,const glm::vec3& scale,const glm::vec3& rotation) {
+            glm::mat4 out = glm::mat4(1.0f);
+            out = glm::rotate(out, glm::radians(-rotation.x), Vector3::right());
+            out = glm::rotate(out, glm::radians(-rotation.y), Vector3::up());
+            out = glm::rotate(out, glm::radians(-rotation.z), Vector3::forward());
+            out = glm::translate(out, -position);
+            out = glm::scale(out, scale);
+            return out;
+        }
+
         glm::vec3& getTransformType(TransformType type) {
             switch(type) {
                 case TransformType::POSITION: return mLocalPosition;
@@ -226,6 +238,14 @@ namespace VoxEng {
             mRotation = mLocalRotation;
             mScale = mLocalScale;
             dirty = false;
+            if(hasChanged(this)) {
+                glm::mat4 rotMat = createRotMatrix(mPosition, mScale, mRotation);
+                glm::mat4 inv = glm::inverse(rotMat);
+                mForward = glm::normalize(glm::vec3(inv[2]));
+                mRight = glm::normalize(glm::vec3(inv[0]));
+                mUp = glm::normalize(glm::vec3(inv[1]));
+            }
+
             //TODO: CALCULATE position with parent base.
             if(parent) {
                 parent->createMatrix();
@@ -237,7 +257,7 @@ namespace VoxEng {
             //id = parent->createMatrix() * id;
         }
 
-        glm::mat4& createMatrix() {
+        glm::mat4 createMatrix() {
             bool hasParent = false;
             Transform* parent = this->parent();
             prevDirty = false;
@@ -254,6 +274,14 @@ namespace VoxEng {
             oldPosition = mLocalPosition;
             oldRotation = mLocalRotation;
             oldScale = mLocalScale;
+/*
+            glm::mat4 rotMat = createRotMatrix(mPosition,mScale,mRotation);
+            glm::mat4 inv = glm::inverse(rotMat);
+            mForward = glm::normalize(glm::vec3(inv[2]));
+            mRight = glm::normalize(glm::vec3(inv[0]));
+            mUp = glm::normalize(glm::vec3(inv[1]));
+*/
+
             transform = id;
             return id;
         }
@@ -272,6 +300,11 @@ namespace VoxEng {
         glm::vec3 oldPosition = glm::vec3(0,0,0);
         glm::vec3 oldRotation = glm::vec3(0,0,0);
         glm::vec3 oldScale = glm::vec3(1,1,1);
+
+        glm::vec3 mUp = glm::vec3(1,1,1);
+        glm::vec3 mRight = glm::vec3(1,1,1);
+        glm::vec3 mForward = glm::vec3(1,1,1);
+
 
         glm::vec3 mPosition = glm::vec3(0,0,0);
         glm::vec3 mRotation = glm::vec3(0,0,0);

@@ -6,11 +6,12 @@
 #define CPPMC_INSTANSIATOR_H
 
 #include <string>
-#include "Entity.hpp"
-#include "components/ScriptComponent.hpp"
+#include "Entity.h"
+#include "scene/components/ScriptComponent.h"
 namespace VoxEng {
     class Instansiator {
     public:
+        /*
         template <typename T>
         static T* instansiateScriptableComponent(Entity& entity, const std::string& name) {
             Entity newEnt = entity.getScene()->createEntity(name);
@@ -34,6 +35,7 @@ namespace VoxEng {
             val->onCreate();
             return static_cast<T*>(val);
         };
+         */
     };
 }
 

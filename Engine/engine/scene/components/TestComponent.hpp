@@ -7,7 +7,7 @@
 
 #include <core/Input.h>
 #include "VoxComponent.h"
-#include "ScriptComponent.hpp"
+#include "ScriptComponent.h"
 #include "../Instansiator.h"
 #include <core/Input.h>
 #include <glm/vec2.hpp>

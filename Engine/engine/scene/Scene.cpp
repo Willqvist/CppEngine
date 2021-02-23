@@ -5,8 +5,8 @@
 #include "Scene.h"
 #include <core/Logger.h>
 #include "components/VoxComponent.h"
-#include "components/ScriptComponent.hpp"
-#include "scene/Entity.hpp"
+#include "scene/components/ScriptComponent.h"
+#include "scene/Entity.h"
 #include "components/Components.h"
 #include <rendering/Renderer.h>
 #include <core/Window.h>
@@ -27,6 +27,7 @@ VoxEng::Entity VoxEng::Scene::createEntity(const std::string& name, Entity& pare
 }
 
 VoxEng::Entity VoxEng::Scene::createEntity(const std::string &name) {
+
     Entity entity(mRegistry.create(),this);
     Transform& trans = entity.addComponent<Transform>();
     trans.createMatrix();
@@ -34,16 +35,20 @@ VoxEng::Entity VoxEng::Scene::createEntity(const std::string &name) {
     NamedComponent& comp = entity.addComponent<NamedComponent>();
     entity.addComponent<NamedComponent>();
     comp.name(name);
+
     return entity;
 }
 
 void VoxEng::Scene::update(Timestep ts) {
-   mRegistry.view<ScriptComponent>().each([ts](ScriptComponent& comp) {
-       comp.update(ts);
-   });
+
+    mRegistry.view<ScriptComponent>().each([ts](ScriptComponent& comp) {
+        comp.update(ts);
+    });
+
     for(const Scope<Layer>& layer : layers) {
         layer->update(ts);
     }
+
 }
 
 void VoxEng::Scene::render() {

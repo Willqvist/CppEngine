@@ -26,6 +26,10 @@ public:
         return registry.valid(entity);
     }
 
+    entt::registry& core() {
+        return registry;
+    }
+
 private:
     entt::registry & registry;
 };

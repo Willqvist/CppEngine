@@ -20,6 +20,12 @@ void VoxEng::Material::bind() {
         this->visit.name = variable.name;
         std::visit(this->visit,variable.value);
     }
+    int loc = 0;
+    for(MaterialTexture& tex : textures) {
+        tex.texture->bind(loc);
+        shader->setUniform(tex.name,loc);
+        loc ++;
+    }
 }
 
 void VoxEng::Material::unbind() {
@@ -56,7 +62,7 @@ void VoxEng::Material::set(const std::string &name, const glm::mat4 &value) {
 }
 */
 void VoxEng::Material::set(const std::string &name, const VoxEng::Ref<VoxEng::Texture> &value) {
-    textures.push_back(value);
+    textures.push_back({name,value});
 }
 
 VoxEng::Ref<VoxEng::Material> VoxEng::Material::create(const VoxEng::Ref<VoxEng::Shader> &shader) {

@@ -17,6 +17,11 @@
 
 namespace VoxEng {
 
+    struct MaterialTexture {
+        std::string name;
+        Ref<Texture> texture;
+    };
+
     typedef std::variant<float,int,bool,glm::vec2,glm::vec3,glm::vec4,glm::mat4> MaterialTypes;
     struct VisitShader {
         Ref<Shader> shader;
@@ -77,7 +82,7 @@ namespace VoxEng {
         static inline unsigned int globalId = 0;
         MaterialVariable* get(const std::string& name);
         Ref<Shader> shader;
-        std::vector<Ref<Texture>> textures;
+        std::vector<MaterialTexture> textures;
         std::vector<MaterialVariable> variables;
         VisitShader visit;
         static inline unsigned int boundMaterial = -1;

@@ -14,6 +14,7 @@
 #include <event/EventListener.h>
 #include <core/Application.h>
 #include <vector>
+#include <thread>
 #include "Layer.h"
 #include "Registry.h"
 

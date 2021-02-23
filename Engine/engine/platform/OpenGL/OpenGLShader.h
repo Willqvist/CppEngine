@@ -12,7 +12,7 @@
 namespace VoxEng {
     class OpenGLShader : public Shader {
     public:
-        OpenGLShader(const std::string& vertex,const std::string& fragment);
+        OpenGLShader(const std::string& vertex,const std::string& fragment,ShaderLayout& layout);
 
         void bind() override;
 

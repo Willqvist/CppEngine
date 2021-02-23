@@ -31,8 +31,16 @@ public:
         if(Input::isKeyDown(KeyCode::A)) {
             forward += transform.right();
         }
+
+        if(Input::isKeyDown(KeyCode::E)) {
+            forward.y += 1;
+        }
+
+        if(Input::isKeyDown(KeyCode::Q)) {
+            forward.y += -1;
+        }
         //DEBUG_LOG("moving");
-        transform.translatePosition(glm::vec3(1, 0, 1) * -forward * movementSpeed * (float)ts);
+        transform.translatePosition(glm::vec3(1, 1, 1) * -forward * movementSpeed * (float)ts);
         //DEBUG_LOG("new moving, %s",to_string(transform->localPosition()).c_str());
 
         if(speed.x == 0 && speed.y == 0) return;

@@ -7,10 +7,14 @@
 #include "OpenGLShader.h"
 #include "glm/gtc/type_ptr.hpp"
 
-VoxEng::OpenGLShader::OpenGLShader(const std::string &vertex, const std::string& fragment): program(glCreateProgram())  {
+VoxEng::OpenGLShader::OpenGLShader(const std::string &vertex, const std::string& fragment,ShaderLayout& layout): program(glCreateProgram())  {
 
     unsigned int vs = compileShader(GL_VERTEX_SHADER, vertex);
     unsigned int fs = compileShader(GL_FRAGMENT_SHADER, fragment);
+
+    for(const ShaderLayoutLocation& location : layout.elements) {
+        glBindAttribLocation(program,location.location,location.name.c_str());
+    }
 
     glAttachShader(program, vs);
     glAttachShader(program, fs);
@@ -102,7 +106,6 @@ void VoxEng::OpenGLShader::setAttribLocation(std::vector<std::string> locations)
     bind();
     int i = 0;
     for(const std::string& str : locations) {
-        DEBUG_LOG("id: %d, name: %s",i,str.c_str());
         glBindAttribLocation(program,i,str.c_str());
         i++;
     }

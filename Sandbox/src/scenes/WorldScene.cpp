@@ -3,37 +3,55 @@
 //
 
 #include "WorldScene.h"
-#include <scene/Entity.hpp>
-#include "scene/Instansiator.h"
+#include <scene/Entity.h>
 #include "../components/CameraMovement.h"
 #include "../components/Plane.h"
 #include "../layers/DebugLayer.h"
+#include "../components/ChunkComponent.h"
 #include "../components/Rotator.h"
+#include "../components/ChunkManager.h"
+#include "../components/WorldManager.h"
+
 
 using namespace VoxEng;
 void WorldScene::onSceneStart(void *data) {
+
+    //SceneThread managerThread = this->createThread();
+
     this->addLayer<DebugLayer>();
     Entity e2 = this->createEntity("plane");
     Entity e3 = this->createEntity("plane2",e2);
     Entity e = this->createEntity("camera");
+    Entity managerEnt = this->createEntity("ChunkManager");
+
+    Ref<ChunkManager> manager = managerEnt.addDynamicComponent<ChunkManager>();
+    managerEnt.addDynamicComponent<WorldManager>();
+    manager->setFollow(e);
+    manager->setScene(this);
+
     Camera& cam = e.addComponent<Camera>();
+    e.addDynamicComponent<CameraMovement>();
+
     Ref<Window> window = application->getWindow();
     cam.viewport = glm::vec2(window->width(),window->height());
     cam.updateProjection();
 
+
     e3.getComponent<Transform>().translateY(TransformType::POSITION,2);
     e3.getComponent<Transform>().setScale(0.2f,0.2f,0.2f);
 
-    Instansiator::addScriptComponent<CameraMovement>(e);
-    e.getComponent<Transform>().translateZ(TransformType::POSITION,10);
-    Instansiator::addScriptComponent<Plane>(e2);
-    Instansiator::addScriptComponent<Rotator>(e2);
-    Plane* p = Instansiator::addScriptComponent<Plane>(e3);
-    //UpVectorDisplay* up  = Instansiator::addScriptComponent<UpVectorDisplay>(e3);
-    //up->setOrigin(e2);
-    p->material->set("m_Color",glm::vec3(1,0,0));
+    e.addDynamicComponent<CameraMovement>();
+    Entity e22 = this->createEntity("camera2");
 
-    //Instansiator::addScriptComponent<Plane>(e4);
-    //VecorDot* d = Instansiator::addScriptComponentImmediate<VecorDot>(e4);
-    //d->target = &e2.transform();
+    //e.getComponent<Transform>().translateZ(TransformType::POSITION,10);
+    //Ref<ChunkComponent> comp = cunk.addDynamicComponent<ChunkComponent>();
+    Ref<Plane> p = e2.addDynamicComponent<Plane>();
+
+    //e2.addDynamicComponent<Rotator>();
+
+    //Plane* p = e3.addDynamicComponent<Plane>();
+    //p->material->set("m_Color",glm::vec3(1,0,0));
+
+
+    //thr.start(nullptr);
 }

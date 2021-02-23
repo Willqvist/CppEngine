@@ -2,12 +2,14 @@
 // Created by Gerry on 2020-08-19.
 //
 
-#ifndef CPPMC_SCRIPTCOMPONENT_HPP
-#define CPPMC_SCRIPTCOMPONENT_HPP
+#ifndef CPPMC_SCRIPTCOMPONENT_H
+#define CPPMC_SCRIPTCOMPONENT_H
 #include <iostream>
-#include "VoxComponent.h"
+#include <functional>
+#include "core/Core.h"
 namespace VoxEng {
-
+    class VoxComponent;
+    class Entity;
     class ScriptComponent {
     public:
         typedef std::pair<std::function<VoxComponent*()>,std::function<void(ScriptComponent*,int)>> ComponentMethods;
@@ -15,54 +17,46 @@ namespace VoxEng {
 
         template<typename T>
         void bind() {
+            /*
             boundedMethods.emplace_back(
                     []()->VoxComponent* {return static_cast<VoxComponent*>(new T());},
                     [&](ScriptComponent* comp, int index){delete components[index]; components[index] = nullptr;}
                     );
+                    */
         };
 
         template<typename F>
         void build(F& callback) {
+            /*
             for(ComponentMethods& methods : boundedMethods) {
                 VoxComponent* comp = methods.first();
                 callback(comp);
                 components.push_back(comp);
             }
+             */
         }
 
-        void update(Timestep ts) {
-            //DEBUG_LOG("SIZE: %d\n", components.size());
-            for(VoxComponent* comp : components) {
-                comp->update(ts);
-            }
-        }
+        void update(Timestep ts);
 
-        void render() {
-            for(VoxComponent* comp : components) {
-                comp->render();
-            }
-        }
+        void render();
 
-        ~ScriptComponent() {
-            for(VoxComponent* comp : components) {
-                delete comp;
-            }
-        };
+        ~ScriptComponent();
 
     protected:
 
         template<typename T>
-        T* set() {
-            T* instance = new T();
-            components.push_back(static_cast<VoxComponent*>(instance));
-            return instance;
-            //return static_cast<T&>(*instance);
-        };
+        Ref<VoxComponent> set(){
+            T* t = new T();
+            Ref<T> instance = CreateRef<T>(t);
+            Ref<VoxComponent> v = std::dynamic_pointer_cast<VoxComponent>(instance);
+            components.push_back(v);
+            return v;
+        }
 
         std::vector<ComponentMethods> boundedMethods;
-        std::vector<VoxComponent*> components;
+        std::vector<Ref<VoxComponent>> components;
         friend class Scene;
-        friend class Instansiator;
+        friend class Entity;
     };
 }
-#endif //CPPMC_SCRIPTCOMPONENT_HPP
+#endif //CPPMC_SCRIPTCOMPONENT_H

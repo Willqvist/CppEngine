@@ -479,12 +479,12 @@ public:
      */
     entity_type create() {
         entity_type entt;
-
         if(destroyed == null) {
             entt = entities.emplace_back(entity_type(entities.size()));
             // traits_type::entity_mask is reserved to allow for null identifiers
             ENTT_ASSERT(to_integral(entt) < traits_type::entity_mask);
         } else {
+            fprintf(stderr,"recycle \n");
             const auto curr = to_integral(destroyed);
             const auto version = to_integral(entities[curr]) & (traits_type::version_mask << traits_type::entity_shift);
             destroyed = entity_type{to_integral(entities[curr]) & traits_type::entity_mask};

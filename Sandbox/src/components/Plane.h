@@ -16,6 +16,8 @@ class Plane: public VoxComponent {
 public:
     void onCreate() override {
         this->transform = &component<Transform>();
+        transform->setRotation(0,0,0);
+
         vertexArray = VertexArray::create();
 
         float arr[8] = {

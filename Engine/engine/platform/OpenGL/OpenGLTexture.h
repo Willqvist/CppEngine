@@ -11,9 +11,11 @@ namespace VoxEng {
     class OpenGLTexture : public Texture {
     public:
 
-        OpenGLTexture(const TextureDetails& details, int textureId, int x,int y,int width,int height);
+        OpenGLTexture(const TextureDetails& details, int textureId, int x,int y,int width,int height) : Texture(details),textureId(textureId),x(x),y(y),mWidth(width),mHeight(height){}
 
         void bind() override;
+
+        void bind(int location) override;
 
         void unbind() override;
 
@@ -32,7 +34,7 @@ namespace VoxEng {
         static int convert(TextureFilter wrap);
         static int convert(TextureType wrap);
 
-        int textureId,x,y,mWidth, mHeight;
+        int textureId,x,y,mWidth, mHeight, mtextureType;
     };
 }
 

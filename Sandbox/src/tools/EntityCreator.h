@@ -6,7 +6,7 @@
 #define CPPMC_ENTITYCREATOR_H
 
 #include <scene/Scene.h>
-#include <scene/Entity.hpp>
+#include <scene/Entity.h>
 #include <scene/Instansiator.h>
 
 using namespace VoxEng;

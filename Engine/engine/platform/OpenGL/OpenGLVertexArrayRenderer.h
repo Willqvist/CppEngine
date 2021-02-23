@@ -19,8 +19,9 @@ namespace VoxEng {
                 ibo->bind();
                 glDrawElements(GL_TRIANGLES, ibo->getSize(),GL_UNSIGNED_INT,nullptr);
             } else {
-                glDrawArrays(GL_TRIANGLES,0,3);
+                glDrawArrays(GL_TRIANGLES,0,buffer->buffers()[0]->size/3);
             }
+
         }
     };
 }

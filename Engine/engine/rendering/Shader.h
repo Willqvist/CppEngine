@@ -13,6 +13,20 @@
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
 namespace VoxEng {
+
+    struct ShaderLayoutLocation {
+        std::string name;
+        int location;
+    };
+
+    class ShaderLayout {
+    public:
+        ShaderLayout(const std::initializer_list<ShaderLayoutLocation> elements) : elements(elements) {}
+        ShaderLayout(std::vector<ShaderLayoutLocation> elements) : elements(elements) {}
+    public:
+        std::vector<ShaderLayoutLocation> elements;
+    };
+
     class Shader {
     public:
         virtual void bind() = 0;
@@ -25,7 +39,7 @@ namespace VoxEng {
         virtual void setUniform(const std::string& name, const glm::vec2& value) = 0;
         virtual void setUniform(const std::string& name, const glm::vec3& value) = 0;
         virtual void setUniform(const std::string& name, const glm::vec4& value) = 0;
-        static Ref <Shader> create(const std::string& vertex, const std::string& fragment);
+        static Ref <Shader> create(const std::string& vertex, const std::string& fragment, ShaderLayout& layout);
         virtual ~Shader() = default;
     };
 }

@@ -10,6 +10,10 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
+
+void APIENTRY glDebugHandler(GLenum source, GLenum type, unsigned int id, GLenum severity,
+                             GLsizei length, const char *message, const void *userParam);
+
 VoxEng::GLFWWindow::GLFWWindow(const WindowAttributes& attributes) : Window(attributes) {
     char errorCode[1024];
     const char** outError = reinterpret_cast<const char **>(&errorCode);
@@ -19,10 +23,13 @@ VoxEng::GLFWWindow::GLFWWindow(const WindowAttributes& attributes) : Window(attr
         exit(1);
     }
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
     glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
-    DEBUG_LOG("ENABLED MOTION %d", glfwRawMouseMotionSupported());
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    #ifdef DEBUG_ENABLE
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+    #endif
 
     window = glfwCreateWindow(mWidth,mHeight,mTitle,NULL,NULL);
     if(!window) {
@@ -38,10 +45,17 @@ VoxEng::GLFWWindow::GLFWWindow(const WindowAttributes& attributes) : Window(attr
     int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress); //TODO: move out
     if(!status)
     {
-        DEBUG_ERROR("Faild to init glad!");
+        DEBUG_ERROR("Failed to init glad!");
         exit(-1);
     }
     glViewport(0,0,width(),height());
+    /*
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_CCW);
+
+    glPolygonMode(GL_FRONT, GL_LINE);
+    glPolygonMode(GL_BACK, GL_LINE);
+*/
     setupListeners();
 #ifdef DEBUG_ENABLE
     //IMGUI
@@ -53,6 +67,11 @@ VoxEng::GLFWWindow::GLFWWindow(const WindowAttributes& attributes) : Window(attr
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 150");
+
+    //Debug output
+    glEnable(GL_DEBUG_OUTPUT);
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    glDebugMessageCallback(glDebugHandler, nullptr);
 #endif
     lockMouse(true);
 
@@ -161,4 +180,38 @@ void VoxEng::GLFWWindow::lockMouse(bool locked) {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         glfwSetCursorPos(window,mWidth/2,mHeight/2);
     }
+}
+
+void APIENTRY glDebugHandler(GLenum source, GLenum type, unsigned int id, GLenum severity,
+                             GLsizei length, const char *message, const void *userParam) {
+
+    if(id == 131169 || id == 131185 || id == 131218 || id == 131204)
+        return;
+
+    std::cerr << "GL ERROR["<< id <<"] " << std::endl;
+    std::cerr << "\t" <<message << std::endl;
+    std::cerr << "\tSource: ";
+    switch(source) {
+        case GL_DEBUG_SOURCE_API: std::cerr << "Api"; break;
+        case GL_DEBUG_SOURCE_WINDOW_SYSTEM: std::cerr << "Window"; break;
+        case GL_DEBUG_SOURCE_SHADER_COMPILER: std::cerr << "Shader"; break;
+        case GL_DEBUG_SOURCE_APPLICATION: std::cerr << "Application"; break;
+        case GL_DEBUG_SOURCE_OTHER: std::cerr << "Other"; break;
+    }
+    std::cerr << std::endl;
+
+    std::cerr << "\tType: ";
+    switch(type) {
+        case GL_DEBUG_TYPE_ERROR: std::cerr << "Error"; break;
+        case GL_DEBUG_TYPE_PERFORMANCE: std::cerr << "Performance"; break;
+        case GL_DEBUG_TYPE_PORTABILITY: std::cerr << "Portability"; break;
+        case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: std::cerr << "Deprecated"; break;
+        case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR: std::cerr << "Undefined"; break;
+        case GL_DEBUG_TYPE_OTHER: std::cerr << "Other"; break;
+    }
+    std::cerr << std::endl;
+    if(severity == GL_DEBUG_SEVERITY_HIGH) {
+        exit(id);
+    }
+
 }

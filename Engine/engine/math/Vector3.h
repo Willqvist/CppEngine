@@ -9,13 +9,13 @@
 
 class Vector3 {
 public:
-    static const glm::vec3 const& up() {
+    inline static const glm::vec3& up() {
         return upVec;
     }
-    static const glm::vec3 const& right() {
+    inline static const glm::vec3& right() {
         return rightVec;
     }
-    static const glm::vec3 const& forward() {
+    inline static const glm::vec3& forward() {
         return forwardVec;
     }
 private:

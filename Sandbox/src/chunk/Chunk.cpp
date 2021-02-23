@@ -3,3 +3,9 @@
 //
 
 #include "Chunk.h"
+#include "ChunkModelBuilder.h"
+#include "ChunkBlockBuilder.h"
+
+Chunk::Chunk() : blocks{}, opaqueBlocksPerLayer{} {
+    ChunkBlockBuilder::generate(*this);
+}

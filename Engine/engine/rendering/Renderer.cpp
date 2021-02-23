@@ -14,6 +14,7 @@ void VoxEng::Renderer::render(VoxEng::Ref<VoxEng::VertexArray> data, VoxEng::Ref
     material->getShader()->setUniform("uViewProj",camera->viewProj);
     material->getShader()->setUniform("uTransform",transform);
     VertexArrayRenderer::draw(data);
+
 }
 
 void VoxEng::Renderer::end() {

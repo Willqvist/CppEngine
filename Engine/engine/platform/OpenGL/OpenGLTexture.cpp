@@ -7,13 +7,14 @@
 #include <glad/glad.h>
 #include <core/Logger.h>
 
-VoxEng::OpenGLTexture::OpenGLTexture(const VoxEng::TextureDetails &details, int textureId, int x, int y, int width,
-                                     int height): Texture(details),textureId(textureId),x(x),y(y),mWidth(width),mHeight(height) {
-
-}
 
 void VoxEng::OpenGLTexture::bind() {
+    bind(0);
+}
 
+void VoxEng::OpenGLTexture::bind(int location) {
+    glActiveTexture(GL_TEXTURE0 + location);
+    glBindTexture(mtextureType, textureId);
 }
 
 void VoxEng::OpenGLTexture::unbind() {
@@ -40,7 +41,6 @@ VoxEng::Ref<VoxEng::OpenGLTexture> VoxEng::OpenGLTexture::create(const char *pat
     int imageWidth=0, imageHeight=0, nrChannels;
     unsigned char* data = stbi_load(path, &imageWidth, &imageHeight, &nrChannels, 0);
     unsigned int texture;
-
     int textureType = convert(details.type);
     int wrap = convert(details.wrapping);
     int min = convert(details.min);
@@ -64,7 +64,10 @@ VoxEng::Ref<VoxEng::OpenGLTexture> VoxEng::OpenGLTexture::create(const char *pat
     }
     stbi_image_free(data);
 
-    return CreateRef<OpenGLTexture>(details,texture, 0,0,imageWidth,imageHeight);
+    Ref<OpenGLTexture> tex = CreateRef<OpenGLTexture>(details,texture, 0,0,imageWidth,imageHeight);
+    tex->mtextureType = textureType;
+
+    return tex;
 }
 
 int VoxEng::OpenGLTexture::convert(VoxEng::TextureWrap wrap) {
