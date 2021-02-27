@@ -26,18 +26,22 @@ namespace BG {
         const unsigned int *indicies;
         int vertexSize, indexSize;
 
-        void move(int x, int y, int z, std::vector<float>& fill) {
+        void move(int x, int y, int z, float* fill, int* index) {
+            int val = *index;
             for (int i = 0; i < vertexSize; i += 3) {
-                fill.push_back(vertices[i] + x);
-                fill.push_back(vertices[i+1] + y);
-                fill.push_back(vertices[i+2] + z);
+                fill[val+i] = vertices[i] + x;
+                fill[val+i+1] = vertices[i+1] + y;
+                fill[val+i+2] = vertices[i+2] + z;
             }
+            *index += vertexSize;
         }
 
-        void indexBase(int base, std::vector<unsigned int>& fill) {
+        void indexBase(int base, unsigned int* fill, int* index) {
+            int val = *index;
             for (int i = 0; i < indexSize; i ++) {
-                fill.push_back(indicies[i] + base);
+                fill[val+i] = indicies[i] + base;
             }
+            *index += indexSize;
         }
     };
 

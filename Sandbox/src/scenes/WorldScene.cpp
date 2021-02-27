@@ -9,7 +9,6 @@
 #include "../layers/DebugLayer.h"
 #include "../components/ChunkComponent.h"
 #include "../components/Rotator.h"
-#include "../components/ChunkManager.h"
 #include "../components/WorldManager.h"
 
 
@@ -17,17 +16,13 @@ using namespace VoxEng;
 void WorldScene::onSceneStart(void *data) {
 
     //SceneThread managerThread = this->createThread();
-
     this->addLayer<DebugLayer>();
     Entity e2 = this->createEntity("plane");
     Entity e3 = this->createEntity("plane2",e2);
     Entity e = this->createEntity("camera");
     Entity managerEnt = this->createEntity("ChunkManager");
 
-    Ref<ChunkManager> manager = managerEnt.addDynamicComponent<ChunkManager>();
     managerEnt.addDynamicComponent<WorldManager>();
-    manager->setFollow(e);
-    manager->setScene(this);
 
     Camera& cam = e.addComponent<Camera>();
     e.addDynamicComponent<CameraMovement>();

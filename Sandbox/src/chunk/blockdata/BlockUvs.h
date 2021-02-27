@@ -13,11 +13,13 @@ namespace BG {
     struct UVData {
         float* data;
         int size;
-        void fill(std::vector<float>& out) {
-            for(int i = 0 ; i < size; i+= 2) {
-                out.push_back(data[i]);
-                out.push_back(data[i+1]);
+        void fill(float* fill, int* index) {
+            int val = *index;
+            for (int i = 0; i < size; i += 2) {
+                fill[val+i] = data[i];
+                fill[val+i+1] = data[i+1];
             }
+            *index += size;
         }
 
     };

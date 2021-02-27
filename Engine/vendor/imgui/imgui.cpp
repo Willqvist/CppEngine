@@ -1792,7 +1792,7 @@ void ImGui::ColorConvertHSVtoRGB(float h, float s, float v, float& out_r, float&
 
 //-----------------------------------------------------------------------------
 // [SECTION] ImGuiStorage
-// Helper: Key->value storage
+// Helper: KeyLock->value storage
 //-----------------------------------------------------------------------------
 
 // std::lower_bound but without the bullshit
@@ -6759,7 +6759,7 @@ static void ImGui::ErrorCheckEndFrameSanityChecks()
 {
     ImGuiContext& g = *GImGui;
 
-    // Verify that io.KeyXXX fields haven't been tampered with. Key mods should not be modified between NewFrame() and EndFrame()
+    // Verify that io.KeyXXX fields haven't been tampered with. KeyLock mods should not be modified between NewFrame() and EndFrame()
     // One possible reason leading to this assert is that your back-ends update inputs _AFTER_ NewFrame().
     const ImGuiKeyModFlags expected_key_mod_flags = GetMergedKeyModFlags();
     IM_ASSERT(g.IO.KeyMods == expected_key_mod_flags && "Mismatching io.KeyCtrl/io.KeyShift/io.KeyAlt/io.KeySuper vs io.KeyMods");
@@ -10405,7 +10405,7 @@ void ImGui::ShowMetricsWindow(bool* p_open)
             for (int n = 0; n < storage->Data.Size; n++)
             {
                 const ImGuiStorage::ImGuiStoragePair& p = storage->Data[n];
-                ImGui::BulletText("Key 0x%08X Value { i: %d }", p.key, p.val_i); // Important: we currently don't store a type, real value may not be integer.
+                ImGui::BulletText("KeyLock 0x%08X Value { i: %d }", p.key, p.val_i); // Important: we currently don't store a type, real value may not be integer.
             }
             ImGui::TreePop();
         }

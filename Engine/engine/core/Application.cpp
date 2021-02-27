@@ -13,6 +13,8 @@
 #include <thread>
 #include <imgui/imgui.h>
 #include <scene/Scene.h>
+#include <threading/MainThread.h>
+
 VoxEng::Application::Application(VoxEng::WindowAttributes &attributes) {
     window = Window::createWindow(attributes);
     inputHandler = CreateRef<Input>();
@@ -30,23 +32,24 @@ void VoxEng::Application::run() {
     const float dt = 1/60.0f;
     double accumulator = 0;
     float prevFrameDelta = 0;
-    while(running) {
+    while (running) {
         float time = static_cast<float>(glfwGetTime());
         Timestep timestep = time - prevFrameTime;
         prevFrameDelta = timestep;
         data.frameTime = prevFrameDelta;
         prevFrameTime = time;
         accumulator += timestep;
-        while(accumulator >= dt) {
+        while (accumulator >= dt) {
             timestep = dt;
+            MainThread::callIfExists(15);
             update(timestep);
             accumulator -= dt;
-            #ifdef DEBUG_ENABLE
-            ups ++;
-            #endif
+#ifdef DEBUG_ENABLE
+            ups++;
+#endif
         }
         //if(maxTimePerFrame-timestep > 0)
-        if(Input::isKeyDown(KeyCode::Escape)) {
+        if (Input::isKeyDown(KeyCode::Escape)) {
             window->lockMouse(false);
         }
         inputHandler->poll();
@@ -54,28 +57,28 @@ void VoxEng::Application::run() {
 
 
         render();
-        #ifdef DEBUG_ENABLE
+#ifdef DEBUG_ENABLE
         renderDebug();
-        #endif
-        #ifdef DEBUG_ENABLE
-                tsavg += timestep;
-                frames++;
-                data.frameTime = prevFrameDelta;
-                if(getTime() - timeSinceStart > 1000)
-                {
-                    if(data.frames.size() > 150)
-                        data.frames.erase(data.frames.begin());
-                    data.frames.push_back(tsavg/frames);
-                    timeSinceStart = getTime();
-                    prevFrame = frames;
-                    prevUpd = ups;
-                    data.fps = prevFrame;
-                    data.ups = ups;
-                    frames = 0;
-                    ups = 0;
-                    tsavg = 0;
-                }
-                //TODO: break this out to a class so Application is not dependant of IMGUI;
+#endif
+#ifdef DEBUG_ENABLE
+        tsavg += timestep;
+        frames++;
+        data.frameTime = prevFrameDelta;
+        if (getTime() - timeSinceStart > 1000)
+        {
+            if (data.frames.size() > 150)
+                data.frames.erase(data.frames.begin());
+            data.frames.push_back(tsavg / frames);
+            timeSinceStart = getTime();
+            prevFrame = frames;
+            prevUpd = ups;
+            data.fps = prevFrame;
+            data.ups = ups;
+            frames = 0;
+            ups = 0;
+            tsavg = 0;
+        }
+        //TODO: break this out to a class so Application is not dependant of IMGUI;
 
 #endif
 

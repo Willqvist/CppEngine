@@ -7,21 +7,25 @@
 
 #include <scene/components/VoxComponent.h>
 #include "../chunk/Chunk.h"
-#include "../chunk/ChunkModelBuilder.h"
 #include <tools/Tools.h>
 #include <core/ResourceManager.h>
 #include <rendering/Renderer.h>
-
 using namespace VoxEng;
 class ChunkComponent: public VoxComponent {
 public:
 
     void setChunk(Ref<Chunk>& chunk,int x,int y) {
         this->chunk = chunk;
-        vertexArray = ChunkModelBuilder::generate(chunk);
-        ChunkModelBuilder::build(*chunk);
+        setPosition(x,y);
+    }
+
+    void setView(Ref<VertexArray>& array) {
+        this->vertexArray = array;
         visible = true;
-        this->setPosition(x,y);
+    }
+
+    Ref<Chunk> getChunk(){
+        return chunk;
     }
 
     void onCreate() override {
@@ -50,8 +54,9 @@ public:
     }
 
     void render() override {
-        if(visible)
-            Renderer::render(vertexArray,material, component<Transform>());
+        if(visible) {
+            Renderer::render(vertexArray, material, component<Transform>());
+        }
     }
 
     ~ChunkComponent() override {

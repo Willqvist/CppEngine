@@ -6,23 +6,58 @@
 #define CPPMC_CHUNKMODELBUILDER_H
 
 
-#include <tools/ThreadPool.h>
+#include <threading/ThreadPool.h>
 #include <rendering/VertexArray.h>
+#include <threading/MainThread.h>
+#include <pipeline/PipelineObject.h>
 #include "Chunk.h"
 #include "tools/DataPool.h"
+#include "tools/Tools.h"
+#include "../components/ChunkComponent.h"
+
+struct GeneratedData {
+    std::vector<float> data, uvData;
+    std::vector<unsigned int> indicies;
+};
+
+using BuildCallback = std::function<void(Ref<VertexArray>& vao)>;
+
+struct ChunkQueueData {
+    Ref<ChunkComponent> chunk;
+};
+
+struct GeneratePointers {
+    float* vertices;
+    float* uvs;
+    unsigned int* indicies;
+    int vertexSize, uvSize, indexSize;
+};
+
+
+struct MainThreadDataRet {
+    Ref<ChunkComponent> queueData;
+    GeneratePointers ptrs;
+};
+
+struct ChunkModelBuilderData {
+    Ref<ChunkComponent> chunkComp;
+    Ref<VertexArray> data;
+};
 
 namespace VoxEng {
-    class ChunkModelBuilder {
+    class ChunkModelBuilder : public PipelineObject<Ref<ChunkComponent>,ChunkModelBuilderData> {
     public:
-        static void threads(int num) {
+
+        static Ref<ChunkModelBuilder>& instance() {
+            static Ref<ChunkModelBuilder> instance {new ChunkModelBuilder()};
+            return instance;
+        }
+
+        void threads(int num) {
             if(threadPool != nullptr) {
                 delete threadPool;
             }
-            threadPool = new ThreadPool<Chunk>(num);
-        }
-
-        static void build(Chunk &c) {
-            threadPool->enqueue(buildingChunk, c);
+            threadPool = new ThreadPool<Ref<ChunkComponent>>(num);
         }
 
         static void wow(std::vector<float>& uvData) {
@@ -38,15 +73,25 @@ namespace VoxEng {
             uvData.push_back(0);
             uvData.push_back(0);
         }
-        static Ref<VertexArray> generate(Ref<Chunk>& c){
-            return generate(*c);
-        }
-        static Ref<VertexArray> generate(Chunk& c){
-            Ref<VertexArray> vertexArray = VertexArray::create();
+        ChunkModelBuilder(ChunkModelBuilder const&) = delete;
+        void operator=(ChunkModelBuilder const&)  = delete;
 
-            std::vector<float> data = std::vector<float>();
-            std::vector<float> uvData = std::vector<float>();
-            std::vector<unsigned int> indicies = std::vector<unsigned int>();
+    private:
+
+    protected:
+        void onInsert(Ref<ChunkComponent> &val) override {
+            threadPool->enqueue(
+                    [this](Ref<ChunkComponent>& c, int threadId) {
+                        this->buildingChunk(c,threadId);
+                    }
+                    , val);
+        }
+
+    private:
+
+        ChunkModelBuilder() {}
+        void generate(Chunk& c,GeneratePointers* ptrs){
+            int vertexIndex = 0, uvIndex = 0,indiciesIndex = 0;
             int index = 0;
             for(int y = 0; y < c.highestY; y++) {
                 if(c.opaqueBlocksPerLayer[y] == 0)
@@ -61,90 +106,119 @@ namespace VoxEng {
                             if(!c.getBlock(x-1,y,z).isOpaque(Sides::RIGHT)) {
                                 FaceData faceData = BlockFaceData::getData(b, BlockFace::LEFT);
                                 UVData uvFaceData = BlockFaceData::getUvData(b,BlockFace::LEFT);
-                                faceData.move(x, y, z, data);
-                                faceData.indexBase(index, indicies);
-                                uvFaceData.fill(uvData);
+                                faceData.move(x, y, z, ptrs->vertices,&vertexIndex);
+                                faceData.indexBase(index, ptrs->indicies,&indiciesIndex);
+                                uvFaceData.fill(ptrs->uvs,&uvIndex);
                                 index += 4;
                             }
 
                             if(!c.getBlock(x+1,y,z).isOpaque(Sides::LEFT)) {
                                 FaceData  faceData = BlockFaceData::getData(b, BlockFace::RIGHT);
                                 UVData uvFaceData = BlockFaceData::getUvData(b,BlockFace::RIGHT);
-                                faceData.move(x, y, z, data);
-                                faceData.indexBase(index, indicies);
-                                uvFaceData.fill(uvData);
+                                faceData.move(x, y, z, ptrs->vertices,&vertexIndex);
+                                faceData.indexBase(index, ptrs->indicies,&indiciesIndex);
+                                uvFaceData.fill(ptrs->uvs,&uvIndex);
                                 index += 4;
                             }
 
                             if(!c.getBlock(x,y,z-1).isOpaque(Sides::BACK)) {
                                 FaceData faceData = BlockFaceData::getData(b, BlockFace::FRONT);
                                 UVData uvFaceData = BlockFaceData::getUvData(b,BlockFace::FRONT);
-                                faceData.move(x, y, z, data);
-                                faceData.indexBase(index, indicies);
-                                uvFaceData.fill(uvData);
+                                faceData.move(x, y, z, ptrs->vertices,&vertexIndex);
+                                faceData.indexBase(index, ptrs->indicies,&indiciesIndex);
+                                uvFaceData.fill(ptrs->uvs,&uvIndex);
                                 index += 4;
                             }
 
                             if(!c.getBlock(x,y,z+1).isOpaque(Sides::FRONT)) {
                                 FaceData faceData = BlockFaceData::getData(b, BlockFace::BACK);
                                 UVData uvFaceData = BlockFaceData::getUvData(b,BlockFace::BACK);
-                                faceData.move(x, y, z, data);
-                                faceData.indexBase(index, indicies);
-                                uvFaceData.fill(uvData);
+                                faceData.move(x, y, z, ptrs->vertices,&vertexIndex);
+                                faceData.indexBase(index, ptrs->indicies,&indiciesIndex);
+                                uvFaceData.fill(ptrs->uvs,&uvIndex);
                                 index += 4;
                             }
 
                             if(!c.getBlock(x,y+1,z).isOpaque(Sides::BOTTOM)) {
                                 FaceData faceData = BlockFaceData::getData(b, BlockFace::TOP);
                                 UVData uvFaceData = BlockFaceData::getUvData(b,BlockFace::TOP);
-                                faceData.move(x, y, z, data);
-                                faceData.indexBase(index, indicies);
-                                uvFaceData.fill(uvData);
+                                faceData.move(x, y, z, ptrs->vertices,&vertexIndex);
+                                faceData.indexBase(index, ptrs->indicies,&indiciesIndex);
+                                uvFaceData.fill(ptrs->uvs,&uvIndex);
                                 index += 4;
                             }
 
                             if(!c.getBlock(x,y-1,z).isOpaque(Sides::TOP)) {
                                 FaceData faceData = BlockFaceData::getData(b, BlockFace::BOTTOM);
                                 UVData uvFaceData = BlockFaceData::getUvData(b,BlockFace::BOTTOM);
-                                faceData.move(x, y, z, data);
-                                faceData.indexBase(index, indicies);
-                                uvFaceData.fill(uvData);
+                                faceData.move(x, y, z, ptrs->vertices,&vertexIndex);
+                                faceData.indexBase(index, ptrs->indicies,&indiciesIndex);
+                                uvFaceData.fill(ptrs->uvs,&uvIndex);
                                 index += 4;
                             }
                         }
                     }
                 }
             }
-
-            Ref<ArrayBuffer> buffer = ArrayBuffer::create(data.data(),data.size()* sizeof(float));
-            Ref<ArrayBuffer> uvBuffer = ArrayBuffer::create(uvData.data(),uvData.size()* sizeof(float));
-            Ref<IndexBuffer> ibuffer = IndexBuffer::create(indicies.data(),indicies.size() * sizeof(unsigned int));
-            buffer->setLayout(layout);
-            uvBuffer->setLayout(uvLayout);
-            vertexArray->addIndexBuffer(ibuffer);
-            vertexArray->addBuffer(buffer);
-            vertexArray->addBuffer(uvBuffer);
-            return vertexArray;
+            ptrs->indexSize = indiciesIndex;
+            ptrs->vertexSize = vertexIndex;
+            ptrs->uvSize = uvIndex;
         }
 
-    private:
-        static const inline BufferLayout layout = BufferLayout({
+        const BufferLayout layout = BufferLayout({
             BufferElement(ElementType::float3)
         });
 
-        static const inline BufferLayout uvLayout = BufferLayout({
+        const BufferLayout uvLayout = BufferLayout({
             BufferElement(ElementType::float2)
         });
-        static void buildingChunk(Chunk& c) {
-            /*
-            int size = sizeof(c.getBlocks())*8;
-            float* data = vertexPool.Rent(size);
-            vertexPool.Return(data,size);
-             */
+
+        GeneratePointers getPointers(int pool) {
+            float* data = vertexPool.GetIndex(pool);
+            float* uv = uvPool.GetIndex(pool);
+            unsigned int* indicies = indiciesPool.GetIndex(pool);
+            return { data,uv,indicies,0,0,0 };
         }
 
-        static inline DataPool<float, 10000 * 5> vertexPool;
-        static inline ThreadPool<Chunk>* threadPool;
+        void returnData(GeneratePointers& ptrs) {
+            //vertexPool.Return(ptrs.vertices);
+            //uvPool.Return(ptrs.uvs);
+            //indiciesPool.Return(ptrs.indicies);
+        }
+
+        void buildingChunk(Ref<ChunkComponent>& c, int threadId) {
+                GeneratePointers ptrs = getPointers(threadId);
+                generate(*c->getChunk(), &ptrs);
+                MainThreadDataRet* mainThreadData = new MainThreadDataRet();
+                mainThreadData->ptrs = ptrs;
+                mainThreadData->queueData = c;
+
+                MainThread::enqueue(mainThreadData,[&](void* mainData){
+                    MainThreadDataRet* retData = static_cast<MainThreadDataRet*>(mainData);
+                    GeneratePointers& ptrs = retData->ptrs;
+                    Ref<VertexArray> vertexArray = VertexArray::create();
+                    Ref<ArrayBuffer> buffer = ArrayBuffer::create(ptrs.vertices, ptrs.vertexSize * sizeof(float));
+                    Ref<ArrayBuffer> uvBuffer = ArrayBuffer::create(ptrs.uvs, ptrs.uvSize * sizeof(float));
+                    Ref<IndexBuffer> ibuffer = IndexBuffer::create(ptrs.indicies,
+                        ptrs.indexSize * sizeof(unsigned int));
+                    returnData(ptrs);
+                    buffer->setLayout(layout);
+                    uvBuffer->setLayout(uvLayout);
+                    vertexArray->addIndexBuffer(ibuffer);
+                    vertexArray->addBuffer(buffer);
+                    vertexArray->addBuffer(uvBuffer);
+                    ChunkModelBuilderData dat;
+                    dat.data = vertexArray;
+                    dat.chunkComp = retData->queueData;
+                    send(dat);
+                    delete retData;
+                });
+        }
+
+        DataPool<float, 200000,10> vertexPool;
+        DataPool<float, 200000,10> uvPool;
+        DataPool<unsigned int, 150000,10> indiciesPool;
+        ThreadPool<Ref<ChunkComponent>>* threadPool = nullptr;
     };
 }
 

@@ -141,128 +141,128 @@ namespace VoxEng
 }
 
 // From glfw3.h
-#define VE_KEY_SPACE           ::VoxEng::Key::Space
-#define VE_KEY_APOSTROPHE      ::VoxEng::Key::Apostrophe    /* ' */
-#define VE_KEY_COMMA           ::VoxEng::Key::Comma         /* , */
-#define VE_KEY_MINUS           ::VoxEng::Key::Minus         /* - */
-#define VE_KEY_PERIOD          ::VoxEng::Key::Period        /* . */
-#define VE_KEY_SLASH           ::VoxEng::Key::Slash         /* / */
-#define VE_KEY_0               ::VoxEng::Key::D0
-#define VE_KEY_1               ::VoxEng::Key::D1
-#define VE_KEY_2               ::VoxEng::Key::D2
-#define VE_KEY_3               ::VoxEng::Key::D3
-#define VE_KEY_4               ::VoxEng::Key::D4
-#define VE_KEY_5               ::VoxEng::Key::D5
-#define VE_KEY_6               ::VoxEng::Key::D6
-#define VE_KEY_7               ::VoxEng::Key::D7
-#define VE_KEY_8               ::VoxEng::Key::D8
-#define VE_KEY_9               ::VoxEng::Key::D9
-#define VE_KEY_SEMICOLON       ::VoxEng::Key::Semicolon     /* ; */
-#define VE_KEY_EQUAL           ::VoxEng::Key::Equal         /* = */
-#define VE_KEY_A               ::VoxEng::Key::A
-#define VE_KEY_B               ::VoxEng::Key::B
-#define VE_KEY_C               ::VoxEng::Key::C
-#define VE_KEY_D               ::VoxEng::Key::D
-#define VE_KEY_E               ::VoxEng::Key::E
-#define VE_KEY_F               ::VoxEng::Key::F
-#define VE_KEY_G               ::VoxEng::Key::G
-#define VE_KEY_H               ::VoxEng::Key::H
-#define VE_KEY_I               ::VoxEng::Key::I
-#define VE_KEY_J               ::VoxEng::Key::J
-#define VE_KEY_K               ::VoxEng::Key::K
-#define VE_KEY_L               ::VoxEng::Key::L
-#define VE_KEY_M               ::VoxEng::Key::M
-#define VE_KEY_N               ::VoxEng::Key::N
-#define VE_KEY_O               ::VoxEng::Key::O
-#define VE_KEY_P               ::VoxEng::Key::P
-#define VE_KEY_Q               ::VoxEng::Key::Q
-#define VE_KEY_R               ::VoxEng::Key::R
-#define VE_KEY_S               ::VoxEng::Key::S
-#define VE_KEY_T               ::VoxEng::Key::T
-#define VE_KEY_U               ::VoxEng::Key::U
-#define VE_KEY_V               ::VoxEng::Key::V
-#define VE_KEY_W               ::VoxEng::Key::W
-#define VE_KEY_X               ::VoxEng::Key::X
-#define VE_KEY_Y               ::VoxEng::Key::Y
-#define VE_KEY_Z               ::VoxEng::Key::Z
-#define VE_KEY_LEFT_BRACKET    ::VoxEng::Key::LeftBracket   /* [ */
-#define VE_KEY_BACKSLASH       ::VoxEng::Key::Backslash     /* \ */
-#define VE_KEY_RIGHT_BRACKET   ::VoxEng::Key::RightBracket  /* ] */
-#define VE_KEY_GRAVE_ACCENT    ::VoxEng::Key::GraveAccent   /* ` */
-#define VE_KEY_WORLD_1         ::VoxEng::Key::World1        /* non-US #1 */
-#define VE_KEY_WORLD_2         ::VoxEng::Key::World2        /* non-US #2 */
+#define VE_KEY_SPACE           ::VoxEng::KeyLock::Space
+#define VE_KEY_APOSTROPHE      ::VoxEng::KeyLock::Apostrophe    /* ' */
+#define VE_KEY_COMMA           ::VoxEng::KeyLock::Comma         /* , */
+#define VE_KEY_MINUS           ::VoxEng::KeyLock::Minus         /* - */
+#define VE_KEY_PERIOD          ::VoxEng::KeyLock::Period        /* . */
+#define VE_KEY_SLASH           ::VoxEng::KeyLock::Slash         /* / */
+#define VE_KEY_0               ::VoxEng::KeyLock::D0
+#define VE_KEY_1               ::VoxEng::KeyLock::D1
+#define VE_KEY_2               ::VoxEng::KeyLock::D2
+#define VE_KEY_3               ::VoxEng::KeyLock::D3
+#define VE_KEY_4               ::VoxEng::KeyLock::D4
+#define VE_KEY_5               ::VoxEng::KeyLock::D5
+#define VE_KEY_6               ::VoxEng::KeyLock::D6
+#define VE_KEY_7               ::VoxEng::KeyLock::D7
+#define VE_KEY_8               ::VoxEng::KeyLock::D8
+#define VE_KEY_9               ::VoxEng::KeyLock::D9
+#define VE_KEY_SEMICOLON       ::VoxEng::KeyLock::Semicolon     /* ; */
+#define VE_KEY_EQUAL           ::VoxEng::KeyLock::Equal         /* = */
+#define VE_KEY_A               ::VoxEng::KeyLock::A
+#define VE_KEY_B               ::VoxEng::KeyLock::B
+#define VE_KEY_C               ::VoxEng::KeyLock::C
+#define VE_KEY_D               ::VoxEng::KeyLock::D
+#define VE_KEY_E               ::VoxEng::KeyLock::E
+#define VE_KEY_F               ::VoxEng::KeyLock::F
+#define VE_KEY_G               ::VoxEng::KeyLock::G
+#define VE_KEY_H               ::VoxEng::KeyLock::H
+#define VE_KEY_I               ::VoxEng::KeyLock::I
+#define VE_KEY_J               ::VoxEng::KeyLock::J
+#define VE_KEY_K               ::VoxEng::KeyLock::K
+#define VE_KEY_L               ::VoxEng::KeyLock::L
+#define VE_KEY_M               ::VoxEng::KeyLock::M
+#define VE_KEY_N               ::VoxEng::KeyLock::N
+#define VE_KEY_O               ::VoxEng::KeyLock::O
+#define VE_KEY_P               ::VoxEng::KeyLock::P
+#define VE_KEY_Q               ::VoxEng::KeyLock::Q
+#define VE_KEY_R               ::VoxEng::KeyLock::R
+#define VE_KEY_S               ::VoxEng::KeyLock::S
+#define VE_KEY_T               ::VoxEng::KeyLock::T
+#define VE_KEY_U               ::VoxEng::KeyLock::U
+#define VE_KEY_V               ::VoxEng::KeyLock::V
+#define VE_KEY_W               ::VoxEng::KeyLock::W
+#define VE_KEY_X               ::VoxEng::KeyLock::X
+#define VE_KEY_Y               ::VoxEng::KeyLock::Y
+#define VE_KEY_Z               ::VoxEng::KeyLock::Z
+#define VE_KEY_LEFT_BRACKET    ::VoxEng::KeyLock::LeftBracket   /* [ */
+#define VE_KEY_BACKSLASH       ::VoxEng::KeyLock::Backslash     /* \ */
+#define VE_KEY_RIGHT_BRACKET   ::VoxEng::KeyLock::RightBracket  /* ] */
+#define VE_KEY_GRAVE_ACCENT    ::VoxEng::KeyLock::GraveAccent   /* ` */
+#define VE_KEY_WORLD_1         ::VoxEng::KeyLock::World1        /* non-US #1 */
+#define VE_KEY_WORLD_2         ::VoxEng::KeyLock::World2        /* non-US #2 */
 
 /* Function keys */
-#define VE_KEY_ESCAPE          ::VoxEng::Key::Escape
-#define VE_KEY_ENTER           ::VoxEng::Key::Enter
-#define VE_KEY_TAB             ::VoxEng::Key::Tab
-#define VE_KEY_BACKSPACE       ::VoxEng::Key::Backspace
-#define VE_KEY_INSERT          ::VoxEng::Key::Insert
-#define VE_KEY_DELETE          ::VoxEng::Key::Delete
-#define VE_KEY_RIGHT           ::VoxEng::Key::Right
-#define VE_KEY_LEFT            ::VoxEng::Key::Left
-#define VE_KEY_DOWN            ::VoxEng::Key::Down
-#define VE_KEY_UP              ::VoxEng::Key::Up
-#define VE_KEY_PAGE_UP         ::VoxEng::Key::PageUp
-#define VE_KEY_PAGE_DOWN       ::VoxEng::Key::PageDown
-#define VE_KEY_HOME            ::VoxEng::Key::Home
-#define VE_KEY_END             ::VoxEng::Key::End
-#define VE_KEY_CAPS_LOCK       ::VoxEng::Key::CapsLock
-#define VE_KEY_SCROLL_LOCK     ::VoxEng::Key::ScrollLock
-#define VE_KEY_NUM_LOCK        ::VoxEng::Key::NumLock
-#define VE_KEY_PRINT_SCREEN    ::VoxEng::Key::PrintScreen
-#define VE_KEY_PAUSE           ::VoxEng::Key::Pause
-#define VE_KEY_F1              ::VoxEng::Key::F1
-#define VE_KEY_F2              ::VoxEng::Key::F2
-#define VE_KEY_F3              ::VoxEng::Key::F3
-#define VE_KEY_F4              ::VoxEng::Key::F4
-#define VE_KEY_F5              ::VoxEng::Key::F5
-#define VE_KEY_F6              ::VoxEng::Key::F6
-#define VE_KEY_F7              ::VoxEng::Key::F7
-#define VE_KEY_F8              ::VoxEng::Key::F8
-#define VE_KEY_F9              ::VoxEng::Key::F9
-#define VE_KEY_F10             ::VoxEng::Key::F10
-#define VE_KEY_F11             ::VoxEng::Key::F11
-#define VE_KEY_F12             ::VoxEng::Key::F12
-#define VE_KEY_F13             ::VoxEng::Key::F13
-#define VE_KEY_F14             ::VoxEng::Key::F14
-#define VE_KEY_F15             ::VoxEng::Key::F15
-#define VE_KEY_F16             ::VoxEng::Key::F16
-#define VE_KEY_F17             ::VoxEng::Key::F17
-#define VE_KEY_F18             ::VoxEng::Key::F18
-#define VE_KEY_F19             ::VoxEng::Key::F19
-#define VE_KEY_F20             ::VoxEng::Key::F20
-#define VE_KEY_F21             ::VoxEng::Key::F21
-#define VE_KEY_F22             ::VoxEng::Key::F22
-#define VE_KEY_F23             ::VoxEng::Key::F23
-#define VE_KEY_F24             ::VoxEng::Key::F24
-#define VE_KEY_F25             ::VoxEng::Key::F25
+#define VE_KEY_ESCAPE          ::VoxEng::KeyLock::Escape
+#define VE_KEY_ENTER           ::VoxEng::KeyLock::Enter
+#define VE_KEY_TAB             ::VoxEng::KeyLock::Tab
+#define VE_KEY_BACKSPACE       ::VoxEng::KeyLock::Backspace
+#define VE_KEY_INSERT          ::VoxEng::KeyLock::Insert
+#define VE_KEY_DELETE          ::VoxEng::KeyLock::Delete
+#define VE_KEY_RIGHT           ::VoxEng::KeyLock::Right
+#define VE_KEY_LEFT            ::VoxEng::KeyLock::Left
+#define VE_KEY_DOWN            ::VoxEng::KeyLock::Down
+#define VE_KEY_UP              ::VoxEng::KeyLock::Up
+#define VE_KEY_PAGE_UP         ::VoxEng::KeyLock::PageUp
+#define VE_KEY_PAGE_DOWN       ::VoxEng::KeyLock::PageDown
+#define VE_KEY_HOME            ::VoxEng::KeyLock::Home
+#define VE_KEY_END             ::VoxEng::KeyLock::End
+#define VE_KEY_CAPS_LOCK       ::VoxEng::KeyLock::CapsLock
+#define VE_KEY_SCROLL_LOCK     ::VoxEng::KeyLock::ScrollLock
+#define VE_KEY_NUM_LOCK        ::VoxEng::KeyLock::NumLock
+#define VE_KEY_PRINT_SCREEN    ::VoxEng::KeyLock::PrintScreen
+#define VE_KEY_PAUSE           ::VoxEng::KeyLock::Pause
+#define VE_KEY_F1              ::VoxEng::KeyLock::F1
+#define VE_KEY_F2              ::VoxEng::KeyLock::F2
+#define VE_KEY_F3              ::VoxEng::KeyLock::F3
+#define VE_KEY_F4              ::VoxEng::KeyLock::F4
+#define VE_KEY_F5              ::VoxEng::KeyLock::F5
+#define VE_KEY_F6              ::VoxEng::KeyLock::F6
+#define VE_KEY_F7              ::VoxEng::KeyLock::F7
+#define VE_KEY_F8              ::VoxEng::KeyLock::F8
+#define VE_KEY_F9              ::VoxEng::KeyLock::F9
+#define VE_KEY_F10             ::VoxEng::KeyLock::F10
+#define VE_KEY_F11             ::VoxEng::KeyLock::F11
+#define VE_KEY_F12             ::VoxEng::KeyLock::F12
+#define VE_KEY_F13             ::VoxEng::KeyLock::F13
+#define VE_KEY_F14             ::VoxEng::KeyLock::F14
+#define VE_KEY_F15             ::VoxEng::KeyLock::F15
+#define VE_KEY_F16             ::VoxEng::KeyLock::F16
+#define VE_KEY_F17             ::VoxEng::KeyLock::F17
+#define VE_KEY_F18             ::VoxEng::KeyLock::F18
+#define VE_KEY_F19             ::VoxEng::KeyLock::F19
+#define VE_KEY_F20             ::VoxEng::KeyLock::F20
+#define VE_KEY_F21             ::VoxEng::KeyLock::F21
+#define VE_KEY_F22             ::VoxEng::KeyLock::F22
+#define VE_KEY_F23             ::VoxEng::KeyLock::F23
+#define VE_KEY_F24             ::VoxEng::KeyLock::F24
+#define VE_KEY_F25             ::VoxEng::KeyLock::F25
 
 /* Keypad */
-#define VE_KEY_KP_0            ::VoxEng::Key::KP0
-#define VE_KEY_KP_1            ::VoxEng::Key::KP1
-#define VE_KEY_KP_2            ::VoxEng::Key::KP2
-#define VE_KEY_KP_3            ::VoxEng::Key::KP3
-#define VE_KEY_KP_4            ::VoxEng::Key::KP4
-#define VE_KEY_KP_5            ::VoxEng::Key::KP5
-#define VE_KEY_KP_6            ::VoxEng::Key::KP6
-#define VE_KEY_KP_7            ::VoxEng::Key::KP7
-#define VE_KEY_KP_8            ::VoxEng::Key::KP8
-#define VE_KEY_KP_9            ::VoxEng::Key::KP9
-#define VE_KEY_KP_DECIMAL      ::VoxEng::Key::KPDecimal
-#define VE_KEY_KP_DIVIDE       ::VoxEng::Key::KPDivide
-#define VE_KEY_KP_MULTIPLY     ::VoxEng::Key::KPMultiply
-#define VE_KEY_KP_SUBTRACT     ::VoxEng::Key::KPSubtract
-#define VE_KEY_KP_ADD          ::VoxEng::Key::KPAdd
-#define VE_KEY_KP_ENTER        ::VoxEng::Key::KPEnter
-#define VE_KEY_KP_EQUAL        ::VoxEng::Key::KPEqual
+#define VE_KEY_KP_0            ::VoxEng::KeyLock::KP0
+#define VE_KEY_KP_1            ::VoxEng::KeyLock::KP1
+#define VE_KEY_KP_2            ::VoxEng::KeyLock::KP2
+#define VE_KEY_KP_3            ::VoxEng::KeyLock::KP3
+#define VE_KEY_KP_4            ::VoxEng::KeyLock::KP4
+#define VE_KEY_KP_5            ::VoxEng::KeyLock::KP5
+#define VE_KEY_KP_6            ::VoxEng::KeyLock::KP6
+#define VE_KEY_KP_7            ::VoxEng::KeyLock::KP7
+#define VE_KEY_KP_8            ::VoxEng::KeyLock::KP8
+#define VE_KEY_KP_9            ::VoxEng::KeyLock::KP9
+#define VE_KEY_KP_DECIMAL      ::VoxEng::KeyLock::KPDecimal
+#define VE_KEY_KP_DIVIDE       ::VoxEng::KeyLock::KPDivide
+#define VE_KEY_KP_MULTIPLY     ::VoxEng::KeyLock::KPMultiply
+#define VE_KEY_KP_SUBTRACT     ::VoxEng::KeyLock::KPSubtract
+#define VE_KEY_KP_ADD          ::VoxEng::KeyLock::KPAdd
+#define VE_KEY_KP_ENTER        ::VoxEng::KeyLock::KPEnter
+#define VE_KEY_KP_EQUAL        ::VoxEng::KeyLock::KPEqual
 
-#define VE_KEY_LEFT_SHIFT      ::VoxEng::Key::LeftShift
-#define VE_KEY_LEFT_CONTROL    ::VoxEng::Key::LeftControl
-#define VE_KEY_LEFT_ALT        ::VoxEng::Key::LeftAlt
-#define VE_KEY_LEFT_SUPER      ::VoxEng::Key::LeftSuper
-#define VE_KEY_RIGHT_SHIFT     ::VoxEng::Key::RightShift
-#define VE_KEY_RIGHT_CONTROL   ::VoxEng::Key::RightControl
-#define VE_KEY_RIGHT_ALT       ::VoxEng::Key::RightAlt
-#define VE_KEY_RIGHT_SUPER     ::VoxEng::Key::RightSuper
-#define VE_KEY_MENU            ::VoxEng::Key::Menu
+#define VE_KEY_LEFT_SHIFT      ::VoxEng::KeyLock::LeftShift
+#define VE_KEY_LEFT_CONTROL    ::VoxEng::KeyLock::LeftControl
+#define VE_KEY_LEFT_ALT        ::VoxEng::KeyLock::LeftAlt
+#define VE_KEY_LEFT_SUPER      ::VoxEng::KeyLock::LeftSuper
+#define VE_KEY_RIGHT_SHIFT     ::VoxEng::KeyLock::RightShift
+#define VE_KEY_RIGHT_CONTROL   ::VoxEng::KeyLock::RightControl
+#define VE_KEY_RIGHT_ALT       ::VoxEng::KeyLock::RightAlt
+#define VE_KEY_RIGHT_SUPER     ::VoxEng::KeyLock::RightSuper
+#define VE_KEY_MENU            ::VoxEng::KeyLock::Menu

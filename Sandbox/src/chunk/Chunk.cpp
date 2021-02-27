@@ -7,5 +7,5 @@
 #include "ChunkBlockBuilder.h"
 
 Chunk::Chunk() : blocks{}, opaqueBlocksPerLayer{} {
-    ChunkBlockBuilder::generate(*this);
+
 }

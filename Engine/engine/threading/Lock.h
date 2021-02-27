@@ -5,19 +5,29 @@
 #ifndef CPPMC_LOCK_H
 #define CPPMC_LOCK_H
 #include <mutex>
+#include <functional>
 #include "core/Core.h"
+#include "core/KeyCode.h"
+using ThreadCallback = std::function<void(void*)>;
+
 namespace VoxEng {
-    struct LockKey {
+    using KeyLock =  std::unique_lock<std::mutex>;
+    class Lock {
     public:
-        LockKey(std::mutex &lock, std::condition_variable& condLock) : mtx(lock), condLock(condLock) {
+    	
+    	/*
+        Scope<LockKey> createKey() {
+            Scope<LockKey> key = CreateScope<LockKey>(_lock,condLock);
+            return std::move(key);
+        }
+        */
+
+        KeyLock lock() {
+            return std::unique_lock<std::mutex> {mtx};
         }
 
-        void lock() {
-            _lock = std::unique_lock<std::mutex>{mtx};
-        }
-
-        void wait() {
-            condLock.wait(_lock);
+        void wait(KeyLock& key) {
+            condLock.wait(key);
         }
 
         void notify() {
@@ -28,25 +38,8 @@ namespace VoxEng {
             condLock.notify_all();
         }
 
-        void unlock() {
-            _lock.unlock();
-        }
-
     private:
-        std::unique_lock<std::mutex> _lock;
-        std::mutex& mtx;
-        std::condition_variable& condLock;
-    };
-
-    class Lock {
-    public:
-        Scope<LockKey> createKey() {
-            Scope<LockKey> key = CreateScope<LockKey>(_lock,condLock);
-            return std::move(key);
-        }
-
-    private:
-        std::mutex _lock;
+        std::mutex mtx;
         std::condition_variable condLock;
     };
 }

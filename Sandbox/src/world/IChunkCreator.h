@@ -8,6 +8,6 @@
 using namespace VoxEng;
 class IChunkCreator {
 public:
-    virtual Ref<IChunk> createChunk() = 0;
+    virtual Ref<IChunk> createChunk(int x,int z) = 0;
 };
 #endif //CPPMC_ICHUNKCREATOR_H

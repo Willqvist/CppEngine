@@ -36,7 +36,7 @@ VoxEng::Ref<VoxEng::Shader> VoxEng::ResourceManager::loadShader(const std::strin
     ParsedShader parsedShaders;
     if(!loadShaders(path.c_str(), &parsedShaders)) {
         DEBUG_ERROR("Could not find shader: %s",path.c_str());
-        exit(1);
+        exit(100);
     }
     std::vector<ShaderLayoutLocation> locations;
     for(int i = 0; i < parsedShaders.in.size(); i++) {

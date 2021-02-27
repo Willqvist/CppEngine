@@ -9,21 +9,35 @@
 #include "../world/World.h"
 #include "../chunk/Chunk.h"
 #include "ChunkComponent.h"
+#include "../chunk/ChunkBlockBuilder.h"
+#include "../chunk/ChunkModelBuilder.h"
 
 using namespace VoxEng;
 class WorldManager: public VoxComponent, public IChunkCreator {
 public:
     void onCreate() override {
         VoxComponent::onCreate();
-        ChunkModelBuilder::threads(2);
+        ChunkModelBuilder::instance()->threads(4);
+        ChunkBlockBuilder::instance()->threads(4);
+
+        ChunkBlockBuilder::instance()->finish([this](Ref<ChunkComponent>& c) {
+            ChunkModelBuilder::instance()->insert(c);
+        });
+
+        ChunkModelBuilder::instance()->finish([this](ChunkModelBuilderData& data) {
+            data.chunkComp->setView(data.data);
+        });
+
+
         world = CreateRef<World>(std::unique_ptr<IChunkCreator>(this));
     }
 
-    Ref<IChunk> createChunk() override {
+    Ref<IChunk> createChunk(int x,int y) override {
         Ref<Chunk> chunk = CreateRef<Chunk>();
         Entity e = Scene::active()->createEntity("c");
         Ref<ChunkComponent> comp = e.addDynamicComponent<ChunkComponent>();
-        comp->setChunk(chunk,0,0);
+        comp->setChunk(chunk,x,y);
+        ChunkBlockBuilder::instance()->insert(comp);
         return chunk;
     }
 

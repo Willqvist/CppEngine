@@ -13,7 +13,11 @@ using namespace VoxEng;
 class World {
 public:
     World(Scope<IChunkCreator>& chunkCreator) : chunkCreator(std::move(chunkCreator)) {
-        Ref<IChunk> c = this->chunkCreator->createChunk();
+        for(int i = 0; i < 60; i++) {
+            for(int j = 0; j < 60; j++) {
+                this->chunkCreator->createChunk(i,j);
+            }
+        }
     }
 private:
     Scope<IChunkCreator> chunkCreator;
