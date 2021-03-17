@@ -11,9 +11,7 @@ namespace VoxEng {
 
     class GraphicsLibrary {
     public:
-        static Library& library() {
-            return GraphicsLibrary::m_library;
-        }
+        static Library& library();
     public:
         inline static const unsigned int TEXTURE_SLOTS = 32;
     private:

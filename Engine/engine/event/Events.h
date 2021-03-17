@@ -22,7 +22,7 @@ namespace VoxEng {
     public:
         int key;
         InputState state;
-        KeyPressEvent(int key,InputState state): key(key), state(state){};
+        KeyPressEvent(int key,InputState state);
         EVENT(KEY_PRESS);
     };
 
@@ -30,7 +30,7 @@ namespace VoxEng {
     public:
         int key;
         InputState state;
-        MousePressEvent(int key,InputState state): key(key), state(state){};
+        MousePressEvent(int key,InputState state);
         EVENT(MOUSE_PRESS);
     };
 
@@ -44,7 +44,7 @@ namespace VoxEng {
     class WindowResizeEvent : public Event {
     public:
         int width, height;
-        WindowResizeEvent(int width,int height): width(width), height(height){};
+        WindowResizeEvent(int width,int height);
         EVENT(WINDOW_RESIZE);
     };
 }

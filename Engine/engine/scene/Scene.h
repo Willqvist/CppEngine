@@ -8,19 +8,19 @@
 #include <entt/entt.hpp>
 #include <core/Core.h>
 #include <vector>
-#include <core/Timestep.h>
 #include <map>
 #include <string.h>
 #include <event/EventListener.h>
-#include <core/Application.h>
 #include <vector>
 #include <thread>
-#include "Layer.h"
 #include "Registry.h"
-
+#include "Layer.h"
 namespace VoxEng {
 
     class Entity;
+    class Application;
+    class WindowResizeEvent;
+    class Timestep;
 
     class Scene: public EventListener {
     public:
@@ -37,9 +37,7 @@ namespace VoxEng {
 
         void stop();
 
-        Registry registry() {
-            return Registry(mRegistry);
-        }
+        Registry registry();
 
         void onEvent(Event &ev) override;
 
@@ -54,39 +52,23 @@ namespace VoxEng {
             layers.push_back(std::move(layer));
         }
 
-        static Ref<Scene> create(const std::string& name) {
-            Ref<Scene> scene = CreateRef<Scene>();
-            scene->application = Application::getApplication();
-            Application::getApplication()->getWindow()->addEventListener(scene);
-            scenes[name] = scene;
-            return scene;
-        };
+        //static Ref<Scene> create(const std::string& name);
 
-        template<class T>static Ref<Scene> create(const std::string& name) {
+        template<class T>
+        static Ref<Scene> create(const std::string& name) {
             Ref<Scene> scene = CreateRef<T>();
             scene->application = Application::getApplication();
             Application::getApplication()->getWindow()->addEventListener(scene);
             scenes[name] = scene;
             return scene;
-        };
+        }
 
-        virtual void onSceneStart(void* data) {};
+        virtual void onSceneStart(void* data);
 
-        virtual void onSceneEnd() {};
+        virtual void onSceneEnd();
 
-        static Ref<Scene> goToScene(const std::string& name, void* data, int size) {
-            if(activeScene) {
-                activeScene->onSceneEnd();
-            }
-            activeScene = scenes[name];
-            activeScene->onSceneEnter(data,size);
-            activeScene->start();
-            return activeScene;
-        };
-
-        static Ref<Scene> active() {
-            return activeScene;
-        };
+        static Ref<Scene> goToScene(const std::string& name, void* data, int size);
+        static Ref<Scene> active();
 
         ~Scene();
     protected:
@@ -94,25 +76,13 @@ namespace VoxEng {
     private:
         std::vector<Scope<Layer>> layers;
         bool onWindowResizeEvent(WindowResizeEvent& ev);
-        void onSceneEnter(void* data, int size) {
-            if(hasSceneData) {
-                free(data);
-            }
-            this->data = nullptr;
-            if(size > 0) {
-                void *newData = malloc(size);
-                memcpy(newData, data, size);
-                this->data = data;
-                hasSceneData = true;
-            }
-            onSceneStart(this->data);
-        }
+        void onSceneEnter(void* data, int size);
 
         entt::registry mRegistry;
         void* data;
         bool hasSceneData = false;
-        inline static Ref<Scene> activeScene = nullptr;
-        inline static std::map<std::string, Ref<Scene>> scenes;
+        static Ref<Scene> activeScene;
+        static std::map<std::string, Ref<Scene>> scenes;
         friend class Entity;
     };
 }

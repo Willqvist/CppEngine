@@ -27,7 +27,7 @@ namespace VoxEng {
             return dat;
         }
 
-    	Data* GetIndex(int pool) // not thread safe, used only when knowledge of no overlap.
+        Data* GetIndex(int pool) // not thread safe, used only when knowledge of no overlap.
         {
             return &data[pool*capacityPerBuffer];
         }
@@ -35,7 +35,7 @@ namespace VoxEng {
         Data *Rent() {
             KeyLock key = lock.lock();
             Data* dat = _Rent();
-            return dat;            
+            return dat;
         }
 
         void Return(Data *data) {
@@ -50,6 +50,7 @@ namespace VoxEng {
             }
             lock.notify();
         }
+
 
     private:
         Data* _Rent() {
@@ -66,6 +67,7 @@ namespace VoxEng {
             }
             return &data[start];
         }
+
         Data data[capacityPerBuffer * buffers];
         bool usedBuffers[buffers];
         Lock lock;

@@ -4,13 +4,14 @@
 
 #include "WorldScene.h"
 #include <scene/Entity.h>
+#include <scene/components/Components.h>
+#include <core/Window.h>
+#include <scene/components/Transform.h>
+#include <core/Application.h>
 #include "../components/CameraMovement.h"
-#include "../components/Plane.h"
 #include "../layers/DebugLayer.h"
 #include "../components/ChunkComponent.h"
-#include "../components/Rotator.h"
 #include "../components/WorldManager.h"
-
 
 using namespace VoxEng;
 void WorldScene::onSceneStart(void *data) {
@@ -22,25 +23,24 @@ void WorldScene::onSceneStart(void *data) {
     Entity e = this->createEntity("camera");
     Entity managerEnt = this->createEntity("ChunkManager");
 
-    managerEnt.addDynamicComponent<WorldManager>();
+    Ref<WorldManager> manager = managerEnt.addDynamicComponent<WorldManager>();
 
     Camera& cam = e.addComponent<Camera>();
     e.addDynamicComponent<CameraMovement>();
-
+    e.getComponent<Transform>().setPosition({ 0,150,0 });
+    manager->follow(e);
     Ref<Window> window = application->getWindow();
     cam.viewport = glm::vec2(window->width(),window->height());
     cam.updateProjection();
 
 
-    e3.getComponent<Transform>().translateY(TransformType::POSITION,2);
+    e3.getComponent<Transform>().translatePosition({0,0,2});
     e3.getComponent<Transform>().setScale(0.2f,0.2f,0.2f);
 
     e.addDynamicComponent<CameraMovement>();
-    Entity e22 = this->createEntity("camera2");
 
     //e.getComponent<Transform>().translateZ(TransformType::POSITION,10);
     //Ref<ChunkComponent> comp = cunk.addDynamicComponent<ChunkComponent>();
-    Ref<Plane> p = e2.addDynamicComponent<Plane>();
 
     //e2.addDynamicComponent<Rotator>();
 

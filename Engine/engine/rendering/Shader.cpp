@@ -14,3 +14,7 @@ VoxEng::Ref <VoxEng::Shader> VoxEng::Shader::create(const std::string& vertex, c
     }
     return nullptr;
 }
+
+VoxEng::ShaderLayout::ShaderLayout(std::vector<ShaderLayoutLocation> elements) : elements(elements) {}
+
+VoxEng::ShaderLayout::ShaderLayout(const std::initializer_list<ShaderLayoutLocation> elements) : elements(elements) {}

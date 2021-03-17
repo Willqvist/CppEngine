@@ -11,7 +11,7 @@ namespace VoxEng {
     class OpenGLTexture : public Texture {
     public:
 
-        OpenGLTexture(const TextureDetails& details, int textureId, int x,int y,int width,int height) : Texture(details),textureId(textureId),x(x),y(y),mWidth(width),mHeight(height){}
+        OpenGLTexture(const TextureDetails& details, int textureId, int x,int y,int width,int height);
 
         void bind() override;
 

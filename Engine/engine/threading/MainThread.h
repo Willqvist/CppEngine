@@ -8,39 +8,21 @@
 #include "Lock.h"
 #include <queue>
 #include <utility>
-#include <tools/Tools.h>
 
 struct MainThreadData {
     void* data;
     ThreadCallback callback;
 };
+
 namespace VoxEng {
     class MainThread {
     public: 	
-        static void enqueue(void* data, ThreadCallback callback) {
-            KeyLock key = lock.lock();
-            callbacks.push({data, std::move(callback)});
-        }
+        static void enqueue(void* data, ThreadCallback callback);
 
-        static void callIfExists(int maxMs) {
-            KeyLock key = lock.lock();
-            int accumTim = 0;
-        	while(!callbacks.empty())
-        	{
-        	    auto start = getTime();
-                printf("HERE! \n");
-                const MainThreadData& data = callbacks.front();
-                data.callback(data.data);
-                callbacks.pop();
-                auto end = getTime();
-                accumTim += end-start;
-                if(accumTim >= maxMs)
-                    break;
-        	}
-        }
+        static void callIfExists(int maxMs);
     private:
-        static inline std::queue<MainThreadData> callbacks;
-        static inline Lock lock;
+        static std::queue<MainThreadData> callbacks;
+        static Lock lock;
     };
 }
 

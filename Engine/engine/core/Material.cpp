@@ -3,9 +3,10 @@
 //
 
 #include "Material.h"
-#include "GraphicsLibrary.h"
+#include <rendering/Texture.h>
 
-
+unsigned int VoxEng::Material::boundMaterial = -1;
+unsigned int VoxEng::Material::globalId = 0;
 
 VoxEng::Material::Material(const VoxEng::Ref<VoxEng::Shader> &shader) {
     this->shader = shader;

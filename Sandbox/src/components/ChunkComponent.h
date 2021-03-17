@@ -7,64 +7,56 @@
 
 #include <scene/components/VoxComponent.h>
 #include "../chunk/Chunk.h"
-#include <tools/Tools.h>
-#include <core/ResourceManager.h>
-#include <rendering/Renderer.h>
+
 using namespace VoxEng;
-class ChunkComponent: public VoxComponent {
+
+class World;
+namespace VoxEng {
+    class Material;
+    class VertexArray;
+}
+
+class ChunkComponent: public VoxComponent, public IChunk {
 public:
 
-    void setChunk(Ref<Chunk>& chunk,int x,int y) {
-        this->chunk = chunk;
-        setPosition(x,y);
-    }
 
-    void setView(Ref<VertexArray>& array) {
-        this->vertexArray = array;
-        visible = true;
-    }
+    void setChunk(Ref<Chunk>& chunk,int x,int y);
+    void setChunkProvider(Ref<World>& world);
 
-    Ref<Chunk> getChunk(){
-        return chunk;
-    }
+    void build();
 
-    void onCreate() override {
-        VoxComponent::onCreate();
-        //fprintf(stderr," it took : %d milliseconds\n", (t2-t1));
-        Ref<Shader> shader = ResourceManager::loadShader("res/shaders/albedo.glsl");
-        material = ResourceManager::createMaterial("AlbedoMaterial",shader);
-        material->set("m_Vec2",2.0f);
-        material->set("m_Color",glm::vec3(1.0f,1.0f,1.0f));
-        material->set("m_albedoTexture",ResourceManager::loadTexture("res/images/texture.png"));
-    }
+    void setView(Ref<VertexArray>& array);
 
-    static Ref<ChunkComponent> create(Scene* scene, int x,int z) {
-        Entity e = scene->createEntity("chunk");
-        Ref<ChunkComponent> c = e.addDynamicComponent<ChunkComponent>();
-        c->setPosition(x,z);
-        return c;
-    }
+    Ref<Chunk> getChunk();
 
-    void isVisible(bool visible) {
-        this->visible = visible;
-    }
+    void onCreate() override;
 
-    void setPosition(int x,int z) {
-        component<Transform>().setPosition(x*CHUNK_WIDTH,0,z*CHUNK_DEPTH);
-    }
+    static Ref<ChunkComponent> create(Scene* scene, int x,int z);
 
-    void render() override {
-        if(visible) {
-            Renderer::render(vertexArray, material, component<Transform>());
-        }
-    }
+    void isVisible(bool visible);
 
-    ~ChunkComponent() override {
-    }
+    vec2i worldPosition();
+
+    bool isDirty();
+
+    void setPosition(int x,int z);
+
+    void render() override;
+
+    ~ChunkComponent() override;
+
+    Block getBlock(int x, int y, int z) override;
+    void setBlock(int x, int y, int z, Block& block) override;
+    Block* getBlocks() override;
+    void setNeighbor(VoxEng::Ref<IChunk> chunk, int neigh) override;
+    bool hasNeighbor(int neigh) override;
+
 private:
+    Ref<World> world;
     Ref<Chunk> chunk;
     Ref<VertexArray> vertexArray;
     Ref<Material> material;
+    vec2i worldPos;
     bool visible = false;
 };
 #endif //CPPMC_CHUNKCOMPONENT_H

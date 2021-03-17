@@ -1,7 +1,7 @@
 //code from https://github.com/TheCherno/Hazel/blob/master/Hazel/src/Hazel/Core/MouseCodes.h
 namespace VoxEng
 {
-    typedef enum class MouseCode : unsigned int
+    enum class MouseCode : unsigned int
     {
         // From glfw3.h
         Button0                = 0,
@@ -17,7 +17,7 @@ namespace VoxEng
         ButtonLeft             = Button0,
         ButtonRight            = Button1,
         ButtonMiddle           = Button2
-    } Mouse;
+    };
 }
 
 #define VE_MOUSE_BUTTON_0      ::VoxEng::Mouse::Button0

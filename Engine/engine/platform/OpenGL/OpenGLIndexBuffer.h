@@ -8,6 +8,7 @@
 #include <rendering/Buffer.h>
 
 namespace VoxEng {
+
     class OpenGLIndexBuffer : public IndexBuffer {
     public:
         unsigned int getSize() override;

@@ -15,27 +15,6 @@ namespace VoxEng {
         typedef std::pair<std::function<VoxComponent*()>,std::function<void(ScriptComponent*,int)>> ComponentMethods;
         ScriptComponent() = default;
 
-        template<typename T>
-        void bind() {
-            /*
-            boundedMethods.emplace_back(
-                    []()->VoxComponent* {return static_cast<VoxComponent*>(new T());},
-                    [&](ScriptComponent* comp, int index){delete components[index]; components[index] = nullptr;}
-                    );
-                    */
-        };
-
-        template<typename F>
-        void build(F& callback) {
-            /*
-            for(ComponentMethods& methods : boundedMethods) {
-                VoxComponent* comp = methods.first();
-                callback(comp);
-                components.push_back(comp);
-            }
-             */
-        }
-
         void update(Timestep ts);
 
         void render();

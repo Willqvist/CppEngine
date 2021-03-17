@@ -4,6 +4,9 @@
 
 #include <tools/Tools.h>
 #include "ResourceManager.h"
+#include <rendering/Texture.h>
+#include <rendering/Shader.h>
+#include "Material.h"
 
 VoxEng::Ref<VoxEng::Texture>
 VoxEng::ResourceManager::loadTexture(const std::string& path, const VoxEng::TextureDetails &details) {

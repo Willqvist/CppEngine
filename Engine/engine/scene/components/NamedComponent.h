@@ -6,23 +6,20 @@
 #define CPPMC_NAMEDCOMPONENT_H
 
 #include <string>
+namespace VoxEng {
+    class NamedComponent {
+    public:
+        std::string mName, mTag;
+        unsigned int id;
 
-class NamedComponent {
-public:
-    std::string mName,mTag;
-    unsigned int id;
-    NamedComponent() {
-        id = globalId ++;
-    }
-    void name(const std::string& name) {
-        this->mName = name;
-    }
+        NamedComponent();
 
-    std::string& name() {
-        return mName;
-    }
+        void name(const std::string &name);
 
-private:
-    inline static int globalId = 0;
-};
+        std::string &name();
+
+    private:
+        static int globalId;
+    };
+}
 #endif //CPPMC_NAMEDCOMPONENT_H

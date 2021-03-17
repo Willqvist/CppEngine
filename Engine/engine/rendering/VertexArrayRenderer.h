@@ -5,18 +5,21 @@
 #ifndef CPPMC_VERTEXARRAYRENDERER_H
 #define CPPMC_VERTEXARRAYRENDERER_H
 
-#include <core/GraphicsLibrary.h>
-#include <platform/OpenGL/OpenGLVertexArrayRenderer.h>
-#include "VertexArray.h"
+#include <glad/glad.h>
+#include "core/Core.h"
 
 namespace VoxEng {
+    //TODO: change to not use opengl constanrs
+    enum RenderMode
+    {
+        LINES = GL_LINE, POINTS = GL_POINTS, TRIANGLES=GL_TRIANGLES
+    };
+
+    class VertexArray;
+
     class VertexArrayRenderer {
     public:
-        inline static void draw(Ref <VertexArray> &buffer) {
-            switch(GraphicsLibrary::library()) {
-                case Library::OPENGL: OpenGLVertexArrayRenderer::draw(buffer);
-            }
-        }
+        static void draw(Ref <VertexArray> &buffer, RenderMode mode);
 
     protected:
         virtual void drawBuffer(Ref <VertexArray> &buffer) = 0;

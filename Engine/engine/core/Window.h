@@ -5,11 +5,14 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include <event/EventListener.h>
 #include <vector>
 #include "Core.h"
 
 namespace VoxEng {
+
+    class EventListener;
+    class Event;
+
     struct WindowAttributes {
         int width;
         int height;
@@ -20,15 +23,9 @@ namespace VoxEng {
     class Window {
     public:
 
-        void addEventListener(const Ref<EventListener>& listener) {
-            listeners.push_back(listener);
-        }
+        void addEventListener(const Ref<EventListener>& listener);
 
-        void sendEvent(Event& ev) {
-            for(Ref<EventListener>& listener : listeners) {
-                listener->onEvent(ev);
-            }
-        }
+        void sendEvent(Event& ev);
 
         virtual int width() = 0;
 
@@ -47,8 +44,7 @@ namespace VoxEng {
         static Ref<Window> createWindow(const WindowAttributes& attributes);
 
     protected:
-        Window(WindowAttributes const &attributes) : mWidth(attributes.width), mHeight(attributes.height),
-                                                     mTitle(attributes.title), mVsync(attributes.vsync) {}
+        Window(WindowAttributes const &attributes);
 
         int mWidth, mHeight;
         bool mVsync;

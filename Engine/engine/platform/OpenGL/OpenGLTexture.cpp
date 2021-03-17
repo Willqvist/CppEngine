@@ -7,6 +7,8 @@
 #include <glad/glad.h>
 #include <core/Logger.h>
 
+VoxEng::OpenGLTexture::OpenGLTexture(const VoxEng::TextureDetails &details, int textureId, int x, int y, int width,
+                                     int height) : Texture(details),textureId(textureId),x(x),y(y),mWidth(width),mHeight(height){}
 
 void VoxEng::OpenGLTexture::bind() {
     bind(0);

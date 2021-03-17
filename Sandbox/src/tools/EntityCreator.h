@@ -7,7 +7,6 @@
 
 #include <scene/Scene.h>
 #include <scene/Entity.h>
-#include <scene/Instansiator.h>
 
 using namespace VoxEng;
 class EntityCreator {

@@ -7,51 +7,30 @@
 
 
 #include "Chunk.h"
-#include "../components/ChunkComponent.h"
 #include <pipeline/PipelineObject.h>
 #include <threading/ThreadPool.h>
+#include "glm/vec2.hpp"
+class ChunkComponent;
+
 class ChunkBlockBuilder : public PipelineObject<Ref<ChunkComponent>,Ref<ChunkComponent>> {
 public:
-    static Ref<ChunkBlockBuilder>& instance() {
-        static Ref<ChunkBlockBuilder> instance {new ChunkBlockBuilder()};
-        return instance;
-    }
+    static Ref<ChunkBlockBuilder>& instance();
 
-    void generate(const Ref<Chunk>& chunk) {
-        std::srand(23224);
-        for(int x = 0; x < CHUNK_WIDTH; x++) {
-            for(int z = 0; z < CHUNK_DEPTH; z++) {
-                for(int y = 0; y < CHUNK_HEIGHT; y++) {
-                    if(std::rand() % 100 > 90 && y < 120)
-                        chunk->setBlock(x,y,z,Block::DIRT);
-                    else
-                        chunk->setBlock(x,y,z,Block::AIR);
-                }
-            }
-        }
-    }
+	void follow(Entity& following);
 
-    void threads(int num) {
-        if(threadPool != nullptr) {
-            delete threadPool;
-        }
-        threadPool = new ThreadPool<Ref<ChunkComponent>>(num);
-    }
+    void generate(const Ref<Chunk>& chunk,glm::vec2 worldPos);
+
+    void threads(int num);
 
     ChunkBlockBuilder(ChunkBlockBuilder const&) = delete;
     void operator=(ChunkBlockBuilder const&)  = delete;
 
 protected:
-    void onInsert(Ref<ChunkComponent> &val) override {
-        threadPool->enqueue(
-        [this](Ref<ChunkComponent>& c, int threadId) {
-            this->generate(c->getChunk());
-            send(c);
-        }, val);
-    }
+    void onInsert(Ref<ChunkComponent> &val) override;
 
 private:
     ChunkBlockBuilder() {}
+    Entity following;
     ThreadPool<Ref<ChunkComponent>>* threadPool = nullptr;
 };
 

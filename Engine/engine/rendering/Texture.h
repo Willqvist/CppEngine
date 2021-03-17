@@ -35,7 +35,7 @@ namespace VoxEng {
 
     class Texture {
     public:
-        Texture(const TextureDetails& details): mDetails(details) {};
+        Texture(const TextureDetails& details);
 
         virtual void bind() = 0;
         virtual void bind(int location) = 0;
@@ -57,13 +57,7 @@ namespace VoxEng {
         TextureDetails mDetails;
         inline static unsigned int boundTexture[GraphicsLibrary::TEXTURE_SLOTS];
     private:
-        inline static TextureDetails defaultDetails = {
-                TextureType::T_2D,
-                TextureWrap::CLAMP_TO_EDGE,
-                TextureFilter::LINEAR,
-                TextureFilter::NEAREST
-        };
-
+        static TextureDetails defaultDetails;
         friend class ResourceManager;
 
     };

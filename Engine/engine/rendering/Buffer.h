@@ -9,28 +9,12 @@
 #include <core/Core.h>
 #include "Vertex.h"
 #include <vector>
+
 namespace VoxEng {
 
     enum class ElementType {
         none=0,float1,float2,float3,float4,mat3,mat4,int1,int2,int3,int4,boolean
     };
-
-    static unsigned int elementPrimativeSize(ElementType type) {
-        switch(type) {
-            case ElementType::float1: return 4;
-            case ElementType::float2: return 4*2;
-            case ElementType::float3: return 4*3;
-            case ElementType::float4: return 4*4;
-            case ElementType::mat3: return 4*3*3;
-            case ElementType::mat4: return 4*4*4;
-            case ElementType::int1: return 4;
-            case ElementType::int2: return 4*2;
-            case ElementType::int3: return 4*3;
-            case ElementType::int4: return 4*4;
-            case ElementType::boolean: return 1;
-        }
-        return -1;
-    }
 
     class BufferElement {
     public:
@@ -38,23 +22,8 @@ namespace VoxEng {
         unsigned int size;
         unsigned int offset;
         bool normalized;
-        BufferElement(ElementType type, bool normalized =false): type(type), size(elementPrimativeSize(type)), offset(0), normalized(normalized){}
-        unsigned int count() const {
-            switch(type) {
-                case ElementType::float1: return 1;
-                case ElementType::float2: return 2;
-                case ElementType::float3: return 3;
-                case ElementType::float4: return 4;
-                case ElementType::mat3: return 3;
-                case ElementType::mat4: return 4;
-                case ElementType::int1: return 1;
-                case ElementType::int2: return 2;
-                case ElementType::int3: return 3;
-                case ElementType::int4: return 4;
-                case ElementType::boolean: return 1;
-            }
-            return -1;
-        }
+        BufferElement(ElementType type, bool normalized =false);
+        unsigned int count() const;
     };
 
     class BufferLayout {
@@ -62,24 +31,14 @@ namespace VoxEng {
         unsigned int mStride;
         BufferLayout(){}
 
-        BufferLayout(const std::initializer_list<BufferElement> elements): mElements(elements) {
-            calculateElements();
-        }
+        BufferLayout(const std::initializer_list<BufferElement> elements);
 
-        unsigned int stride() const {return mStride;}
-        const std::vector<BufferElement>& elements() const { return mElements; }
+        unsigned int stride() const;
+        const std::vector<BufferElement>& elements() const;
 
     private:
         std::vector<BufferElement> mElements;
-        void calculateElements() {
-            int offset = 0;
-            mStride = 0;
-            for(BufferElement& e : mElements) {
-                e.offset = offset;
-                offset += e.size;
-                mStride += e.size;
-            }
-        }
+        void calculateElements();
     };
 
     class ArrayBuffer {

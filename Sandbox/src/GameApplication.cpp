@@ -1,20 +1,8 @@
 //
 // Created by Gerry on 2020-08-10.
 //
-
-//#include <imgui/imgui.h>
-#include <core/Logger.h>
-#include <rendering/Texture.h>
-#include <core/ResourceManager.h>
-#include <rendering/VertexArray.h>
-#include <rendering/VertexArrayRenderer.h>
-#include <tools/Tools.h>
-#include <rendering/Renderer.h>
-#include <Scene/Scene.h>
-#include <scene/components/TestComponent.hpp>
-#include <scene/components/ScriptComponent.h>
 #include "GameApplication.h"
-#include "components/CameraMovement.h"
+#include <Scene/Scene.h>
 #include "scenes/WorldScene.h"
 
 void GameApplication::init() {

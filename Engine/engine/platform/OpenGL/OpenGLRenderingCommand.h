@@ -5,11 +5,11 @@
 #ifndef CPPMC_OPENGLRENDERINGCOMMAND_H
 #define CPPMC_OPENGLRENDERINGCOMMAND_H
 
-#include <rendering/RenderingCommand.h>
-
-
 
 namespace VoxEng {
+
+    enum class BUFFER_BIT;
+
     class OpenGLRenderingCommand {
     public:
         static void clearScreenColor(float red, float green, float blue, float alpha);

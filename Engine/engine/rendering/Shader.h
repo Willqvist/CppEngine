@@ -21,8 +21,8 @@ namespace VoxEng {
 
     class ShaderLayout {
     public:
-        ShaderLayout(const std::initializer_list<ShaderLayoutLocation> elements) : elements(elements) {}
-        ShaderLayout(std::vector<ShaderLayoutLocation> elements) : elements(elements) {}
+        ShaderLayout(const std::initializer_list<ShaderLayoutLocation> elements);
+        ShaderLayout(std::vector<ShaderLayoutLocation> elements);
     public:
         std::vector<ShaderLayoutLocation> elements;
     };

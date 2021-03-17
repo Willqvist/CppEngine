@@ -3,7 +3,6 @@
 //
 
 #include "Scene.h"
-#include <core/Logger.h>
 #include "components/VoxComponent.h"
 #include "scene/components/ScriptComponent.h"
 #include "scene/Entity.h"
@@ -11,6 +10,10 @@
 #include <rendering/Renderer.h>
 #include <core/Window.h>
 #include <scene/components/NamedComponent.h>
+#include "scene/components/Transform.h"
+#include <core/Application.h>
+#include "Layer.h"
+#include <core/Timestep.h>
 
 VoxEng::Scene::Scene() {
 }
@@ -18,7 +21,7 @@ VoxEng::Scene::Scene() {
 VoxEng::Entity VoxEng::Scene::createEntity(const std::string& name, Entity& parent) {
     Entity entity(mRegistry.create(),this);
     Transform& trans = entity.addComponent<Transform>();
-    trans.parentEntity = parent;
+    trans.setParent(parent);
     trans.createMatrix();
     entity.addComponent<ScriptComponent>();
     NamedComponent& comp = entity.addComponent<NamedComponent>();
@@ -78,10 +81,12 @@ void VoxEng::Scene::render() {
 
 void VoxEng::Scene::start() {
     mRegistry.view<ScriptComponent>().each([=](auto id, ScriptComponent& comp) {
+        /*
         comp.build([&](VoxComponent* component) {
             component->mEntity = Entity(id,this);
             component->onCreate();
         });
+         */
     });
 }
 
@@ -109,3 +114,65 @@ bool VoxEng::Scene::onWindowResizeEvent(VoxEng::WindowResizeEvent &ev) {
     });
     return true;
 }
+
+Registry VoxEng::Scene::registry() {
+    return Registry(mRegistry);
+}
+
+void VoxEng::Scene::onSceneStart(void *data) {
+
+}
+
+
+
+void VoxEng::Scene::onSceneEnd() {
+
+}
+
+VoxEng::Ref<VoxEng::Scene> VoxEng::Scene::goToScene(const std::string &name, void *data, int size) {
+    if(activeScene) {
+        activeScene->onSceneEnd();
+    }
+    activeScene = scenes[name];
+    activeScene->onSceneEnter(data,size);
+    activeScene->start();
+    return activeScene;
+};
+
+VoxEng::Ref<VoxEng::Scene> VoxEng::Scene::active() {
+    return activeScene;
+};
+
+void VoxEng::Scene::onSceneEnter(void *data, int size) {
+    if(hasSceneData) {
+        free(data);
+    }
+    this->data = nullptr;
+    if(size > 0) {
+        void *newData = malloc(size);
+        memcpy(newData, data, size);
+        this->data = data;
+        hasSceneData = true;
+    }
+    onSceneStart(this->data);
+}
+/*
+ *   {
+            Ref<Scene> scene = CreateRef<T>();
+            scene->application = Application::getApplication();
+            Application::getApplication()->getWindow()->addEventListener(scene);
+            scenes[name] = scene;
+            return scene;
+        };
+ */
+/*
+VoxEng::Ref<VoxEng::Scene> VoxEng::Scene::create(const std::string &name) {
+    Ref<Scene> scene = CreateRef<Scene>();
+    scene->application = Application::getApplication();
+    Application::getApplication()->getWindow()->addEventListener(scene);
+    scenes[name] = scene;
+    return scene;
+}
+ */
+VoxEng::Ref<VoxEng::Scene> VoxEng::Scene::activeScene = nullptr;
+std::map<std::string, VoxEng::Ref<VoxEng::Scene>> VoxEng::Scene::scenes;

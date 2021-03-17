@@ -3,3 +3,5 @@
 //
 
 #include "ThreadPool.h"
+
+template class VoxEng::ThreadPool<float>;

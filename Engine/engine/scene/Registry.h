@@ -10,25 +10,17 @@
 class Registry {
 
 public:
-    Registry(entt::registry& registry) : registry(registry) {}
+    Registry(entt::registry& registry);
 
     template<class T>
-    T& get(entt::entity entity) {
-        return registry.get<T>(entity);
-    }
+    T& get(entt::entity entity);
 
     template<class T>
-    bool has(entt::entity entity) {
-        return registry.has<T>(entity);
-    }
+    bool has(entt::entity entity);
 
-    bool valid(entt::entity entity) {
-        return registry.valid(entity);
-    }
+    bool valid(entt::entity entity);
 
-    entt::registry& core() {
-        return registry;
-    }
+    entt::registry& core();
 
 private:
     entt::registry & registry;

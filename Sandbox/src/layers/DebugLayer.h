@@ -6,9 +6,11 @@
 #define CPPMC_DEBUGLAYER_H
 
 #include <scene/Layer.h>
-#include <core/Application.h>
 
 using namespace VoxEng;
+namespace VoxEng {
+    class Application;
+}
 class DebugLayer: public Layer {
 public:
     void onCreate() override;

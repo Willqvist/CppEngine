@@ -7,6 +7,8 @@
 #define CPPMC_CORE_H
 
 #include <memory>
+#include <glm/detail/type_vec2.hpp>
+
 namespace VoxEng {
     template<typename T>
     using Scope = std::unique_ptr<T>;
@@ -25,6 +27,9 @@ namespace VoxEng {
     constexpr Scope<T> CreateScope(Args&&... args) {
         return std::make_unique<T>(std::forward<Args>(args)...);
     }
+
+    using vec2i = glm::vec<2,int,glm::defaultp>;
+
 }
 
 #define BIND_FN(fn) std::bind(&fn,this,std::placeholders::_1)

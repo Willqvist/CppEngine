@@ -36,27 +36,13 @@ namespace BG {
 
         Block() : id(0) {}
 
-        bool isOpaque(Sides sides) {
-            return ((int32_t)data[id].opaqueSides & (int32_t)sides) > 0;
-        }
+        bool isOpaque(Sides sides);
+        bool isFullyTransparent();
 
-        bool isFullyTransparent() {
-            return data[id].opaqueSides == Sides::NONE;
-        }
+        bool operator ==(Block& b);
+        operator unsigned short();
 
-        bool operator ==(Block& b) {
-            return b.id == this->id;
-        }
-
-        operator unsigned short() {
-            return id;
-        }
-
-        Block(unsigned short id, bool isSolid, Sides opaqueSides,BlockVerticies* vertexData, BlockUvs* uvs) : id(id) {
-            data[id] = {isSolid, opaqueSides};
-            BlockFaceData::addBlockFace(id, vertexData);
-            BlockFaceData::addBlockUv(id, uvs);
-        }
+        Block(unsigned short id, bool isSolid, Sides opaqueSides,BlockVerticies* vertexData, BlockUvs* uvs);
 
 
     private:

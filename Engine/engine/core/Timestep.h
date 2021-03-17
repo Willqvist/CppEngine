@@ -8,19 +8,10 @@
 namespace VoxEng {
     class Timestep {
     public:
-        Timestep(float time = 0.0f) : time(time) {}
-
-        operator float() const {
-            return time;
-        }
-
-        float getSeconds() {
-            return time;
-        }
-
-        float getMilli() {
-            return time * 1000;
-        }
+        Timestep(float time = 0.0f);
+        operator float() const;
+        float getSeconds();
+        unsigned int getMs();
 
     private:
         float time;

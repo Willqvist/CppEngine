@@ -14,12 +14,14 @@
 #include <imgui/imgui.h>
 #include <scene/Scene.h>
 #include <threading/MainThread.h>
+#include <rendering/DebugRenderer.h>
 
 VoxEng::Application::Application(VoxEng::WindowAttributes &attributes) {
     window = Window::createWindow(attributes);
     inputHandler = CreateRef<Input>();
     window->addEventListener(inputHandler);
     application = this;
+    DebugRenderer::init();
 }
 void VoxEng::Application::run() {
     #ifdef DEBUG_ENABLE
@@ -41,7 +43,7 @@ void VoxEng::Application::run() {
         accumulator += timestep;
         while (accumulator >= dt) {
             timestep = dt;
-            MainThread::callIfExists(15);
+            MainThread::callIfExists(8);
             update(timestep);
             accumulator -= dt;
 #ifdef DEBUG_ENABLE
@@ -54,7 +56,6 @@ void VoxEng::Application::run() {
         }
         inputHandler->poll();
         window->update();
-
 
         render();
 #ifdef DEBUG_ENABLE
@@ -123,4 +124,16 @@ void VoxEng::Application::render() {
     Ref<Scene> active = Scene::active();
     if(active)
         active->render();
+}
+
+void VoxEng::Application::renderDebug() {
+    DebugRenderer::flush();
+}
+
+VoxEng::Application *VoxEng::Application::getApplication()  {
+    return application;
+}
+
+VoxEng::RuntimeData &VoxEng::Application::getRuntimeData() {
+    return data;
 }

@@ -7,12 +7,14 @@
 
 #include <core/Timestep.h>
 #include <core/Core.h>
-#include <scene/components/Components.h>
 #include <scene/Entity.h>
 
 #define Comp(name) component<name>()
 #define _transform component<Transform>()
 namespace VoxEng {
+
+    class Transform;
+
 
     class VoxComponent {
     public:
@@ -21,23 +23,20 @@ namespace VoxEng {
         virtual void update(Timestep ts) {};
         virtual void render()  {};
         //virtual void destroy() {};
-        Transform& transform() {
-            return mEntity.getComponent<Transform>();
-        }
+        Transform& transform();
 
 
         template<typename T>
-        T& component() {
+        T& component()  {
             return mEntity.getComponent<T>();
-        }
+        };
 
-        const std::string& name() {
-            return mEntity.name();
-        }
+
+        const std::string& name();
 
         EntityID id() {
             return mEntity.id();
-        }
+        };
 
         template<typename T>
         T& instansiate(const std::string& name) {
@@ -46,17 +45,11 @@ namespace VoxEng {
                 return ent.addComponent<T>();
             else
                 return ent.getComponent<T>();
-        }
+        };
 
-        void setEntity(Entity& entity) {
-            this->mEntity = entity;
-        }
+        void setEntity(Entity& entity);
 
-        Entity getEntity() {
-            return mEntity;
-        }
-
-        //const Entity& entity() const;
+        Entity getEntity();
 
         virtual ~VoxComponent() = default;
     protected:

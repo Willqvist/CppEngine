@@ -41,7 +41,7 @@ namespace VoxEng {
         unsigned int program;
         unsigned int compileShader(unsigned int shaderType, const std::string& src);
         std::map<std::string,unsigned int> uniformLocations;
-        static inline unsigned int boundProgram = -1;
+        static unsigned int boundProgram;
     };
 }
 

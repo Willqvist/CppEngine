@@ -8,10 +8,8 @@
 
 #include <entt/entt.hpp>
 #include <core/Timestep.h>
-#include <core/Logger.h>
-#include <scene/components/NamedComponent.h>
-#include "components/ScriptComponent.h"
 #include "Scene.h"
+#include "components/ScriptComponent.h"
 
 namespace VoxEng {
     typedef unsigned int EntityID;
@@ -19,11 +17,11 @@ namespace VoxEng {
     class Entity {
 
     public:
-        Entity() {};
-        Entity(entt::entity id, Scene *scene): mId(id), scene(scene){}
+        Entity();
+        Entity(entt::entity id, Scene *scene);
 
         template<typename T>
-        T& addComponent() {
+        T& addComponent(){
             if(hasComponent<T>())
                 return getComponent<T>();
 
@@ -31,26 +29,20 @@ namespace VoxEng {
         };
 
         template<class T>
-        Ref<T> addDynamicComponent() {
+        Ref<T> addDynamicComponent(){
             Ref<VoxComponent> val = addComponent<ScriptComponent>().set<T>();
             setVals(val);
             return std::dynamic_pointer_cast<T>(val);
         };
 
 
-        EntityID id() {
-            return getComponent<NamedComponent>().id;
-        }
+        EntityID id();
 
-        entt::entity componentIdentifier() {
-            return mId;
-        }
+        entt::entity componentIdentifier();
 
         bool valid();
 
-        const std::string& name() {
-            return getComponent<NamedComponent>().name();
-        }
+        const std::string& name();
 
         template<typename T>
         bool hasComponent() {
@@ -67,9 +59,8 @@ namespace VoxEng {
             return scene->mRegistry.remove_if_exists<T>(id);
         };
 
-        Scene* getScene() {
-            return scene;
-        };
+
+        Scene* getScene();
 
         ~Entity() = default;
 

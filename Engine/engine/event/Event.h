@@ -24,7 +24,7 @@ namespace VoxEng {
         EventExecutor(Event& e) : e(e){}
 
         template<typename T, typename F>
-        bool bind(const F &clb) {
+        bool bind(const F &clb)  {
             if (e.getType() == T::getStaticType()) {
                 e.handled = clb(static_cast<T&>(e));
                 return true;

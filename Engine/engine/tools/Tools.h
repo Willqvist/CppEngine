@@ -20,6 +20,15 @@ namespace VoxEng {
         std::vector<std::string> in;
     };
 
+    /*
+		template<class T,class C, class U, class V>
+		class MapWrapper
+		{
+		private:
+		    std::unordered_map<T, C, U, V> map;
+		};
+	*/
+
     static unsigned int getTime()
     {
         return (unsigned int)std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();

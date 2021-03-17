@@ -6,7 +6,6 @@
 #define CPPMC_MATERIAL_H
 
 #include <rendering/Shader.h>
-#include <rendering/Texture.h>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
@@ -16,15 +15,22 @@
 #include <vector>
 
 namespace VoxEng {
+    class Texture;
+    typedef std::variant<float,int,bool,glm::vec2,glm::vec3,glm::vec4,glm::mat4> MaterialTypes;
 
     struct MaterialTexture {
         std::string name;
-        Ref<Texture> texture;
+        VoxEng::Ref<Texture> texture;
     };
 
-    typedef std::variant<float,int,bool,glm::vec2,glm::vec3,glm::vec4,glm::mat4> MaterialTypes;
+    struct MaterialVariable {
+        std::string name;
+        VoxEng::MaterialTypes value;
+    };
+
+
     struct VisitShader {
-        Ref<Shader> shader;
+        VoxEng::Ref<Shader> shader;
         std::string name;
 
         void operator()(int& val) {
@@ -48,11 +54,6 @@ namespace VoxEng {
         void operator()(glm::mat4& val) {
             shader->setUniform(name,val);
         };
-    };
-
-    struct MaterialVariable {
-        std::string name;
-        MaterialTypes value;
     };
 
     class Material {
@@ -79,13 +80,13 @@ namespace VoxEng {
         ~Material() = default;
     private:
         unsigned int id;
-        static inline unsigned int globalId = 0;
+        static unsigned int globalId;
         MaterialVariable* get(const std::string& name);
         Ref<Shader> shader;
         std::vector<MaterialTexture> textures;
         std::vector<MaterialVariable> variables;
         VisitShader visit;
-        static inline unsigned int boundMaterial = -1;
+        static unsigned int boundMaterial;
     };
 }
 

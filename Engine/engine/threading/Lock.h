@@ -14,29 +14,10 @@ namespace VoxEng {
     using KeyLock =  std::unique_lock<std::mutex>;
     class Lock {
     public:
-    	
-    	/*
-        Scope<LockKey> createKey() {
-            Scope<LockKey> key = CreateScope<LockKey>(_lock,condLock);
-            return std::move(key);
-        }
-        */
-
-        KeyLock lock() {
-            return std::unique_lock<std::mutex> {mtx};
-        }
-
-        void wait(KeyLock& key) {
-            condLock.wait(key);
-        }
-
-        void notify() {
-            condLock.notify_one();
-        }
-
-        void notifyAll() {
-            condLock.notify_all();
-        }
+        KeyLock lock();
+        void wait(KeyLock& key);
+        void notify();
+        void notifyAll();
 
     private:
         std::mutex mtx;

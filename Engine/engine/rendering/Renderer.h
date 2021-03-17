@@ -5,18 +5,26 @@
 #ifndef CPPMC_RENDERER_H
 #define CPPMC_RENDERER_H
 
-#include <core/Material.h>
-#include <scene/components/Components.h>
-#include "VertexArray.h"
-
+#include <core/Core.h>
+#include <stack>
 namespace VoxEng {
+
+    class Camera;
+    enum RenderMode;
+    class VertexArray;
+    class Transform;
+    class Material;
+
     class Renderer {
     public:
         static void begin(Camera* camera);
+        static void pushMode(RenderMode mode);
+        static void popMode();
         static void render(Ref <VertexArray> array,Ref<Material> material, Transform& transform);
         static void end();
     private:
-        static inline Camera* camera;
+        static Camera* camera;
+        static std::stack<RenderMode> _mode;
     };
 }
 

@@ -5,6 +5,7 @@
 #include <core/GraphicsLibrary.h>
 #include <platform/OpenGL/OpenGLVertexArray.h>
 #include "VertexArray.h"
+#include "Buffer.h"
 
 VoxEng::Ref<VoxEng::VertexArray> VoxEng::VertexArray::create() {
     switch(GraphicsLibrary::library()) {
@@ -12,3 +13,5 @@ VoxEng::Ref<VoxEng::VertexArray> VoxEng::VertexArray::create() {
     }
     return nullptr;
 }
+
+const std::vector<VoxEng::Ref<VoxEng::ArrayBuffer>>& VoxEng::VertexArray::buffers() {return mBuffers; }

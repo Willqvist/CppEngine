@@ -6,6 +6,7 @@
 #define CPPMC_APPLICATION_H
 
 #include <event/Events.h>
+
 #include "Window.h"
 #include "Core.h"
 #include "Timestep.h"
@@ -33,20 +34,16 @@ namespace VoxEng {
         void onEvent(Event &ev) override final;
 
         Ref<Window>& getWindow();
-        static Application* getApplication() {
-            return application;
-        }
+        static Application* getApplication();
 
-        RuntimeData& getRuntimeData() {
-            return data;
-        }
+        RuntimeData& getRuntimeData();
 
     protected:
         void update(Timestep& delta);
 
         void render();
 
-        virtual void renderDebug() {};
+        virtual void renderDebug();
 
         virtual void destroy() = 0;
 

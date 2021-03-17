@@ -7,6 +7,8 @@
 #include "OpenGLShader.h"
 #include "glm/gtc/type_ptr.hpp"
 
+unsigned int VoxEng::OpenGLShader::boundProgram = -1;
+
 VoxEng::OpenGLShader::OpenGLShader(const std::string &vertex, const std::string& fragment,ShaderLayout& layout): program(glCreateProgram())  {
 
     unsigned int vs = compileShader(GL_VERTEX_SHADER, vertex);
