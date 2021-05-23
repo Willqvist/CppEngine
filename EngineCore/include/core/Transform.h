@@ -30,7 +30,7 @@ namespace Ziti {
             t._position = _position.x*base._right+_position.y*base._up+_position.z*base._forward;
             t._rotation = _rotation+base.rotation();
             t._scale = _scale*base.scale();
-
+            t.setDirections();
             return t;
         }
 
@@ -72,9 +72,9 @@ namespace Ziti {
         glm::vec3 _scale = glm::vec3(1,1,1);
         glm::vec3 _rotation = glm::vec3(0,0,0);
 
-        glm::vec3 _forward = glm::vec3(0,0,0);
-        glm::vec3 _right = glm::vec3(0,0,0);
-        glm::vec3 _up = glm::vec3(0,0,0);
+        glm::vec3 _forward = glm::vec3(0,0,1);
+        glm::vec3 _right = glm::vec3(1,0,0);
+        glm::vec3 _up = glm::vec3(0,1,0);
     };
 }
 

@@ -6,15 +6,21 @@
 #define CPPMC_CAMERA3D_H
 
 #include "Node.h"
+#include "Spatial.h"
 
 namespace Ziti {
-    class Camera3D : public Node {
-        ISCLASS(Camera3D,Node)
+    class Camera3D : public Spatial {
+        ISCLASS(Camera3D,Spatial)
 
         Camera3D();
         Ref<Camera> internal();
 
         void start() override;
+
+        void update() override;
+
+        void onPositionChange() override;
+
 
     private:
         Ref<Camera> _camera;

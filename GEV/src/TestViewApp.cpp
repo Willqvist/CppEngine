@@ -11,6 +11,8 @@
 #include <core/graphics/textures/RenderableTexture.h>
 #include <core/scene/Spatial.h>
 #include <core/scene/Camera3D.h>
+#include <core/scene/MeshRenderer.h>
+#include <core/utils/MeshGenerator.h>
 
 using namespace Ziti;
 void TestViewApp::start() {
@@ -23,20 +25,15 @@ void TestViewApp::start() {
     Ref<Texture> tes = GraphicsLoader::loadTexture("tes.png");
     //printf("wew: %d\n", tes == nullptr);
     _rtex = CreateRef<RenderableTexture>(FBOBuffers::COLOR | FBOBuffers::DEPTH, 1980/10,1080/10);
-    _camera = CreateRef<Camera>(window());
-    _cam2 = CreateRef<Camera>(_rtex);
+    //_cam2 = CreateRef<Camera>(_rtex);
 
-    _mat2->set("_mainTexture",_rtex);
+    //_mat2->set("_mainTexture",_rtex);
     _mat->set("_mainTexture",tes);
-    _cam2->transform().position().z = -5;
-    _cam2->transform().position().y = 0;
-    _cam2->transform().position().x = 0;
-    _cam2->update();
+    //_cam2->transform().position().z = -5;
+    //_cam2->transform().position().y = 0;
+    //_cam2->transform().position().x = 0;
+    //_cam2->update();
 
-    _camera->transform().position().z = -15;
-    _camera->transform().position().y = 0;
-    _camera->transform().position().x = 0;
-    _camera->update();
     /*
     SceneNode node = getNodeTree()->add("test",nullptr);
     SceneNode node2 = getNodeTree()->add("test",nullptr);
@@ -44,12 +41,16 @@ void TestViewApp::start() {
     node2->add("wew3",nullptr);
      */
     Ref<Spatial> spat = getNodeTree()->root()->addNode<Spatial>();
-    Ref<Camera3D> cam = getNodeTree()->root()->addNode<Camera3D>();
-    spat->addNode<Spatial>();
-    cam->addNode<Spatial>();
+    Ref<MeshRenderer> rend = spat->addNode<MeshRenderer>();
+    rend->setMesh(MeshGenerator::createCube(1));
+    rend->setMaterial(_mat);
+    Ref<Spatial> spat2 = spat->addNode<Spatial>();
+    Ref<Camera3D> cam = spat2->addNode<Camera3D>();
+
     _cameraNode = getNodeTree()->root()->findFirst<Camera3D>();
     _cameraNode->internal()->setTarget(window());
-    _cameraNode->internal()->transform().position().z = -5;
+    _cameraNode->local().position().z = -5;
+    _cameraNode->local().position().x = -5;
 }
 
 void TestViewApp::update() {
@@ -59,22 +60,13 @@ void TestViewApp::update() {
 }
 
 void TestViewApp::render(RenderEngine &engine) {
-    //engine.setCamera(_cameraNode->internal());
-    //_cam2->transform().position().z -= 1;
-    //_cam2->update();
+    engine.setCamera(_cameraNode->internal());
     /*
-    RenderData data2;
-    data2.task = _cube;
-    data2.material = _mat;
-    data2.camera = _cam2;
-    engine.addRenderTask(data2);
-*/
     RenderData data;
     data.task = _cube;
     data.material = _mat;
-    data.camera = _cameraNode->internal();
     engine.addRenderTask(data);
-
+*/
     getNodeTree()->render(engine);
 
 }

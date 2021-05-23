@@ -9,6 +9,7 @@
 #include <string.h>
 #include <functional>
 #include "NodeMacro.h"
+#include "Attributes.h"
 
 namespace Ziti {
     class Node;
@@ -92,7 +93,8 @@ namespace Ziti {
 
         template<class T>
         Ref<T> parent() {
-            return std::static_pointer_cast<T>(_parent);
+            if(!_parent) return nullptr;
+            return std::dynamic_pointer_cast<T>(_parent);
         }
 
         Ref<Node> parent() {
@@ -125,6 +127,7 @@ namespace Ziti {
         virtual void render(RenderEngine& engine) {};
         virtual void enterTree(SceneTree* tree) {};
         virtual void leaveTree(SceneTree* tree) {};
+        virtual void attributes(Attributes& attributes) {};
 
         virtual ~Node() = default;
 

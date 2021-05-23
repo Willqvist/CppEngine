@@ -18,7 +18,6 @@ ZitiView::NodeHierarchyView::NodeHierarchyView(Ref<SceneTree> tree) : _tree(tree
 }
 
 int ZitiView::NodeHierarchyView::renderTree(Ref<Node>& node,int uuid) {
-
     for(Ref<Node>& child : node->children()) {
         uuid ++;
         unsigned int flags = ImGuiTreeNodeFlags_OpenOnArrow;
@@ -28,6 +27,12 @@ int ZitiView::NodeHierarchyView::renderTree(Ref<Node>& node,int uuid) {
         }
         ImGui::PushID(uuid);
         bool open = ImGui::TreeNodeEx(child->getClass().c_str(), flags);
+        bool clicked = ImGui::IsItemClicked(ImGuiMouseButton_Left);
+        if(clicked) {
+            for(auto& listener : _listeners) {
+                listener->nodeActive(child);
+            }
+        }
         ImGui::PopID();
         if(!isLeafNode && open) {
             uuid = renderTree(child,uuid);
@@ -35,4 +40,8 @@ int ZitiView::NodeHierarchyView::renderTree(Ref<Node>& node,int uuid) {
         }
     }
     return uuid;
+}
+
+void ZitiView::NodeHierarchyView::addListener(Ziti::Ref<ZitiView::HierarchyListener> listener) {
+    _listeners.push_back(listener);
 }

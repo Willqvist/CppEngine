@@ -60,7 +60,8 @@ namespace ZitiView {
         std::vector<Ref<View>> _views;
         ViewManager _manager;
         Scope<Application> _app;
-        Ref<TextureWindow> _texWindow;
+        Ref<TextureWindow> _gameWindow;
+        Ref<TextureWindow> _editorWindow;
     };
 }
 

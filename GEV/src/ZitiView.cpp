@@ -7,17 +7,19 @@
 #include "ZitiView.h"
 #include "views/NodeHierarchyView.h"
 #include "views/ViewportView.h"
-
-int dockspace_id = 0;
+#include "views/NodeView.h"
 
 void ZitiView::ZitiView::start() {
     //TODO: create TextureWindow!! instead of window;
-    _texWindow = CreateRef<TextureWindow>(FBOBuffers::COLOR |FBOBuffers::DEPTH, 1980,1080);
-    _app->init(_texWindow);
+    _gameWindow = CreateRef<TextureWindow>(FBOBuffers::COLOR | FBOBuffers::DEPTH, 1980,1080);
+    _editorWindow = CreateRef<TextureWindow>(FBOBuffers::COLOR | FBOBuffers::DEPTH, 1980,1080);
+    _app->init(_gameWindow);
     _manager.setup(window());
-    addView<NodeHierarchyView>(_app->getNodeTree());
-    addView<ViewportView>("Viewport",_texWindow);
-
+    Ref<NodeHierarchyView> hierView = addView<NodeHierarchyView>(_app->getNodeTree());
+    addView<ViewportView>("Game",_gameWindow);
+    addView<ViewportView>("Editor",_editorWindow);
+    Ref<NodeView> nodeView = addView<NodeView>();
+    hierView->addListener(nodeView);
     _app->start();
 
     //TODO: move this to custom io manager!!!

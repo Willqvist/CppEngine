@@ -57,10 +57,14 @@ void ZitiView::ViewManager::dock() {
 
         ImGuiID dock_main_id = dockspace_id; // This variable will track the document node, however we are not using it here as we aren't docking anything into it.
         ImGuiID dock_id_prop = ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Left, 0.30f, NULL, &dock_main_id);
-        ImGuiID dock_id_bottom = ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Left, 1.0f, NULL, &dock_main_id);
+        ImGuiID dock_id_game = ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Left, 0.5f, NULL, &dock_main_id);
+        ImGuiID dock_id_editor = ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Left, 0.5f, NULL, &dock_main_id);
+        ImGuiID dock_id_node = ImGui::DockBuilderSplitNode(dock_main_id, ImGuiDir_Left, 1.0f, NULL, &dock_main_id);
 
         ImGui::DockBuilderDockWindow("Hierarchy", dock_id_prop);
-        ImGui::DockBuilderDockWindow("Viewport", dock_id_bottom);
+        ImGui::DockBuilderDockWindow("Game", dock_id_game);
+        ImGui::DockBuilderDockWindow("Editor", dock_id_editor);
+        ImGui::DockBuilderDockWindow("Inspector", dock_id_node);
         ImGui::DockBuilderFinish(dockspace_id);
         _inited = true;
     }

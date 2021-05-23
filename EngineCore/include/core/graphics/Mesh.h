@@ -15,6 +15,7 @@ namespace Ziti {
     public:
         Mesh();
         void addVertex(const Vertex& vertex);
+        void addIndicies(std::initializer_list<unsigned int> list);
         void addVerticies(std::vector<Vertex>& verticies);
         Vertex& vertexAt(int index);
         void upload();
@@ -23,9 +24,10 @@ namespace Ziti {
         std::vector<float> _data;
         Ref<VertexArray> _vao;
         BufferLayout _layout;
+        std::vector<unsigned int> _indicies;
 
     };
 }
 
 
-#endif //CPPMC_MESH_H
+#endif //CPPMC_MESHRENDERER_H

@@ -38,6 +38,10 @@ namespace Ziti {
             return _transform;
         }
 
+        void setTransform(const Transform& t) {
+            _transform = t;
+        }
+
         void setProjection(ProjectionType type);
 
         void clear();

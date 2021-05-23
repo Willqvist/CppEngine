@@ -43,8 +43,16 @@ void Ziti::Mesh::upload() {
     Ref<ArrayBuffer> data = ArrayBuffer::create(_data.data(),_data.size());
     data->setLayout(_layout);
     _vao->addBuffer(data);
+    if(_indicies.size() > 0) {
+        Ref<IndexBuffer> idx = IndexBuffer::create(_indicies.data(),_indicies.size());
+        _vao->addIndexBuffer(idx);
+    }
 }
 
 void Ziti::Mesh::render() {
     VertexArrayRenderer::draw(_vao, RenderMode::TRIANGLES);
+}
+
+void Ziti::Mesh::addIndicies(std::initializer_list<unsigned int> list) {
+    _indicies = list;
 }

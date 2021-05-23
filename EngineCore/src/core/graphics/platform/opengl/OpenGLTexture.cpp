@@ -23,11 +23,11 @@ void Ziti::OpenGLTexture::deactivate() {
 }
 
 int Ziti::OpenGLTexture::width() {
-    return 0;
+    return _width;
 }
 
 int Ziti::OpenGLTexture::height() {
-    return 0;
+    return _height;
 }
 
 int Ziti::OpenGLTexture::depth() {
