@@ -5,7 +5,6 @@
 #include "core/scene/MeshRenderer.h"
 using namespace glm;
 void Ziti::MeshRenderer::render(Ziti::RenderEngine &engine) {
-    Spatial::render(engine);
     if(_mesh) {
         RenderData data;
         data.task = (RenderTask*)this;

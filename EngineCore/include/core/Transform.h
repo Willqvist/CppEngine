@@ -27,7 +27,8 @@ namespace Ziti {
             Transform t;
             //TODO: cache forward, dont always update.
             base.setDirections();
-            t._position = _position.x*base._right+_position.y*base._up+_position.z*base._forward;
+            t._position = base.position() + _position;
+            //t._position = _position.x*base._right+_position.y*base._up+_position.z*base._forward;
             t._rotation = _rotation+base.rotation();
             t._scale = _scale*base.scale();
             t.setDirections();

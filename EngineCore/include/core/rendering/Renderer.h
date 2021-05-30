@@ -7,6 +7,7 @@
 
 #include <vector>
 #include "RenderTask.h"
+#include "../../../src/core/rendering/gizmo/Gizmo.h"
 
 namespace Ziti {
     class Renderer {
@@ -14,6 +15,7 @@ namespace Ziti {
         virtual void init() = 0;
         virtual void preRender() = 0;
         virtual void render(/*const LightMap& lights, */std::vector<RenderData> tasks) = 0;
+        virtual void render(Ref<Camera>& camera, std::vector<GizmoInstance> gizmos) = 0;
         virtual void postRender() = 0;
     };
 }

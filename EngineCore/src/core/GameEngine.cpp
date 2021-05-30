@@ -8,6 +8,8 @@
 #include <GLFW/glfw3.h>
 #include <thread>
 #include <core/rendering/renderers/ForwardRenderer.h>
+#include <core/window/Input.h>
+#define DEBUG_ENABLE
 
 Ziti::GameEngine::GameEngine(Ziti::Scope<Ziti::Application> &app) : _app(std::move(app)) {
     Ref<Renderer> renderer = CreateRef<ForwardRenderer>();
@@ -24,10 +26,10 @@ void Ziti::GameEngine::start() {
 #endif
     _running = true;
 
-    float prevFrameTime = 0;
+    long double prevFrameTime = 0;
     const float dt = 1/60.0f;
-    double accumulator = 0;
-    float prevFrameDelta = 0;
+    long double accumulator = 0;
+    long double prevFrameDelta = 0;
 
     WindowAttributes attr;
     attr.height = 1080;
@@ -36,14 +38,18 @@ void Ziti::GameEngine::start() {
 
     _listener = CreateRef<GameEngineListener>(new GameEngineListener(this));
     window->addEventListener(_listener);
+    Ref<Input> input = CreateRef<Input>();
+    window->addEventListener(input);
 
     _app->init(window);
     _app->start();
 
-    prevFrameTime = static_cast<float>(Time::seconds());
+    timeSinceStart = Time::seconds();
+
+    prevFrameTime = static_cast<long double>(Time::seconds());
     while (_running) {
-        float time = static_cast<float>(Time::seconds());
-        float timestep = time - prevFrameTime;
+        long double time = static_cast<long double>(Time::seconds());
+        long double timestep = time - prevFrameTime;
         prevFrameDelta = timestep;
         prevFrameTime = time;
         accumulator += timestep;
@@ -68,6 +74,7 @@ void Ziti::GameEngine::start() {
         render();
         renderDebug();
          */
+        input->poll();
         window->update();
         _app->render(_renderEngine);
         _renderEngine.flush();

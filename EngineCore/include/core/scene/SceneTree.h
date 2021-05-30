@@ -31,6 +31,7 @@ namespace Ziti {
         }
 
         void render(RenderEngine& engine);
+        void renderGizmos(RenderEngine& engine);
         void update();
     private:
         void iterate(Ref<Node>& node,const  std::function<void(Ref<Node>&)>& func);

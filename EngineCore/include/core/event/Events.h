@@ -34,6 +34,13 @@ namespace Ziti {
         EVENT(MOUSE_PRESS);
     };
 
+    class MouseWheelEvent : public Event {
+    public:
+        float _amount;
+        MouseWheelEvent(float amount);
+        EVENT(MOUSE_WHEEL);
+    };
+
     class MouseMoveEvent : public Event {
     public:
         double _x, _y;

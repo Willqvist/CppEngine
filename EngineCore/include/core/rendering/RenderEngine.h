@@ -11,6 +11,7 @@
 #include "RenderTask.h"
 #include "RenderTarget.h"
 #include "Camera.h"
+#include "../../../src/core/rendering/gizmo/Gizmo.h"
 #include <vector>
 #include <unordered_set>
 namespace Ziti {
@@ -20,12 +21,13 @@ namespace Ziti {
     class RenderEngine {
     public:
         void setRenderer(Ref<Renderer> renderer);
-        void setCamera(Ref<Camera> camera);
+        virtual void setCamera(Ref<Camera> camera);
         void addRenderTask(RenderData& data);
-
-    private:
+        void addGizmoRenderTask(GizmoInstance& data);
         void flush();
+    private:
         std::vector<RenderData> _tasks;
+        std::vector<GizmoInstance> _gizmos;
         std::unordered_set<Ref<Camera>> _cameras;
         Ref<Camera> _camera;
         Ref<Renderer> _renderer;

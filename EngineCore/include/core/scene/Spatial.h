@@ -53,14 +53,15 @@ namespace Ziti {
         }
 
         void update() override {
-
+            if(_dirty) {
+                _dirty = false;
+            }
             checkIsDirty();
             //printf("spatial: %p\n",_spatial);
             if(_spatial && _spatial->_dirty) {
-                printf("parent is dirty!! %s\n",_className.c_str());
+                printf("parent is dirty!! %s\n",getClass().c_str());
                 _base = _spatial->global();
                 updateGlobal();
-                _spatial->_dirty = false;
                 _dirty = true;
                 onPositionChange();
             }
@@ -79,23 +80,23 @@ namespace Ziti {
 
         void attributes(Attributes &attributes) override {
             Node::attributes(attributes);
-            attributes.emplace<Transform>("Position",&_local);
+            attributes.emplace<Transform>("Transform",&_local);
         }
 
 
         void enterTree(SceneTree* tree) override {
             _spatial = parent<Spatial>();
-            printf("enters tree! %p\n",_spatial.get());
-
         }
 
 
     private:
         void updateGlobal() {
+            _base.update();
             _local.update();
-            _global = _base.changeOfBasis(_local);
+            _global = _local.changeOfBasis(_base);
         }
         bool _dirty = false;
+        bool _prevDirtyFix = false;
         int _dirtyIter = 0;
         Transform _local;
         Transform _base;

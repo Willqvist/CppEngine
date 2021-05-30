@@ -30,5 +30,7 @@ namespace Ziti {
         Yes, No
     };
 
+#define LAMBDA(fnc) [&](auto&&... args)-> bool{return this->fnc(std::forward<decltype(args)>(args)...);}
+
 }
 #endif //CPPMC_MEMORY_H

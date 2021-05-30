@@ -16,6 +16,8 @@ namespace Ziti {
 
         void render(std::vector<RenderData> tasks) override;
 
+        void render(Ref<Camera>& camera,std::vector<GizmoInstance> gizmos) override;
+
         void postRender() override;
     };
 }

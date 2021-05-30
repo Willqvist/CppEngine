@@ -27,3 +27,8 @@ void Ziti::Camera3D::update() {
     Spatial::update();
 }
 
+void Ziti::Camera3Ds(attributes);
+}
+
+::attributes(Ziti::Attributes &attributes) {
+    Spatial::attribute

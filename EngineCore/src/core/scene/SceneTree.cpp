@@ -14,12 +14,9 @@ void Ziti::SceneTree::render(Ziti::RenderEngine &engine) {
 }
 
 void Ziti::SceneTree::update() {
-
-
     iterate(_root,[](Ref<Node>& node) {
         node->onUpdate();
     });
-
 }
 
 void Ziti::SceneTree::iterate(Ziti::Ref<Ziti::Node>& node,const std::function<void(Ref<Node> &)> &func) {
@@ -27,5 +24,12 @@ void Ziti::SceneTree::iterate(Ziti::Ref<Ziti::Node>& node,const std::function<vo
         func(child);
         iterate(child,func);
     }
+}
+
+void Ziti::SceneTree::renderGizmos(Ziti::RenderEngine &engine) {
+    iterate(_root,[&](Ref<Node>& node) {
+        GizmoInstance inst = node->gizmo(false);
+        engine.addGizmoRenderTask(inst);
+    });
 }
 

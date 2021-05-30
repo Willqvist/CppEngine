@@ -8,7 +8,7 @@
 EVENT_TYPE getType(){return EVENT_TYPE::type;}
 namespace Ziti {
     enum class EVENT_TYPE{
-        WINDOW_CLOSE=0, KEY_PRESS, MOUSE_MOVE, MOUSE_PRESS,WINDOW_RESIZE
+        WINDOW_CLOSE=0, KEY_PRESS, MOUSE_MOVE, MOUSE_PRESS,WINDOW_RESIZE, MOUSE_WHEEL
     };
     class Event {
     public:

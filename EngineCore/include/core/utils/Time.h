@@ -9,13 +9,13 @@
 namespace Ziti {
     class Time {
     public:
-        static unsigned int ms() {
+        static long unsigned int ms() {
             return (unsigned int) std::chrono::duration_cast<std::chrono::milliseconds>(
                     std::chrono::system_clock::now().time_since_epoch()).count();
         }
 
-        static float seconds() {
-            return Time::ms()/1000.0f;
+        static long double seconds() {
+            return Time::ms()/1000.0;
         }
 
         static float delta() {

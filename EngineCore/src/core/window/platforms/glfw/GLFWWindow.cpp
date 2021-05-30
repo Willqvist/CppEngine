@@ -173,6 +173,13 @@ void Ziti::GLFWWindow::setupListeners() {
         WindowResizeEvent ev(width,height);
         windowPointer->sendEvent(ev);
     });
+
+    glfwSetScrollCallback(_window,[](GLFWwindow* window, double xOffset,double yOffset){
+        MouseWheelEvent ev(yOffset);
+        GLFWWindow* windowPointer = static_cast<GLFWWindow*>(glfwGetWindowUserPointer(window));
+        windowPointer->sendEvent(ev);
+    });
+
     WindowResizeEvent ev(_width,_height);
     this->sendEvent(ev);
 }

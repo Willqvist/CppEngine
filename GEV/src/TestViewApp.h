@@ -23,6 +23,8 @@ public:
 
     void stop() override;
 
+    void renderGizmos(Ziti::RenderEngine &engine) override;
+
 private:
     CubeTest* _cube;
     Ziti::Ref<Ziti::RenderableTexture> _rtex;

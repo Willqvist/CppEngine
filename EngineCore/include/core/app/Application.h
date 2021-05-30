@@ -24,6 +24,7 @@ namespace Ziti {
         virtual void start() = 0;
         virtual void update() = 0;
         virtual void render(RenderEngine& engine) = 0;
+        virtual void renderGizmos(RenderEngine& engine) {};
         virtual void postRender() {};
         virtual void stop() = 0;
         Ref<Window> window() {

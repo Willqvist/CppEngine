@@ -10,6 +10,7 @@
 #include <functional>
 #include "NodeMacro.h"
 #include "Attributes.h"
+#include "../../../src/core/rendering/gizmo/Gizmo.h"
 
 namespace Ziti {
     class Node;
@@ -128,6 +129,9 @@ namespace Ziti {
         virtual void enterTree(SceneTree* tree) {};
         virtual void leaveTree(SceneTree* tree) {};
         virtual void attributes(Attributes& attributes) {};
+        virtual GizmoInstance gizmo(bool focused) {
+            return GizmoInstance::empty;
+        };
 
         virtual ~Node() = default;
 

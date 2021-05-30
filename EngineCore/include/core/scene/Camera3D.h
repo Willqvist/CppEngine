@@ -21,6 +21,7 @@ namespace Ziti {
 
         void onPositionChange() override;
 
+        void attributes(Attributes &attributes) override;
 
     private:
         Ref<Camera> _camera;

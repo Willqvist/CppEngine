@@ -4,6 +4,7 @@
 
 #include <core/graphics/GraphicsCommand.h>
 #include <imgui/imgui.h>
+#include <core/rendering/renderers/ForwardRenderer.h>
 #include "ZitiView.h"
 #include "views/NodeHierarchyView.h"
 #include "views/ViewportView.h"
@@ -19,20 +20,32 @@ void ZitiView::ZitiView::start() {
     addView<ViewportView>("Game",_gameWindow);
     addView<ViewportView>("Editor",_editorWindow);
     Ref<NodeView> nodeView = addView<NodeView>();
+    _camera = CreateRef<EditorCamera>(std::static_pointer_cast<RenderTarget>(_editorWindow));
     hierView->addListener(nodeView);
+    hierView->addListener(_camera);
     _app->start();
-
+    Ref<ForwardRenderer> renderer = CreateRef<ForwardRenderer>();
+    _editorEngine.setRenderer(renderer);
     //TODO: move this to custom io manager!!!
 }
 
 void ZitiView::ZitiView::update() {
+    _camera->update();
     _app->update();
 }
 
 void ZitiView::ZitiView::render(Ziti::RenderEngine &engine) {
+    _editorEngine.setEditorCamera(_camera->camera());
     GraphicsCommand::clearScreenColor(0.2,0.5,0.8,1);
     GraphicsCommand::clear(BUFFER_BIT::COLOR | BUFFER_BIT::DEPTH);
     _app->render(engine);
+    _editorWindow->bind();
+    GraphicsCommand::clearScreenColor(0.2,0.5,0.8,1);
+    GraphicsCommand::clear(BUFFER_BIT::COLOR | BUFFER_BIT::DEPTH);
+    _app->render(_editorEngine);
+    _app->renderGizmos(_editorEngine);
+    _editorEngine.flush();
+    _editorWindow->unbind();
 }
 
 void ZitiView::ZitiView::stop() {

@@ -9,8 +9,11 @@
 #include <views/View.h>
 #include "ViewManager.h"
 #include "TextureWindow.h"
+#include "ZitiEditorRenderEngine.h"
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
+#include <editor/EditorCamera.h>
+
 using namespace Ziti;
 namespace ZitiView {
     class ZitiView : public Application {
@@ -62,6 +65,8 @@ namespace ZitiView {
         Scope<Application> _app;
         Ref<TextureWindow> _gameWindow;
         Ref<TextureWindow> _editorWindow;
+        Ref<EditorCamera> _camera;
+        ZitiEditorRenderEngine _editorEngine;
     };
 }
 

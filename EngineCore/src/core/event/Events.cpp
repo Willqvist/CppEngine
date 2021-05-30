@@ -9,3 +9,4 @@ Ziti::MousePressEvent::MousePressEvent(int key, Ziti::InputState state): _key(ke
 
 Ziti::WindowResizeEvent::WindowResizeEvent(int width, int height): _width(width), _height(height){};
 
+Ziti::MouseWheelEvent::MouseWheelEvent(float amount) : _amount(amount) {}

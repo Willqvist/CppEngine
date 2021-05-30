@@ -54,6 +54,8 @@ namespace Ziti {
 
         glm::mat4 getProjection();
 
+        void background(float r, float g, float b, float a);
+
     private:
         void updateProjection();
         Ref<RenderTarget> _target;
@@ -61,6 +63,7 @@ namespace Ziti {
         glm::mat4 _projection = glm::mat4(1.0f),_view = glm::mat4(1.0f), _viewProj;
         bool _dirty = true;
         Transform _transform;
+        glm::vec4 _background = glm::vec4(0.4f,0.4f,0.4f,1);
     };
 }
 

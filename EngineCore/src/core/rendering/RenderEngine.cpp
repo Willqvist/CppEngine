@@ -38,7 +38,14 @@ void Ziti::RenderEngine::flush() {
         cam->target()->unbind();
     }
     _renderer->render(_tasks);
+    _renderer->render(_camera, _gizmos);
     _renderer->postRender();
     _tasks.clear();
     _cameras.clear();
+
+}
+
+void Ziti::RenderEngine::addGizmoRenderTask(Ziti::GizmoInstance &data) {
+    if(data.valid())
+        _gizmos.push_back(data);
 }

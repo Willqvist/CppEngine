@@ -71,6 +71,10 @@ void TestViewApp::render(RenderEngine &engine) {
 
 }
 
+void TestViewApp::renderGizmos(RenderEngine &engine) {
+    getNodeTree()->renderGizmos(engine);
+}
+
 void TestViewApp::stop() {
 
 }
